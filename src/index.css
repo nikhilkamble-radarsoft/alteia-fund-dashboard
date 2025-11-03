@@ -1,0 +1,46 @@
+@layer theme, base, antd, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@import "@fontsource/source-sans-pro/400.css";
+@import "@fontsource/source-sans-pro/600.css";
+@import "@fontsource/source-sans-pro/700.css";
+
+@theme {
+  --font-sans: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #054f65;
+  --color-secondary: #1e1e1e;
+  --color-danger: #ff4757;
+
+  --color-background: #f0f7f6;
+  --color-sidebar-background: #fff;
+  --color-modal-background: #fff;
+
+  --color-text-primary: #333333;
+  --color-text-secondary: #a19c84;
+  --color-text-danger: #ff4757;
+  --color-light-primary: #ffe6e0;
+}
+
+:root {
+  --color-primary: #054f65;
+  --color-secondary: #1e1e1e;
+  --color-danger: #ff4757;
+
+  --color-background: #f0f7f6;
+  --color-sidebar-background: #fff;
+  --color-modal-background: #fff;
+
+  --color-text-primary: #4c4c5c;
+  --color-text-secondary: #a19c84;
+  --color-light-primary: #e6edef;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-sans) !important;
+}

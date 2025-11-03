@@ -1,0 +1,63 @@
+
+
+.ant-upload.ant-upload-select {
+  width: 100%
+}.ant-menu-item:not(.ant-menu-item-selected),
+.ant-menu-submenu-title {
+  color: var(--color-background) !important;
+}
+
+.ant-menu .ant-menu-item-selected {
+  background-color: var(--color-sidebar-background) !important;
+  font-weight: 800 !important;
+}
+
+.ant-menu-item-divider {
+  border-color: var(--color-background) !important;
+  width: 20%;
+  margin-left: 25px;
+  margin-block: 10px !important;
+}
+
+.custom-table .ant-table-thead > tr > th,
+.custom-table .ant-table-tbody > tr > td {
+  border: 1px solid #d7d7d7; /* your custom border color */
+  box-shadow: none;
+}
+
+.ant-form-item {
+  margin-bottom: 0 !important;
+}
+
+.light-scroll .ant-table-body {
+  scrollbar-width: thin;
+  scrollbar-color: #cfcfcf transparent;
+}
+
+.light-scroll .ant-table-body::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.light-scroll .ant-table-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.light-scroll .ant-table-body::-webkit-scrollbar-thumb {
+  background-color: #cfcfcf;
+  border-radius: 10px;
+}
+
+.light-scroll .ant-table-body::-webkit-scrollbar-thumb:hover {
+  background-color: #a8a8a8;
+}
+
+.ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ant-upload.ant-upload-select {
+  width: 100%
+}
