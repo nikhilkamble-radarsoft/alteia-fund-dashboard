@@ -31,12 +31,9 @@ const Login = () => {
       // });
 
       const { response, status } = await callApi({
-        url: "/login",
+        url: "/admin/login",
         method: "POST",
-        data: {
-          email: values.email,
-          password: values.password,
-        },
+        data: values,
         successOptions: {},
         errorOptions: {},
       });
@@ -56,12 +53,9 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-primary bg-center bg-no-repeat bg-contain">
-      <AuthCard
-        title="Complete Your SME Verification"
-        description="Seamlessly manage your business orders, buyers, and onboarding — all in one place."
-      />
+      <AuthCard />
 
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-xl flex flex-col items-center">
         <div className="text-center mb-6">
           <Title level={3}>Log in to your account</Title>
         </div>
@@ -72,6 +66,7 @@ const Login = () => {
           layout="vertical"
           onFinish={handleLogin}
           validateTrigger="onBlur"
+          className="w-82"
         >
           <FormField
             name="email"
@@ -103,9 +98,8 @@ const Login = () => {
             <FormField
               name="remember"
               type="checkbox"
-              valuePropName={"checked"}
+              label={"Remember me"}
               rules={[{ required: true }]}
-              props={{ children: "Remember me" }}
             />
 
             <Link to="/forgot-password" className="text-primary">
@@ -117,9 +111,10 @@ const Login = () => {
             <div className="w-full flex items-center justify-evenly">
               <CustomButton
                 loading={loading}
-                text={loading ? "Logging in..." : "Login"}
+                text={loading ? "Signing in..." : "Sign in"}
                 type="submit"
                 htmlType="submit"
+                width=""
               />
             </div>
           </Form.Item>

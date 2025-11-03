@@ -5,8 +5,8 @@ import { Typography } from "antd";
 const { Title, Paragraph } = Typography;
 
 const AuthCard = ({
-  title = "Complete Your SME Verification",
-  description = "Seamlessly manage your business orders, buyers, and onboarding — all in one place.",
+  title = "",
+  description = "",
   logoStyles,
   className = "",
 }) => {

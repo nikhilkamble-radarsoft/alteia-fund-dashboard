@@ -233,8 +233,7 @@ export default function Field({
     }
 
     case "checkbox":
-      // Ant Design Form.Item will automatically control value/onChange
-      return <Checkbox {...common}>{rest.children || rest.label}</Checkbox>;
+      return <Checkbox {...props}>{children || props.label}</Checkbox>;
 
     case "custom":
       // custom render passed via "render" prop
@@ -279,8 +278,8 @@ export function FormField({
 }) {
   if (type === "checkbox") {
     return (
-      <Form.Item key={name} name={name} rules={rules} {...formItemProps}>
-        <Field type="checkbox" {...props} label={label} />
+      <Form.Item key={name} name={name} rules={rules} valuePropName="checked" {...formItemProps}>
+        <Checkbox {...props}>{label}</Checkbox>
       </Form.Item>
     );
   }

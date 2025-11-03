@@ -45,7 +45,7 @@ const CustomButton = ({
       type={type}
       onClick={onClick}
       size={size}
-      disabled={disabled || loading}
+      disabled={disabled}
       loading={loading}
       className={`${bgClass} shadow-none font-semibold px-[14px] py-[10px] h-[38px] disabled:bg-[#CECECE] flex items-center justify-center gap-2 text-white rounded-lg ${width} ${className}`}
       {...rest}

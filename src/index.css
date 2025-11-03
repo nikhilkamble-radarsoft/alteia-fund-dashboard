@@ -11,7 +11,7 @@
 @theme {
   --font-sans: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
 
-  --color-primary: #054f65;
+  --color-primary: #044F55;
   --color-secondary: #1e1e1e;
   --color-danger: #ff4757;
 
@@ -26,7 +26,7 @@
 }
 
 :root {
-  --color-primary: #054f65;
+  --color-primary: #044F55;
   --color-secondary: #1e1e1e;
   --color-danger: #ff4757;
 
