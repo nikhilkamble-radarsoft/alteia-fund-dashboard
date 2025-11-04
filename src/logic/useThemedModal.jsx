@@ -1,7 +1,10 @@
-import { useState, useCallback } from "react";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
-import ThemedModal from "../components/modal/ThemedModal";
-import Paragraph from "antd/es/typography/Paragraph";
+import { useState, useCallback } from 'react'
+import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons'
+import ThemedModal from '../components/modal/ThemedModal'
+import Paragraph from 'antd/es/typography/Paragraph'
+import Title from 'antd/es/typography/Title'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+import successAnim from '../assets/success-animation.lottie'
 
 /**
  * Hook for controlling ThemedModal programmatically
@@ -15,96 +18,108 @@ import Paragraph from "antd/es/typography/Paragraph";
  *
  * return <>{modal}</>;
  */
-export function useThemedModal() {
-  const [visible, setVisible] = useState(false);
+export function useThemedModal () {
+  const [visible, setVisible] = useState(false)
   const [modalConfig, setModalConfig] = useState({
-    title: "",
-    content: "",
+    title: '',
+    content: '',
     buttons: [],
-    footerAlign: "center",
-  });
+    footerAlign: 'center'
+  })
 
-  const closeModal = useCallback(() => setVisible(false), []);
+  const closeModal = useCallback(() => setVisible(false), [])
 
   const handleClose = useCallback(() => {
     if (modalConfig.onOk) {
-      modalConfig.onOk();
+      modalConfig.onOk()
     }
-    setVisible(false);
-  }, [modalConfig]);
+    setVisible(false)
+  }, [modalConfig])
 
   const showCustom = useCallback(
-    (config) => {
+    config => {
       setModalConfig({
         ...config,
-        onClose: config.onClose || handleClose,
-      });
-      setVisible(true);
+        onClose: config.onClose || handleClose
+      })
+      setVisible(true)
     },
     [handleClose]
-  );
+  )
 
   const showSuccess = useCallback(
-    (message, options = {}) => {
+    (message, subMessage, options = {}) => {
       showCustom({
         title: options.title,
         content: (
-          <div className="flex flex-col items-center justify-center">
-            <CheckCircleOutlined className="text-7xl mb-2 text-primary" />
-            <Paragraph className="text-center text-[20px] mt-5">{message}</Paragraph>
+          <div className='flex flex-col items-center justify-center'>
+            <DotLottieReact src={successAnim} loop autoplay />
+            <Title
+              level={3}
+              className='text-light-primary text-center mt-5 mb-0'
+            >
+              {message}
+            </Title>
+            <Paragraph className='mb-0 text-[16px] text-center text-[#828282]'>
+              {subMessage}
+            </Paragraph>
           </div>
         ),
         ...(options.onOk && {
           buttons: [
             {
-              text: options.onOkText || "OK",
-              type: "primary",
+              text: options.onOkText || 'OK',
+              type: 'primary',
               onClick: () => {
-                closeModal();
-                options.onOk?.();
-              },
-            },
-          ],
+                closeModal()
+                options.onOk?.()
+              }
+            }
+          ]
         }),
-        footerAlign: "center",
+        footerAlign: 'center',
         onOk: options.onOk,
-        ...options,
-      });
+        ...options
+      })
     },
     [showCustom, closeModal]
-  );
+  )
 
   const showError = useCallback(
-    (message, options = {}) => {
+    (message, subMessage, options = {}) => {
       showCustom({
         title: options.title,
         content: (
-          <div className="flex flex-col items-center justify-center">
-            <CloseCircleOutlined className="text-7xl mb-2 text-primary" />
-            <Paragraph className="text-center text-[20px] mt-5">{message}</Paragraph>
+          <div className='flex flex-col items-center justify-center'>
+            <CloseCircleOutlined className='text-7xl mb-2 text-primary' />
+            <Title level={4} className='text-center text-[20px] mt-5 mb-0'>
+              {message}
+            </Title>
           </div>
         ),
         ...(options.onOk && {
           buttons: [
             {
-              text: options.onOkText || "OK",
-              type: "primary",
+              text: options.onOkText || 'OK',
+              type: 'primary',
               onClick: () => {
-                closeModal();
-                options.onOk?.();
-              },
-            },
-          ],
+                closeModal()
+                options.onOk?.()
+              }
+            }
+          ]
         }),
-        footerAlign: "center",
+        footerAlign: 'center',
         onOk: options.onOk,
-        ...options,
-      });
+        ...options
+      })
     },
     [showCustom, closeModal]
-  );
+  )
 
-  const modal = <ThemedModal {...modalConfig} visible={visible} onClose={handleClose} />;
+  const modal = (
+    <ThemedModal {...modalConfig} visible={visible} onClose={handleClose} />
+  )
 
-  return { modal, showSuccess, showError, showCustom, closeModal };
+  return { modal, showSuccess, showError, showCustom, closeModal }
 }

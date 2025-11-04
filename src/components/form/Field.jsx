@@ -13,10 +13,12 @@ import {
   Divider,
 } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import { PiCross, PiEye, PiEyeSlash } from "react-icons/pi";
+import { PiCross, PiEye, PiEyeSlash, PiUploadFill } from "react-icons/pi";
 import CustomButton from "./CustomButton";
 import { useMediaQuery } from "react-responsive";
 import { LuPlus } from "react-icons/lu";
+import Paragraph from "antd/es/typography/Paragraph";
+import clsx from "clsx";
 
 const { RangePicker } = DatePicker;
 const { Dragger } = Upload;
@@ -154,7 +156,7 @@ export default function Field({
 
       return (
         <div className="space-y-2">
-          {!common.hidden && (
+          {!common.hidden && (multiple || internalList.length === 0) && (
             <Upload
               {...common}
               beforeUpload={() => false}
@@ -165,24 +167,19 @@ export default function Field({
               showUploadList={false}
             >
               <div
-                className={`
-            ant-input border border-gray-300 h-[40px] w-full 
-            flex items-center cursor-pointer rounded-lg transition-all transform-duration-300 ${
-              internalList.length > 0 && "mb-3"
-            }             ${
+                className={clsx(
+                  `ant-input border border-gray-300 h-[111px] w-full 
+            flex flex-col gap-1 justify-center items-center cursor-pointer rounded-lg transition-all transform-duration-300 bg-[url("/assets/file-upload-bg.png")] bg-cover bg-center`,
+                  internalList.length > 0 ? "mb-3" : "",
                   isError
                     ? "!border-danger hover:border-danger"
                     : "border-gray-300 hover:border-primary"
-                }
-
-          `}
+                )}
               >
-                <span className="font-medium h-full flex items-center bg-gray-50 px-3 border-r border-gray-300 rounded-l-lg">
-                  {multiple ? "Choose Files" : "Choose File"}
-                </span>
-                <span className="text-gray-500 flex-1 px-3 truncate">
-                  Drag & drop or click to browse
-                </span>
+                <div className="rounded-full bg-white border border-gray-300 p-1">
+                  <PiUploadFill className="text-light-primary" size={24} />
+                </div>
+                <Paragraph className="mb-0 text-center">{defaultPlaceholder}</Paragraph>
               </div>
             </Upload>
           )}
@@ -191,7 +188,7 @@ export default function Field({
           {internalList.map((file) => (
             <div
               key={file.uid}
-              className="relative group flex justify-between items-center border border-gray-300 rounded-lg bg-white"
+              className="h-[40px] relative group flex justify-between items-center border border-gray-300 rounded-lg bg-white"
             >
               <span className="truncate max-w-[200px] ms-2" title={file.name}>
                 {file.name}
@@ -201,14 +198,13 @@ export default function Field({
                 <CustomButton
                   btnType="secondary"
                   onClick={() => window.open(URL.createObjectURL(file.originFileObj))}
-                  className="!rounded-none"
+                  className="!rounded-none !h-[39px]"
                   text="View"
                 />
                 <a href={URL.createObjectURL(file.originFileObj)} download={file.name}>
-                  <CustomButton type="link" className="!rounded-l-none" text="Download" />
+                  <CustomButton type="link" className="!rounded-l-none !h-[39px]" text="Download" />
                 </a>
 
-                {/* ❌ Remove button — Mobile: always visible, Desktop: show on hover */}
                 <button
                   onClick={() => {
                     const updated = internalList.filter((f) => f.uid !== file.uid);

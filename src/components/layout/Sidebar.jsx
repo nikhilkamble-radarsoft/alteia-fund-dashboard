@@ -5,6 +5,8 @@ import { createRoutesConfig } from "../../routes/routes";
 import { useMediaQuery } from "react-responsive";
 import AppLogo from "../common/AppLogo";
 import { useDispatch } from "react-redux";
+import { FiChevronLeft } from "react-icons/fi";
+import CustomButton from "../form/CustomButton";
 
 const { Sider } = Layout;
 
@@ -125,7 +127,7 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
 
   return (
     <Sider collapsed={collapsed} width={256} className={sidebarClasses}>
-      <div>
+      <div className="relative">
         <div
           style={{
             height: "64px",
@@ -136,10 +138,12 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
             touchAction: isMobile ? "pan-y" : "auto",
           }}
         >
-          {!collapsed && <AppLogo width={208} />}
+          <AppLogo width={collapsed ? 40 : 208} />
         </div>
 
-        <Divider className="border-[#FFFFFF1A] min-w-[80%] w-[80%] mx-auto" />
+        <Divider className="border-[#FFFFFF1A] min-w-[80%] w-[80%] mx-auto text-gray-500">
+          {/* MAIN */}
+        </Divider>
 
         {/* TOP MENU */}
         <Menu
@@ -150,6 +154,15 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
           items={topMenuItems}
           className={menuClasses}
         />
+        {!isMobile && (
+          <CustomButton
+            showIcon
+            icon={<FiChevronLeft size={14} className="text-white" />}
+            width=""
+            onClick={toggleSidebar}
+            className="!p-1.5 absolute top-[74px] right-[-12px] !bg-light-primary shadow-lg h-auto"
+          />
+        )}
       </div>
 
       {/* Bottom section */}

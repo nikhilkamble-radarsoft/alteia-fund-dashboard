@@ -38,7 +38,7 @@ export default function FormBuilder({
   onFinish = () => {},
   layout = "vertical",
   controlled = {},
-  submitText = "Submit",
+  submitText = "Save",
   cancelText = "Cancel",
   formProps = {},
   twoColumn = true,
@@ -134,50 +134,59 @@ export default function FormBuilder({
   }
 
   return (
-    <Form form={form} layout={layout} onFinish={handleFinish} {...formProps}>
-      <TableTitle
-        title={formTitle}
-        titleColor="text-black"
-        subtitle={formSubtitle}
-        buttons={[
-          <CustomButton
-            text={cancelText}
-            btnType="secondary"
-            onClick={() => navigate(-1)}
-            width=""
-          />,
-          <CustomButton htmlType="submit" text={submitText} width="" />,
-        ]}
-      />
-      <Divider className="my-4" variant="dashed" />
-      <div
-        className={`grid ${
-          twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-        } gap-x-6 gap-y-4 items-start`}
-      >
-        {formConfig.map((field) => {
-          const processedRules = field.rules?.map((rule) => {
-            if (rule.required && !rule.message) {
-              const msgFn = defaultRequiredMsg[field.type] || defaultRequiredMsg.default;
-              return { ...rule, message: msgFn(field.label) };
-            }
-            return rule;
-          });
+    <Form
+      form={form}
+      layout={layout}
+      onFinish={handleFinish}
+      {...formProps}
+      className="min-h-[calc(100vh-135px)] flex flex-col justify-between gap-6"
+    >
+      <div>
+        {(formTitle || formSubtitle) && (
+          <>
+            <TableTitle title={formTitle} titleColor="text-black" subtitle={formSubtitle} />
+            <Divider className="my-4" variant="dashed" />
+          </>
+        )}
+        <div
+          className={`grid ${
+            twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+          } gap-x-6  items-start`}
+        >
+          {formConfig.map((field) => {
+            const processedRules = field.rules?.map((rule) => {
+              if (rule.required && !rule.message) {
+                const msgFn = defaultRequiredMsg[field.type] || defaultRequiredMsg.default;
+                return { ...rule, message: msgFn(field.label) };
+              }
+              return rule;
+            });
 
-          return (
-            <Form.Item
-              key={field.name}
-              name={field.name}
-              label={field.label}
-              rules={processedRules}
-              valuePropName={field.valuePropName}
-              initialValue={field.initialValue}
-              className="w-full"
-            >
-              {mapFieldToComponent(field, field.name)}
-            </Form.Item>
-          );
-        })}
+            return (
+              <Form.Item
+                key={field.name}
+                name={field.name}
+                label={field.label}
+                rules={processedRules}
+                valuePropName={field.valuePropName}
+                initialValue={field.initialValue}
+                className="w-full"
+              >
+                {mapFieldToComponent(field, field.name)}
+              </Form.Item>
+            );
+          })}
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2 w-full">
+        <CustomButton
+          className="!px-10 ms-auto"
+          text={cancelText}
+          btnType="secondary"
+          onClick={() => navigate(-1)}
+          width=""
+        />
+        <CustomButton className="!px-10" htmlType="submit" text={submitText} width="" />
       </div>
     </Form>
   );

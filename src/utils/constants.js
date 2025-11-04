@@ -13,32 +13,38 @@ export const defaultRequiredMsg = {
 };
 
 export const formRules = {
-  phone: [
-    { required: true, message: "Please enter above field." },
+  required: (label, type = "default", customMsg) => {
+    const message = customMsg || (defaultRequiredMsg[type] || defaultRequiredMsg.default)(label);
+    return [{ required: true, message }];
+  },
+  phone: (required = true, requiredMsg = "Please enter phone number.") => [
+    ...(required ? [{ required: true, message: requiredMsg }] : []),
     {
       pattern: /^[0-9]{10}$/,
       message: "Please enter a valid 10-digit phone number.",
     },
   ],
-  email: [
-    { required: true, message: "Please enter above field." },
+
+  email: (required = true, requiredMsg = "Please enter email.") => [
+    ...(required ? [{ required: true, message: requiredMsg }] : []),
     {
       pattern: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
       message: "Please enter a valid email address.",
     },
   ],
-  password: [
-    { required: true, message: "Please enter above field." },
+
+  password: (required = true, requiredMsg = "Please enter password.") => [
+    ...(required ? [{ required: true, message: requiredMsg }] : []),
     { min: 8, message: "Password must be 8-20 characters." },
     { max: 20, message: "Password must be 8-20 characters." },
     {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-      message:
-        "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+      message: "Password must contain uppercase, lowercase, number, and special character.",
     },
   ],
-  confirmPass: (key = "password") => [
-    { required: true, message: "Please confirm password." },
+
+  confirmPass: (key = "password", required = true, requiredMsg = "Please confirm password.") => [
+    ...(required ? [{ required: true, message: requiredMsg }] : []),
     ({ getFieldValue }) => ({
       validator(_, value) {
         if (!value || getFieldValue(key) === value) {
@@ -48,8 +54,9 @@ export const formRules = {
       },
     }),
   ],
-  postalCode: [
-    { required: true, message: "Please enter above field." },
+
+  postalCode: (required = true, requiredMsg = "Please enter postal code.") => [
+    ...(required ? [{ required: true, message: requiredMsg }] : []),
     { pattern: /^[0-9]+$/, message: "Postal code must be a number." },
     { len: 6, message: "Postal code must be exactly 6 digits." },
   ],

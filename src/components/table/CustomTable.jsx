@@ -81,10 +81,11 @@ export default function CustomTable({
     method: "get",
     url: "",
     params: {},
+    body: {},
     fetchRefresh: null,
     dataAccessorKey: "data",
-    metaKey: "meta", // optional { total }
   },
+  getTableData,
   loading = false,
   showPagination = true,
   showSearch = true,
@@ -97,6 +98,7 @@ export default function CustomTable({
   // full data (for client mode) or server-returned page (for server mode)
   const [tableData, setTableData] = useState(dataSource || []);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [total, setTotal] = useState(dataSource?.length || 0);
@@ -157,42 +159,56 @@ export default function CustomTable({
   const showingFrom = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const showingTo = Math.min(page * pageSize, total);
 
+  const commonData = {
+    page,
+    limit: pageSize,
+    search,
+    sortBy: sortBy || undefined,
+    sortOrder: sortOrder || undefined,
+  };
+
   /** Server: fetch page from API */
   const fetchData = async () => {
     if (!isServer) return;
+    const { method, params, body } = apiConfig;
+
     const { response, status } = await callApi({
       ...apiConfig,
       params: {
-        ...apiConfig.params,
-        page,
-        limit: pageSize,
-        search,
-        sortBy: sortBy || undefined,
-        sortOrder: sortOrder || undefined,
+        ...params,
+        ...(method.toLowerCase() === "get" ? commonData : {}),
+      },
+      data: {
+        ...body,
+        ...(method.toLowerCase() !== "get" ? commonData : {}),
       },
     });
 
-    if (status) {
-      const dataKey = apiConfig.dataAccessorKey || "data";
-      const metaKey = apiConfig.metaKey || "meta";
+    const dataKey = apiConfig.dataAccessorKey || "data";
 
-      setTableData(response[dataKey] || []);
-      setTotal(response[metaKey]?.total ?? 0);
-    }
+    setTableData(response?.[dataKey] || []);
+    setTotal(response?.total ?? 0);
+    getTableData?.({ response: response[dataKey], meta: commonData });
   };
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedSearch(search), 400); // 400ms debounce
+    return () => clearTimeout(handler);
+  }, [search]);
 
   useEffect(() => {
     if (isServer) fetchData();
     else {
       const arr = dataSource.filter((d) =>
         Object.keys(d).some((key) =>
-          d[key]?.toString().toLowerCase().includes(search.toLowerCase())
+          d[key]?.toString().toLowerCase().includes(debouncedSearch.toLowerCase())
         )
       );
       setTableData(arr);
       setTotal(arr.length || 0);
+      getTableData?.({ response: arr, meta: commonData });
     }
-  }, [page, pageSize, search, apiConfig.fetchRefresh, apiConfig.url, sortBy, sortOrder]);
+  }, [page, pageSize, debouncedSearch, apiConfig.fetchRefresh, apiConfig.url, sortBy, sortOrder]);
 
   /** Client: sync incoming dataSource prop when not using server */
   useEffect(() => {
@@ -216,7 +232,7 @@ export default function CustomTable({
     } else {
       setPage(1);
     }
-  }, [pageSize, search]);
+  }, [pageSize, debouncedSearch]);
 
   const handleTableChange = (_, __, sorter) => {
     // sorter can be object or array (when multiple columns sort)
@@ -298,12 +314,13 @@ export default function CustomTable({
 
       {/* Bottom row: total left, pagination right */}
       {showPagination && (
-        <div class="flex flex-wrap gap-3 justify-center sm:justify-between items-center mt-3 text-sm text-gray-600">
+        <div className="flex flex-wrap gap-3 justify-center sm:justify-between items-center mt-3 text-sm text-gray-600">
           <span>
             Showing {showingFrom} to {showingTo} of {total} {total === 1 ? "item" : "items"}
           </span>
 
           <Pagination
+            className="custom-pagination"
             current={page}
             pageSize={pageSize}
             total={total}

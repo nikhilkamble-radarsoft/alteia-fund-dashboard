@@ -28,7 +28,7 @@ const CustomButton = ({
       textClasses = "text-white";
       break;
     case "secondary":
-      bgClass = "bg-light-primary";
+      bgClass = "bg-text-light-primary";
       textClasses = "text-primary";
       break;
     default:
@@ -47,7 +47,7 @@ const CustomButton = ({
       size={size}
       disabled={disabled}
       loading={loading}
-      className={`${bgClass} shadow-none font-semibold px-[14px] py-[10px] h-[38px] disabled:bg-[#CECECE] flex items-center justify-center gap-2 text-white rounded-lg ${width} ${className}`}
+      className={`${bgClass} shadow-none font-semibold text-[14px] px-[12px] py-[6px] h-[35px] disabled:bg-[#CECECE] flex items-center justify-center gap-2 text-white rounded-lg ${width} ${className}`}
       {...rest}
     >
       {showIcon && icon}

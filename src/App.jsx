@@ -82,12 +82,15 @@ export default function App() {
               labelFontSize: 14,
               verticalLabelPadding: 0,
               size: "large",
+              labelColor: getCssVariable("--color-primary"),
             },
             Input: {
               fontSizeLG: 14,
             },
             Select: {
               fontSizeLG: 14,
+              optionSelectedBg: getCssVariable("--color-light-primary"),
+              optionSelectedColor: "#fff",
             },
             DatePicker: {
               fontSizeLG: 14,

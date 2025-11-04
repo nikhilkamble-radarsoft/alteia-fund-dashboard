@@ -11,9 +11,11 @@
 @theme {
   --font-sans: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
 
-  --color-primary: #044F55;
+  --color-primary: #044f55;
+  --color-light-primary: #00a63e;
   --color-secondary: #1e1e1e;
   --color-danger: #ff4757;
+  --color-warning: #e58b2b;
 
   --color-background: #f0f7f6;
   --color-sidebar-background: #fff;
@@ -21,22 +23,23 @@
 
   --color-text-primary: #333333;
   --color-text-secondary: #a19c84;
-  --color-text-danger: #ff4757;
-  --color-light-primary: #ffe6e0;
+  --color-text-light-primary: #ffe6e0;
 }
 
 :root {
-  --color-primary: #044F55;
+  --color-primary: #044f55;
+  --color-light-primary: #00a63e;
   --color-secondary: #1e1e1e;
   --color-danger: #ff4757;
+  --color-warning: #e58b2b;
 
   --color-background: #f0f7f6;
-  --color-sidebar-background: #fff;
+  --color-sidebar-background: #1d6166;
   --color-modal-background: #fff;
 
   --color-text-primary: #4c4c5c;
   --color-text-secondary: #a19c84;
-  --color-light-primary: #e6edef;
+  --color-text-light-primary: #e6edef;
 }
 
 body {

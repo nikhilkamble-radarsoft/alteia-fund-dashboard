@@ -17,7 +17,7 @@ export const enhanceColumns = ({ columns }) => {
     if (!col.actions?.length) {
       return {
         ...col,
-        sorter: true,
+        // sorter: true, // Enable this line to make all non-action columns sortable
         sorterIcon: customSortIcon,
         key: col.key ?? col.dataIndex ?? `col-${i}`,
       };
@@ -25,6 +25,7 @@ export const enhanceColumns = ({ columns }) => {
 
     return {
       ...col,
+      align: "right",
       key: col.key ?? col.dataIndex ?? `col-${i}`,
       render: (_, record) => {
         const availableActions = col.actions.filter((a) => (a.visible ? a.visible(record) : true));

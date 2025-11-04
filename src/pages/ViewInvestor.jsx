@@ -4,7 +4,7 @@ import TableTitle from "../components/table/TableTitle";
 import { Divider } from "antd";
 import { PiFilesFill } from "react-icons/pi";
 
-const ViewPO = () => {
+export default function ViewInvestor() {
   return (
     <div>
       <TableTitle
@@ -16,6 +16,4 @@ const ViewPO = () => {
       <ViewInfo info={{ name: "Hello", email: "Hello" }} />
     </div>
   );
-};
-
-export default ViewPO;
+}

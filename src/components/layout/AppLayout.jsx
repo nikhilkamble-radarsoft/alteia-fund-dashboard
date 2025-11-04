@@ -35,7 +35,7 @@ export default function AppLayout() {
             zIndex: 1000,
           }}
         >
-          <Sidebar collapsed={collapsed} />
+          <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
         </div>
       )}
 

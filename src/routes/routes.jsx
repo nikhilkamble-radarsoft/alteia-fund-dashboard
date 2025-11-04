@@ -7,10 +7,10 @@ import SMERegister from "../pages/auth/SMERegister";
 import { PiBellRingingFill, PiGridFour } from "react-icons/pi";
 import { logout } from "../redux/authSlice";
 import { LuLogOut } from "react-icons/lu";
-import PurchaseOrders from "../pages/PurchaseOrders";
-import CreatePO from "../pages/CreatePO";
 import Dashboard from "../pages/Dashboard";
-import ViewPO from "../pages/ViewPO";
+import CreateInvestor from "../pages/CreateInvestor";
+import ViewInvestor from "../pages/ViewInvestor";
+import Investors from "../pages/Investors";
 
 const inProdMode = import.meta.env.VITE_ENV !== "development";
 
@@ -51,7 +51,7 @@ const inProdMode = import.meta.env.VITE_ENV !== "development";
  * - Sidebar only shows routes where showInSidebar is defined
  */
 
-export const createRoutesConfig = (ctx) => {
+export const createRoutesConfig = (ctx = {}) => {
   // ctx can include whatever you need: user, isMobile, feature flags, etc.
 
   return [
@@ -63,32 +63,35 @@ export const createRoutesConfig = (ctx) => {
       showInSidebar: "top",
       isPrivate: inProdMode,
 
-      title: "Dashboard",
-      subtitle: "Welcome to the Ballot System Dashboard",
+      title: `Welcome back, ${ctx.user?.full_name || "Admin"}!`,
+      subtitle: "Dashboard Overview",
     },
     {
-      path: "/purchase-orders",
-      label: "Purchase Orders",
+      path: "/investors",
+      label: "Investors",
       icon: FaVoteYea,
-      Component: PurchaseOrders,
+      Component: Investors,
       showInSidebar: "top",
       isPrivate: inProdMode,
-      title: "Purchase Orders",
-      subtitle: "View and track all your orders.",
+      title: "Customers management",
+      subtitle: "Track customer verification, investment activity, and key details.",
       children: [
         {
-          path: "/purchase-orders/create",
+          path: "/investors/create",
           label: "Create PO",
           icon: CgAdd,
           // showInSidebar: "top",
-          Component: CreatePO,
+          Component: CreateInvestor,
+          title: "Add New Customer",
+          subtitle:
+            "Fill in the details below to register a new customer and initiate KYC verification.",
         },
         {
-          path: "/purchase-orders/:id",
+          path: "/investors/:id",
           label: "View PO",
           icon: CgAdd,
           // showInSidebar: "top",
-          Component: ViewPO,
+          Component: ViewInvestor,
         },
       ],
     },

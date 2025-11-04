@@ -12,7 +12,7 @@ const AuthCard = ({
 }) => {
   return (
     <div className={`flex flex-col items-center justify-center text-center ${className}`}>
-      <AppLogo style={logoStyles} className="mb-4" />
+      <AppLogo style={logoStyles} className="mb-3" />
 
       <Title level={3} className="!text-white mb-2 !leading-tight text-balance">
         {title}
