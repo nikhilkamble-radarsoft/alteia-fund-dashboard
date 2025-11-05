@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalModal } from "./ModalProvider.jsx";
 import { useAxios } from "./useAxios.js";
+import { localStorageTokenKey } from "../utils/constants.js";
 
 export default function useApi() {
   const [loading, setLoading] = useState(false);
@@ -51,7 +52,18 @@ export default function useApi() {
         const errorMessage =
           errorOptions?.message || err.response?.data?.message || "An unexpected error occurred.";
 
-        if (status === 403 && !navigationRef.current.unauthorized) {
+        if (!err.response) {
+          console.error("Network or CORS error:", err);
+          showError("Network error. Please try again later.");
+        } else if (status === 401) {
+          localStorage.removeItem(localStorageTokenKey);
+          showError("Session expired. Please login again.", "", {
+            onOk: () => {
+              navigate("/login");
+            },
+            onOkText: "Go to Login",
+          });
+        } else if (status === 403 && !navigationRef.current.unauthorized) {
           navigationRef.current.unauthorized = true;
           navigate("/unauthorized");
         } else if (status === 409 && !navigationRef.current.conflict) {

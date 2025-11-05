@@ -53,7 +53,7 @@ export function useThemedModal() {
       showCustom({
         title: options.title,
         content: (
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center ">
             <DotLottieReact src={successAnim} loop autoplay />
             <Title level={3} className="text-light-primary text-center mt-5 mb-0">
               {message}

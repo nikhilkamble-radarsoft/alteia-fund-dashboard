@@ -1,6 +1,6 @@
-import React from 'react'
-import { Modal } from 'antd'
-import CustomButton from '../form/CustomButton'
+import React from "react";
+import { Modal } from "antd";
+import CustomButton from "../form/CustomButton";
 
 /**
  * buttons = [
@@ -14,7 +14,7 @@ const ThemedModal = ({
   visible = false,
   onClose,
   buttons = [],
-  footerAlign = 'center',
+  footerAlign = "center",
   ...rest
 }) => {
   return (
@@ -25,13 +25,13 @@ const ThemedModal = ({
       footer={null}
       styles={{
         body: {
-          padding: '24px 32px'
+          // padding: "24px 32px",
         },
         content: {
-          backgroundColor: 'var(--color-modal-background)',
-          color: 'var(--color-text)',
-          borderRadius: '30px'
-        }
+          backgroundColor: "var(--color-modal-background)",
+          color: "var(--color-text)",
+          borderRadius: "30px",
+        },
       }}
       closable={false}
       width={430}
@@ -43,34 +43,35 @@ const ThemedModal = ({
         <div
           className={`
             mt-3
-            flex
-            flex-wrap
-            justify-${footerAlign.replace('flex-', '')} 
+            grid
+            grid-cols-2
             gap-2
+            w-full
+            ${footerAlign === "right" ? "justify-end" : "justify-center"}
           `}
         >
           {buttons.map((btn, index) => {
-            const { type, onClick, text, bgColor, color, icon, ...rest } = btn
+            const { type, onClick, text, bgColor, color, icon, ...rest } = btn;
             return (
               <CustomButton
                 key={index}
-                btnType={type || 'primary'}
+                btnType={type || "primary"}
                 onClick={onClick}
                 className={`flex items-center justify-center gap-1 whitespace-nowrap`}
                 style={{
                   backgroundColor: bgColor || undefined,
-                  color: color || '#fff'
+                  color: color || "#fff",
                 }}
                 icon={icon}
                 text={text}
                 {...rest}
               />
-            )
+            );
           })}
         </div>
       )}
     </Modal>
-  )
-}
+  );
+};
 
-export default ThemedModal
+export default ThemedModal;

@@ -33,7 +33,7 @@ const CustomButton = ({
       break;
     default:
       bgClass = "bg-primary";
-      textClasses = "text-primary";
+      textClasses = "text-white";
   }
 
   if (!text && !children && !showIcon) {
