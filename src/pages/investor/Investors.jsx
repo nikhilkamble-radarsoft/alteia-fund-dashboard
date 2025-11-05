@@ -1,13 +1,14 @@
 import { Typography, Button, Divider } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import CustomTable from "../components/table/CustomTable";
-import CustomButton from "../components/form/CustomButton";
-import { formatDate } from "../utils/utils";
+import CustomTable from "../../components/table/CustomTable";
+import CustomButton from "../../components/form/CustomButton";
+import { formatDate } from "../../utils/utils";
 import dayjs from "dayjs";
-import { sampleColumns, sampleData } from "../components/table/sampleData";
+import { sampleColumns, sampleData } from "../../components/table/sampleData";
 import Paragraph from "antd/es/typography/Paragraph";
-import TableTitle from "../components/table/TableTitle";
-import CustomBadge from "../components/common/CustomBadge";
+import TableTitle from "../../components/table/TableTitle";
+import CustomBadge from "../../components/common/CustomBadge";
+import { investorKycStatus } from "../../utils/constants";
 
 const { Title } = Typography;
 
@@ -22,6 +23,11 @@ export default function Investors() {
     {
       title: "Customer Name",
       dataIndex: "full_name",
+      render: (text, record) => (
+        <Button type="link" onClick={() => handleNavigate(record._id)} className="p-0">
+          {text}
+        </Button>
+      ),
     },
     {
       title: "Email",
@@ -39,15 +45,15 @@ export default function Investors() {
         let finalText = text?.toLowerCase();
         let finalVariant;
         switch (text) {
-          case "verified":
+          case investorKycStatus.approved:
             finalText = "KYC Verified";
             finalVariant = "success";
             break;
-          case "pending":
+          case investorKycStatus.pending:
             finalText = "Pending Approval";
             finalVariant = "warning";
             break;
-          case "rejected":
+          case investorKycStatus.rejected:
             finalText = "Denied";
             finalVariant = "danger";
             break;
@@ -65,16 +71,16 @@ export default function Investors() {
       title: "Country of Residence",
       dataIndex: "country",
     },
-    {
-      title: "Actions",
-      actions: [
-        {
-          type: "view",
-          label: "View",
-          onClick: (record) => handleNavigate(record._id),
-        },
-      ],
-    },
+    // {
+    //   title: "Actions",
+    //   actions: [
+    //     {
+    //       type: "view",
+    //       label: "View",
+    //       onClick: (record) => handleNavigate(record._id),
+    //     },
+    //   ],
+    // },
   ];
 
   return (

@@ -19,6 +19,7 @@ import { useMediaQuery } from "react-responsive";
 import { LuPlus } from "react-icons/lu";
 import Paragraph from "antd/es/typography/Paragraph";
 import clsx from "clsx";
+import CustomBadge from "../common/CustomBadge";
 
 const { RangePicker } = DatePicker;
 const { Dragger } = Upload;
@@ -143,6 +144,7 @@ export default function Field({
 
     case "file": {
       const [internalList, setInternalList] = React.useState([]);
+      const { showView = true, showDownload = false } = uploadProps;
 
       const handleChange = ({ fileList }) => {
         let list = multiple ? fileList : fileList.slice(-1); // respect "multiple"
@@ -165,6 +167,7 @@ export default function Field({
               fileList={internalList}
               onChange={handleChange}
               showUploadList={false}
+              {...uploadProps}
             >
               <div
                 className={clsx(
@@ -190,20 +193,26 @@ export default function Field({
               key={file.uid}
               className="h-[40px] relative group flex justify-between items-center border border-gray-300 rounded-lg bg-white"
             >
-              <span className="truncate max-w-[200px] ms-2" title={file.name}>
-                {file.name}
-              </span>
+              <CustomBadge label={file.name} />
 
               <div className="flex text-sm relative">
-                <CustomButton
-                  btnType="secondary"
-                  onClick={() => window.open(URL.createObjectURL(file.originFileObj))}
-                  className="!rounded-none !h-[39px]"
-                  text="View"
-                />
-                <a href={URL.createObjectURL(file.originFileObj)} download={file.name}>
-                  <CustomButton type="link" className="!rounded-l-none !h-[39px]" text="Download" />
-                </a>
+                {showView && (
+                  <CustomButton
+                    btnType="secondary"
+                    onClick={() => window.open(URL.createObjectURL(file.originFileObj))}
+                    className="!rounded-none !h-[39px]"
+                    text="View"
+                  />
+                )}
+                {showDownload && (
+                  <a href={URL.createObjectURL(file.originFileObj)} download={file.name}>
+                    <CustomButton
+                      type="link"
+                      className="!rounded-l-none !h-[39px]"
+                      text="Download"
+                    />
+                  </a>
+                )}
 
                 <button
                   onClick={() => {

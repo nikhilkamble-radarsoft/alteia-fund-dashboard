@@ -63,18 +63,19 @@ export function useThemedModal() {
             </Paragraph>
           </div>
         ),
-        ...(options.onOk && {
-          buttons: [
-            {
-              text: options.onOkText || "OK",
-              type: "primary",
-              onClick: () => {
-                closeModal();
-                options.onOk?.();
+        ...(options.onOk &&
+          options.onOkText && {
+            buttons: [
+              {
+                text: options.onOkText,
+                type: "primary",
+                onClick: () => {
+                  closeModal();
+                  options.onOk?.();
+                },
               },
-            },
-          ],
-        }),
+            ],
+          }),
         footerAlign: "center",
         onOk: options.onOk,
         ...options,
@@ -90,7 +91,7 @@ export function useThemedModal() {
         content: (
           <div className="flex flex-col items-center justify-center">
             <DotLottieReact src={errorAnim} loop autoplay />
-            <Title level={3} className="text-light-primary text-center mt-5 mb-0">
+            <Title level={3} className="text-danger text-center mt-5 mb-0">
               {message}
             </Title>
             <Paragraph className="mb-0 text-[16px] text-center text-[#828282]">
@@ -98,18 +99,19 @@ export function useThemedModal() {
             </Paragraph>
           </div>
         ),
-        ...(options.onOk && {
-          buttons: [
-            {
-              text: options.onOkText || "OK",
-              type: "primary",
-              onClick: () => {
-                closeModal();
-                options.onOk?.();
+        ...(options.onOk &&
+          options.onOkText && {
+            buttons: [
+              {
+                text: options.onOkText,
+                type: "primary",
+                onClick: () => {
+                  closeModal();
+                  options.onOk?.();
+                },
               },
-            },
-          ],
-        }),
+            ],
+          }),
         footerAlign: "center",
         onOk: options.onOk,
         ...options,

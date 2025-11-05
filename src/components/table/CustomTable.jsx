@@ -2,6 +2,7 @@ import { Select, Table, Input, Pagination } from "antd";
 import useApi from "../../logic/useApi";
 import { useEffect, useMemo, useState } from "react";
 import { enhanceColumns } from "./TableUtils.jsx";
+import { useThemedModal } from "../../logic/useThemedModal.jsx";
 
 /**
  * CustomTable with server/client sorting and action column support
@@ -105,6 +106,8 @@ export default function CustomTable({
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
 
+  const { showError } = useThemedModal();
+
   const enhancedColumns = enhanceColumns({
     columns,
     // setSorter: (dataIndex) => setSortBy(dataIndex),
@@ -197,8 +200,13 @@ export default function CustomTable({
   }, [search]);
 
   useEffect(() => {
-    if (isServer) fetchData();
-    else {
+    if (isServer) {
+      try {
+        fetchData();
+      } catch (error) {
+        showError(error.message);
+      }
+    } else {
       const arr = dataSource.filter((d) =>
         Object.keys(d).some((key) =>
           d[key]?.toString().toLowerCase().includes(debouncedSearch.toLowerCase())
@@ -289,6 +297,7 @@ export default function CustomTable({
 
       {/* Table */}
       <Table
+        rowClassName={(_, index) => (index % 2 === 0 ? "!bg-gray-50" : "")}
         rowKey={rowKey}
         columns={enhancedColumns}
         dataSource={displayedData}
@@ -302,7 +311,7 @@ export default function CustomTable({
             cell: (props) => (
               <th
                 {...props}
-                className="!bg-white !font-semibold !text-[15px] !py-3 whitespace-nowrap"
+                className="bg-white !font-semibold !text-[15px] !py-3 whitespace-nowrap"
               />
             ),
           },

@@ -20,12 +20,12 @@ const TableTitle = ({
         {showIcon}
 
         <div className="flex flex-col justify-center h-full max-w-[175px] sm:max-w-full">
-          <Title level={titleLevel} className={`font-bold m-0 truncate ${titleColor}`}>
+          <Title level={titleLevel} className={`font-bold m-0 truncate min-w-0 ${titleColor}`}>
             {title}
           </Title>
 
           {subtitle && (
-            <Paragraph className={`mb-0 truncate ${subtitleColor}`}>{subtitle}</Paragraph>
+            <Paragraph className={`mb-0 truncate min-w-0 ${subtitleColor}`}>{subtitle}</Paragraph>
           )}
         </div>
       </div>

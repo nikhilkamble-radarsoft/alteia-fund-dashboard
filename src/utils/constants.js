@@ -61,3 +61,9 @@ export const formRules = {
     { len: 6, message: "Postal code must be exactly 6 digits." },
   ],
 };
+
+export const investorKycStatus = {
+  pending: "pending",
+  approved: "approved",
+  rejected: "rejected",
+};

@@ -26,6 +26,7 @@ export const enhanceColumns = ({ columns }) => {
     return {
       ...col,
       align: "right",
+      // fixed: "right", // TODO: ask jeet sir
       key: col.key ?? col.dataIndex ?? `col-${i}`,
       render: (_, record) => {
         const availableActions = col.actions.filter((a) => (a.visible ? a.visible(record) : true));
@@ -63,7 +64,7 @@ export const enhanceColumns = ({ columns }) => {
         }));
 
         return (
-          <Dropdown menu={{ items }} trigger={["click"]}>
+          <Dropdown className="w-full" menu={{ items }} trigger={["click"]}>
             <Button type="text" className="p-0">
               <MoreOutlined className="text-lg text-primary" />
             </Button>

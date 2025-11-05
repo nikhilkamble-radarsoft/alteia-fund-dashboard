@@ -84,6 +84,7 @@ export default function FormBuilder({
       uploadProps: field.uploadProps,
       selectProps: field.selectProps,
       render: field.render,
+      ...field.props,
     };
 
     return <Field type={field.type} {...props} />;
@@ -109,6 +110,7 @@ export default function FormBuilder({
       acc[key] = controlled[key].value;
       return acc;
     }, {});
+
     onFinish({ ...values, ...controlledValues }, { form });
   };
 

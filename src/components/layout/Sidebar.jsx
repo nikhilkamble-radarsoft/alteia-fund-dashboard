@@ -5,7 +5,7 @@ import { createRoutesConfig } from "../../routes/routes";
 import { useMediaQuery } from "react-responsive";
 import AppLogo from "../common/AppLogo";
 import { useDispatch } from "react-redux";
-import { FiChevronLeft } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import CustomButton from "../form/CustomButton";
 
 const { Sider } = Layout;
@@ -157,7 +157,14 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
         {!isMobile && (
           <CustomButton
             showIcon
-            icon={<FiChevronLeft size={14} className="text-white" />}
+            icon={
+              <FiChevronLeft
+                size={14}
+                className={`text-white transition-transform duration-300 ${
+                  collapsed ? "rotate-180" : ""
+                }`}
+              />
+            }
             width=""
             onClick={toggleSidebar}
             className="!p-1.5 absolute top-[74px] right-[-12px] !bg-light-primary shadow-lg h-auto"

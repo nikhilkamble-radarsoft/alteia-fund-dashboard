@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { BiHome } from "react-icons/bi";
-import { FaVoteYea } from "react-icons/fa";
+import { FaRegUser, FaVoteYea } from "react-icons/fa";
 import { CgAdd } from "react-icons/cg";
 import Login from "../pages/auth/Login";
 import SMERegister from "../pages/auth/SMERegister";
@@ -8,9 +8,13 @@ import { PiBellRingingFill, PiGridFour } from "react-icons/pi";
 import { logout } from "../redux/authSlice";
 import { LuLogOut } from "react-icons/lu";
 import Dashboard from "../pages/Dashboard";
-import CreateInvestor from "../pages/CreateInvestor";
-import ViewInvestor from "../pages/ViewInvestor";
-import Investors from "../pages/Investors";
+import CreateInvestor from "../pages/investor/CreateInvestor";
+import ViewInvestor from "../pages/investor/ViewInvestor";
+import Investors from "../pages/investor/Investors";
+import Leads from "../pages/lead/Leads";
+import ViewLead from "../pages/lead/ViewLead";
+import { RxDashboard } from "react-icons/rx";
+import { HiOutlineUserGroup } from "react-icons/hi";
 
 const inProdMode = import.meta.env.VITE_ENV !== "development";
 
@@ -58,7 +62,7 @@ export const createRoutesConfig = (ctx = {}) => {
     {
       path: "/",
       label: "Dashboard",
-      icon: PiGridFour,
+      icon: RxDashboard,
       Component: Dashboard,
       showInSidebar: "top",
       isPrivate: inProdMode,
@@ -69,7 +73,7 @@ export const createRoutesConfig = (ctx = {}) => {
     {
       path: "/investors",
       label: "Investors",
-      icon: FaVoteYea,
+      icon: FaRegUser,
       Component: Investors,
       showInSidebar: "top",
       isPrivate: inProdMode,
@@ -92,6 +96,25 @@ export const createRoutesConfig = (ctx = {}) => {
           icon: CgAdd,
           // showInSidebar: "top",
           Component: ViewInvestor,
+        },
+      ],
+    },
+    {
+      path: "/leads",
+      label: "Leads",
+      icon: HiOutlineUserGroup,
+      Component: Leads,
+      showInSidebar: "top",
+      isPrivate: inProdMode,
+      title: "Leads management",
+      subtitle: "Manage and track lead status, and follow up efficiently.",
+      children: [
+        {
+          path: "/leads/:id",
+          label: "View PO",
+          icon: CgAdd,
+          // showInSidebar: "top",
+          Component: ViewLead,
         },
       ],
     },

@@ -1,6 +1,6 @@
 import React from "react";
-import ViewInfo from "../components/layout/ViewInfo";
-import TableTitle from "../components/table/TableTitle";
+import ViewInfo from "../../components/layout/ViewInfo";
+import TableTitle from "../../components/table/TableTitle";
 import { Divider } from "antd";
 import { PiFilesFill } from "react-icons/pi";
 

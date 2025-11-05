@@ -20,8 +20,9 @@ const CustomBadge = ({ variant = "success", icon, label }) => {
   }
 
   return (
-    <div className="flex whitespace-nowrap gap-1 items-center">
-      {icon || finalIcon} {label}
+    <div className="flex w-full gap-1 items-center !min-w-0">
+      <div className="flex-none">{icon || finalIcon}</div>
+      <span className="truncate !min-w-0" title={label}>{label}</span>
     </div>
   );
 };
