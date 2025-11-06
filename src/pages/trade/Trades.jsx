@@ -2,10 +2,6 @@ import { Typography, Button, Divider } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
-import { formatDate } from "../../utils/utils";
-import dayjs from "dayjs";
-import { sampleColumns, sampleData } from "../../components/table/sampleData";
-import Paragraph from "antd/es/typography/Paragraph";
 import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
 import { investorKycStatus } from "../../utils/constants";
@@ -16,13 +12,13 @@ export default function Trades() {
   const navigate = useNavigate();
 
   const handleNavigate = (id) => {
-    navigate(`/investors/${id}`, { state: { id } });
+    navigate(`/trades/${id}`, { state: { id } });
   };
 
   const columns = [
     {
-      title: "Customer Name",
-      dataIndex: "full_name",
+      title: "Trade Title",
+      dataIndex: "title",
       render: (text, record) => (
         <Button type="link" onClick={() => handleNavigate(record._id)} className="p-0">
           {text}
@@ -30,46 +26,25 @@ export default function Trades() {
       ),
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "Category",
+      dataIndex: "category",
     },
     {
-      title: "Phone",
-      dataIndex: "phone",
-      render: (text) => `${text}`,
+      title: "ROI %",
+      dataIndex: "roi_range",
+      render: (text, record) => `${text} (YTD ${record.ytd_return})`,
     },
     {
-      title: "KYC Status",
-      dataIndex: "kyc_status",
-      render: (text) => {
-        let finalText = text?.toLowerCase();
-        let finalVariant;
-        switch (text) {
-          case investorKycStatus.approved:
-            finalText = "KYC Verified";
-            finalVariant = "success";
-            break;
-          case investorKycStatus.pending:
-            finalText = "Pending Approval";
-            finalVariant = "warning";
-            break;
-          case investorKycStatus.rejected:
-            finalText = "Denied";
-            finalVariant = "danger";
-            break;
-          default:
-            break;
-        }
-        return <CustomBadge variant={finalVariant} label={finalText} />;
-      },
+      title: "Min. Investment",
+      dataIndex: "minimum_investment",
     },
     {
-      title: "Nationality",
-      dataIndex: "nationality",
+      title: "Duration",
+      dataIndex: "duration",
     },
     {
-      title: "Country of Residence",
-      dataIndex: "country",
+      title: "Status",
+      dataIndex: "status",
     },
     // {
     //   title: "Actions",
@@ -86,26 +61,19 @@ export default function Trades() {
   return (
     <div>
       <TableTitle
-        title="Customers investing"
+        title="Trades Listing"
         titleColor="text-black"
         subtitleColor="text-black"
         buttons={[
-          <CustomButton
-            text="Add New Customer"
-            showIcon
-            onClick={() => navigate("/investors/create")}
-          />,
+          <CustomButton text="Add New Trade" showIcon onClick={() => navigate("/trades/create")} />,
         ]}
       />
       <Divider variant="dashed" className="my-2" />
       <CustomTable
         columns={columns}
         apiConfig={{
-          url: "/admin/investor-list",
+          url: "/admin/get-trade-list",
           method: "post",
-          data: {
-            kyc_status: ["approved"],
-          },
         }}
       />
     </div>
