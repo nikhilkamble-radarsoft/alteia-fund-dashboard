@@ -4,7 +4,7 @@ import Field from "./Field";
 import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router-dom";
 import TableTitle from "../table/TableTitle";
-import { defaultRequiredMsg } from "../../utils/constants";
+import { defaultMaxFileUploadSize, defaultRequiredMsg } from "../../utils/constants";
 
 /**
  * 🧩 FormBuilder Component
@@ -81,13 +81,17 @@ export default function FormBuilder({
       accept: field.accept,
       multiple: field.multiple,
       datePickerProps: field.datePickerProps,
-      uploadProps: field.uploadProps,
+      uploadProps: {
+        maxSize: defaultMaxFileUploadSize, // MB
+        ...field.uploadProps,
+      },
       selectProps: field.selectProps,
       render: field.render,
+      fieldName: field.name,
       ...field.props,
     };
 
-    return <Field type={field.type} {...props} />;
+    return <Field type={field.type} disabled={mode === "view-only"} form={form} {...props} />;
   };
 
   const mapFieldToComponent = (field, fieldNamePath) => {
@@ -180,6 +184,7 @@ export default function FormBuilder({
           })}
         </div>
       </div>
+
       <div className="flex flex-wrap gap-2 w-full">
         <CustomButton
           className="!px-10 ms-auto"
@@ -188,7 +193,9 @@ export default function FormBuilder({
           onClick={() => navigate(-1)}
           width=""
         />
-        <CustomButton className="!px-10" htmlType="submit" text={submitText} width="" />
+        {mode !== "view-only" && (
+          <CustomButton className="!px-10" htmlType="submit" text={submitText} width="" />
+        )}
       </div>
     </Form>
   );

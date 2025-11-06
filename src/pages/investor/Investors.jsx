@@ -103,6 +103,9 @@ export default function Investors() {
         apiConfig={{
           url: "/admin/investor-list",
           method: "post",
+          data: {
+            kyc_status: ["approved"],
+          },
         }}
       />
     </div>

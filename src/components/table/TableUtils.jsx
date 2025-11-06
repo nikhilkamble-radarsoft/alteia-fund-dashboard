@@ -51,16 +51,15 @@ export const enhanceColumns = ({ columns }) => {
         // ✅ Multiple actions → dropdown menu
         const items = availableActions.map((action, idx) => ({
           key: idx,
-          label: (
-            <Button
-              onClick={() => !action.disabled?.(record) && action.onClick(record)}
-              className={`text-primary border-none bg-transparent ${
-                action.disabled?.(record) ? "pointer-events-none opacity-40" : "cursor-pointer"
-              }`}
-            >
-              {typeof action.label === "function" ? action.label?.(record) : action.label}
-            </Button>
-          ),
+          label:
+            typeof action.label === "function" ? (
+              action.label?.(record)
+            ) : (
+              <span className="text-primary">{action.label}</span>
+            ),
+          onClick: () => !action.disabled?.(record) && action.onClick(record),
+          disabled: action.disabled?.(record),
+          className: action.disabled?.(record) ? "opacity-40" : "",
         }));
 
         return (

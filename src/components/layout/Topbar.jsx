@@ -16,14 +16,20 @@ import { BiChevronLeft } from "react-icons/bi";
 import { FiChevronLeft } from "react-icons/fi";
 import TableTitle from "../table/TableTitle";
 import { useSelector } from "react-redux";
+import { useTopData } from "./AppLayout";
 
 const { Header } = Layout;
 
-export default function Topbar({ onToggleSidebar, sidebarWidth, collapsed }) {
+export default function Topbar({ onToggleSidebar, sidebarWidth }) {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const {
+    title: contextTitle,
+    subtitle: contextSubtitle,
+    showBack: contextShowBack,
+  } = useTopData();
 
   const routes = createRoutesConfig({ user });
 
@@ -51,9 +57,10 @@ export default function Topbar({ onToggleSidebar, sidebarWidth, collapsed }) {
   // Should we hide?
   const hideDetails = activeRoute?.hideTopDetails;
 
-  // Values with inherited fallback
-  const title = effectiveRoute?.title;
-  const subtitle = effectiveRoute?.subtitle;
+  // Values with context override, then route fallback
+  const title = contextTitle ?? effectiveRoute?.title;
+  const subtitle = contextSubtitle ?? effectiveRoute?.subtitle;
+  const showBack = contextShowBack ?? effectiveRoute.showBack;
 
   return (
     <Header
@@ -82,41 +89,23 @@ export default function Topbar({ onToggleSidebar, sidebarWidth, collapsed }) {
                 title={title}
                 subtitle={subtitle}
                 // this is back button
-                // showIcon={
-                //   lineage.length > 1 ? (
-                //     <CustomButton
-                //       showIcon
-                //       icon={<FiChevronLeft size={30} className="text-primary" />}
-                //       width=""
-                //       className="!p-[6px] !rounded-full"
-                //       onClick={() => navigate(-1)}
-                //       btnType="secondary"
-                //     />
-                //   ) : null
-                //   // !isMobile && <effectiveRoute.icon size={30} className="text-primary" />
-                // }
+                showIcon={
+                  showBack ? (
+                    <CustomButton
+                      showIcon
+                      icon={<FiChevronLeft size={30} className="text-primary" />}
+                      width=""
+                      className="!p-[6px] !rounded-full"
+                      onClick={() => navigate(-1)}
+                      btnType="secondary"
+                    />
+                  ) : null
+                  // !isMobile && <effectiveRoute.icon size={30} className="text-primary" />
+                }
                 titleColor="!text-primary"
                 subtitleColor="text-text-secondary"
                 titleLevel={4}
               />
-              {/* {lineage.length > 1 && (
-                <CustomButton
-                  showIcon
-                  icon={<FiChevronLeft size={30} className="text-primary" />}
-                  width=""
-                  className="!p-[6px] !rounded-full"
-                  onClick={() => navigate(-1)}
-                  btnType="secondary"
-                />
-              )} */}
-              {/* <div className="flex flex-col justify-center h-full max-w-[175px] sm:max-w-full">
-                <Title level={4} className="mb-0 !text-primary font-bold truncate">
-                  {title}
-                </Title>
-                {subtitle && (
-                  <Paragraph className="mb-0 text-text-secondary truncate">{subtitle}</Paragraph>
-                )}
-              </div> */}
             </div>
           )}
         </div>

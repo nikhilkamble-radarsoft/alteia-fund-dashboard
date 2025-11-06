@@ -1,7 +1,7 @@
 import React from "react";
 import { PiProhibitFill, PiSealCheckFill, PiSealWarningFill } from "react-icons/pi";
 
-const CustomBadge = ({ variant = "success", icon, label }) => {
+const CustomBadge = ({ variant = "success", icon, label, className }) => {
   let finalIcon;
   const iconSize = 20;
 
@@ -20,9 +20,11 @@ const CustomBadge = ({ variant = "success", icon, label }) => {
   }
 
   return (
-    <div className="flex w-full gap-1 items-center !min-w-0">
+    <div className={`flex w-full gap-1 items-center !min-w-0 ${className}`}>
       <div className="flex-none">{icon || finalIcon}</div>
-      <span className="truncate !min-w-0" title={label}>{label}</span>
+      <span className="truncate !min-w-0" title={label}>
+        {label}
+      </span>
     </div>
   );
 };

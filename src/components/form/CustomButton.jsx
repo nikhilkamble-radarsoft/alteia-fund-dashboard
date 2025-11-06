@@ -31,6 +31,14 @@ const CustomButton = ({
       bgClass = "bg-text-light-primary";
       textClasses = "text-primary";
       break;
+    case "danger":
+      bgClass = "bg-danger";
+      textClasses = "text-white";
+      break;
+    case "secondary-danger":
+      bgClass = "!bg-light-danger";
+      textClasses = "text-danger";
+      break;
     default:
       bgClass = "bg-primary";
       textClasses = "text-white";

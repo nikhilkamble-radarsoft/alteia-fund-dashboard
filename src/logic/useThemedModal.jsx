@@ -28,6 +28,12 @@ export function useThemedModal() {
     footerAlign: "center",
   });
 
+  const commonStyles = {
+    content: {
+      padding: "24px 32px",
+    },
+  };
+
   const closeModal = useCallback(() => setVisible(false), []);
 
   const handleClose = useCallback(() => {
@@ -42,6 +48,10 @@ export function useThemedModal() {
       setModalConfig({
         ...config,
         onClose: config.onClose || handleClose,
+        styles: {
+          ...commonStyles,
+          ...config.styles,
+        },
       });
       setVisible(true);
     },

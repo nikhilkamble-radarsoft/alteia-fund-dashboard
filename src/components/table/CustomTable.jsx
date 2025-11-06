@@ -82,7 +82,7 @@ export default function CustomTable({
     method: "get",
     url: "",
     params: {},
-    body: {},
+    data: {},
     fetchRefresh: null,
     dataAccessorKey: "data",
   },
@@ -173,16 +173,16 @@ export default function CustomTable({
   /** Server: fetch page from API */
   const fetchData = async () => {
     if (!isServer) return;
-    const { method, params, body } = apiConfig;
+    const { method, params, data } = apiConfig;
 
-    const { response, status } = await callApi({
+    const { response } = await callApi({
       ...apiConfig,
       params: {
         ...params,
         ...(method.toLowerCase() === "get" ? commonData : {}),
       },
       data: {
-        ...body,
+        ...data,
         ...(method.toLowerCase() !== "get" ? commonData : {}),
       },
     });

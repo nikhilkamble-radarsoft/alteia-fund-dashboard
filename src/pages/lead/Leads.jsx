@@ -33,7 +33,7 @@ export default function Leads() {
       const { status } = await callApi({
         url: `/admin/update-status`,
         method: "post",
-        data: { user_id: id, status: newStatus, rejected_comment: comment },
+        data: { user_id: id, kyc_status: newStatus, rejected_comment: comment },
         successOptions: {},
         errorOptions: {},
       });
@@ -62,27 +62,27 @@ export default function Leads() {
         >
           <div className="flex flex-col items-center justify-center">
             <DotLottieReact src={errorAnim} loop autoplay />
-            <Title level={3} className="text-danger text-center mt-5 mb-0">
-              Reject KYC
+            <Title level={3} className="text-danger text-center mt-5">
+              Reject KYC Verification
             </Title>
             {/* <Paragraph className="mb-0 text-[16px] text-center text-[#828282]">
-              {subMessage}
+              {subMessage}cu
             </Paragraph> */}
           </div>
 
           <FormField
             name="comment"
-            label="Comment"
+            label="Comments"
             type="comment"
             placeholder="Enter your comment"
-            rules={formRules.required("C", "", "Please enter your comment")}
+            rules={formRules.required("Comments")}
             formItemProps={{ className: "mb-3" }}
           />
 
           <div className="grid grid-cols-2 gap-2 mt-3">
-            <CustomButton btnType="secondary" onClick={closeModal} text="Cancel" />
+            <CustomButton btnType="secondary-danger" onClick={closeModal} text="Cancel" />
 
-            <CustomButton htmlType="submit" btnType="primary">
+            <CustomButton htmlType="submit" btnType="danger">
               Reject
             </CustomButton>
           </div>
@@ -170,6 +170,9 @@ export default function Leads() {
           url: "/admin/investor-list",
           method: "post",
           fetchRefresh: fetchRefresh,
+          data: {
+            kyc_status: ["pending", "rejectedform"],
+          },
         }}
       />
       {modal}

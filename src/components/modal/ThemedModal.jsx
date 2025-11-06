@@ -15,6 +15,7 @@ const ThemedModal = ({
   onClose,
   buttons = [],
   footerAlign = "center",
+  styles = {},
   ...rest
 }) => {
   return (
@@ -26,11 +27,13 @@ const ThemedModal = ({
       styles={{
         body: {
           // padding: "24px 32px",
+          ...styles.body,
         },
         content: {
           backgroundColor: "var(--color-modal-background)",
           color: "var(--color-text)",
           borderRadius: "30px",
+          ...styles.content,
         },
       }}
       closable={false}
