@@ -38,8 +38,9 @@ export default function FormBuilder({
   onFinish = () => {},
   layout = "vertical",
   controlled = {},
-  submitText = "Save",
+  submitText,
   cancelText = "Cancel",
+  onCancel = () => {},
   formProps = {},
   twoColumn = true,
 }) {
@@ -190,10 +191,12 @@ export default function FormBuilder({
           className="!px-10 ms-auto"
           text={cancelText}
           btnType="secondary"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            onCancel ? onCancel?.() : navigate(-1);
+          }}
           width=""
         />
-        {mode !== "view-only" && (
+        {(mode !== "view-only" || submitText) && (
           <CustomButton className="!px-10" htmlType="submit" text={submitText} width="" />
         )}
       </div>

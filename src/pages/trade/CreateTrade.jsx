@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 
 const { Title } = Typography;
 
-export default function CreateInvestor() {
+export default function CreateTrade() {
   const navigate = useNavigate();
   const { callApi } = useApi();
 
@@ -121,11 +121,6 @@ export default function CreateInvestor() {
   ];
 
   return (
-    <FormBuilder
-      formProps={{ autoComplete: "off" }}
-      formConfig={formConfig}
-      onFinish={onFinish}
-      submitText={"Save"}
-    />
+    <FormBuilder formProps={{ autoComplete: "off" }} formConfig={formConfig} onFinish={onFinish} />
   );
 }

@@ -38,7 +38,12 @@ export default function useApi() {
           successOptions?.message || res?.data?.message || "Request completed successfully!";
 
         if (successOptions) {
-          showSuccess(successMessage, successOptions.subMessage, successOptions);
+          showSuccess(successMessage, successOptions.subMessage, {
+            ...successOptions,
+            style: {
+              zIndex: 3000,
+            },
+          });
         }
         return {
           response: res.data,
@@ -71,7 +76,12 @@ export default function useApi() {
           navigate(-1);
         } else {
           if (errorOptions) {
-            showError(errorMessage, errorOptions.subMessage, errorOptions);
+            showError(errorMessage, errorOptions.subMessage, {
+              ...errorOptions,
+              style: {
+                zIndex: 3000,
+              },
+            });
           }
         }
 

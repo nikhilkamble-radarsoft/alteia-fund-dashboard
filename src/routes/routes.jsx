@@ -4,7 +4,7 @@ import { FaRegUser, FaVoteYea } from "react-icons/fa";
 import { CgAdd } from "react-icons/cg";
 import Login from "../pages/auth/Login";
 import SMERegister from "../pages/auth/SMERegister";
-import { PiBellRingingFill, PiGridFour } from "react-icons/pi";
+import { PiBellRingingFill, PiChartLineUp, PiGridFour } from "react-icons/pi";
 import { logout } from "../redux/authSlice";
 import { LuLogOut } from "react-icons/lu";
 import Dashboard from "../pages/Dashboard";
@@ -15,6 +15,9 @@ import Leads from "../pages/lead/Leads";
 import ViewLead from "../pages/lead/ViewLead";
 import { RxDashboard } from "react-icons/rx";
 import { HiOutlineUserGroup } from "react-icons/hi";
+import Trades from "../pages/trade/Trades";
+import CreateTrade from "../pages/trade/CreateTrade";
+import ViewTrade from "../pages/trade/ViewTrade";
 
 const inProdMode = import.meta.env.VITE_ENV !== "development";
 
@@ -82,7 +85,7 @@ export const createRoutesConfig = (ctx = {}) => {
       children: [
         {
           path: "/investors/create",
-          label: "Create PO",
+          label: "Create Investor",
           icon: CgAdd,
           // showInSidebar: "top",
           Component: CreateInvestor,
@@ -102,6 +105,37 @@ export const createRoutesConfig = (ctx = {}) => {
       ],
     },
     {
+      path: "/trades",
+      label: "Funds",
+      icon: PiChartLineUp,
+      Component: Trades,
+      showInSidebar: "top",
+      isPrivate: inProdMode,
+      title: "Trades management",
+      subtitle: "Browse and explore every available investment opportunity in one place.",
+      children: [
+        {
+          path: "/trades/create",
+          label: "Create Trade",
+          icon: CgAdd,
+          // showInSidebar: "top",
+          Component: CreateTrade,
+          title: "Add New Trade",
+          subtitle:
+            "Fill in the details below to create or update an investment opportunity. Ensure all information is accurate before saving.",
+        },
+        {
+          path: "/trades/:id",
+          label: "View Trade",
+          icon: CgAdd,
+          // showInSidebar: "top",
+          Component: ViewTrade,
+          title: "Trade Details",
+          subtitle: "View and manage trade details.",
+        },
+      ],
+    },
+    {
       path: "/leads",
       label: "Leads",
       icon: HiOutlineUserGroup,
@@ -113,7 +147,7 @@ export const createRoutesConfig = (ctx = {}) => {
       children: [
         {
           path: "/leads/:id",
-          label: "View PO",
+          label: "View Lead",
           icon: CgAdd,
           // showInSidebar: "top",
           title: "Lead Details",
