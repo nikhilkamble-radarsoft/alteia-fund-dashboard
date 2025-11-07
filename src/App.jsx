@@ -94,9 +94,19 @@ export default function App() {
             },
             DatePicker: {
               fontSizeLG: 14,
+              cellActiveWithRangeBg: getCssVariable("--color-light-primary"),
+              cellActiveWithRangeColor: "#fff",
+              cellHoverBg: "rgba(0,0,0,0.04)",
+              cellActiveBg: getCssVariable("--color-light-primary"),
+              cellSelectedBg: getCssVariable("--color-light-primary"),
+              cellSelectedColor: "#fff",
             },
-            InputNumber: {
+            TimePicker: {
               fontSizeLG: 14,
+              cellActiveBg: getCssVariable("--color-light-primary"),
+              cellHoverBg: "rgba(0,0,0,0.04)",
+              cellSelectedBg: getCssVariable("--color-light-primary"),
+              cellSelectedColor: "#fff",
             },
           },
         }}

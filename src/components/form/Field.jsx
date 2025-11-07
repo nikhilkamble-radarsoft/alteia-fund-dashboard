@@ -31,7 +31,7 @@ export default function Field({
   options = [],
   value,
   onChange,
-  rows = 4,
+  rows = 1,
   accept,
   multiple = false,
   showSearch = true,
@@ -130,6 +130,8 @@ export default function Field({
           placeholder={defaultPlaceholder}
           value={value}
           onChange={onChange}
+          format="h:mm A"
+          use12Hours
         />
       );
 

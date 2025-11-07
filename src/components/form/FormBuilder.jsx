@@ -40,7 +40,7 @@ export default function FormBuilder({
   controlled = {},
   submitText,
   cancelText = "Cancel",
-  onCancel = () => {},
+  onCancel,
   formProps = {},
   twoColumn = true,
 }) {

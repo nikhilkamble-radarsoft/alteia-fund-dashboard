@@ -85,6 +85,7 @@ export default function CustomTable({
     data: {},
     fetchRefresh: null,
     dataAccessorKey: "data",
+    totalAccessorKey: "total",
   },
   getTableData,
   loading = false,
@@ -188,9 +189,10 @@ export default function CustomTable({
     });
 
     const dataKey = apiConfig.dataAccessorKey || "data";
+    const totalKey = apiConfig.totalAccessorKey || "total";
 
     setTableData(response?.[dataKey] || []);
-    setTotal(response?.total ?? 0);
+    setTotal(response?.[totalKey] ?? 0);
     getTableData?.({ response: response[dataKey], meta: commonData });
   };
 

@@ -4,7 +4,8 @@ import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
-import { investorKycStatus } from "../../utils/constants";
+import { tradeStatus } from "../../utils/constants";
+import CustomTag from "../../components/common/CustomTag";
 
 const { Title } = Typography;
 
@@ -32,11 +33,26 @@ export default function Trades() {
     {
       title: "ROI %",
       dataIndex: "roi_range",
-      render: (text, record) => `${text} (YTD ${record.ytd_return})`,
+      render: (text, record) =>
+        `${text.endsWith("%") ? text : `${text}%`} ${
+          record.ytd_return ? `(YTD ${record.ytd_return})` : ""
+        }`,
     },
     {
       title: "Min. Investment",
       dataIndex: "minimum_investment",
+      render: (text) => {
+        const num = parseFloat(text);
+
+        if (!isNaN(num)) {
+          return `$${num.toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          })}`;
+        }
+
+        return text;
+      },
     },
     {
       title: "Duration",
@@ -45,6 +61,23 @@ export default function Trades() {
     {
       title: "Status",
       dataIndex: "status",
+      render: (text) => {
+        let finalText = text?.toLowerCase();
+        let finalVariant, customColors;
+        switch (text) {
+          case tradeStatus.active:
+            finalText = "Active";
+            finalVariant = "success";
+            break;
+          case tradeStatus.upcoming:
+            finalText = "Upcoming";
+            finalVariant = "upcoming";
+            break;
+          default:
+            break;
+        }
+        return <CustomTag variant={finalVariant} text={finalText} customColors={customColors} />;
+      },
     },
     // {
     //   title: "Actions",
@@ -74,6 +107,7 @@ export default function Trades() {
         apiConfig={{
           url: "/admin/get-trade-list",
           method: "post",
+          totalAccessorKey: "totalRecords",
         }}
       />
     </div>

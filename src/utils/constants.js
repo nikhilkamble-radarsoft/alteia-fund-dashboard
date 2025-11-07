@@ -21,8 +21,8 @@ export const formRules = {
   phone: (required = true, requiredMsg = "Please enter phone number.") => [
     ...(required ? [{ required: true, message: requiredMsg }] : []),
     {
-      pattern: /^[0-9]{10}$/,
-      message: "Please enter a valid 10-digit phone number.",
+      pattern: /^[0-9]{4,17}$/,
+      message: "Please enter a valid phone number.",
     },
   ],
 
@@ -59,7 +59,7 @@ export const formRules = {
   postalCode: (required = true, requiredMsg = "Please enter postal code.") => [
     ...(required ? [{ required: true, message: requiredMsg }] : []),
     { pattern: /^[0-9]+$/, message: "Postal code must be a number." },
-    { len: 6, message: "Postal code must be exactly 6 digits." },
+    // { len: 6, message: "Postal code must be exactly 6 digits." },
   ],
 };
 
@@ -67,4 +67,9 @@ export const investorKycStatus = {
   pending: "pending",
   approved: "approved",
   rejected: "rejected",
+};
+
+export const tradeStatus = {
+  active: "active",
+  upcoming: "upcoming",
 };

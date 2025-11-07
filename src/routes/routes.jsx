@@ -18,6 +18,7 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import Trades from "../pages/trade/Trades";
 import CreateTrade from "../pages/trade/CreateTrade";
 import ViewTrade from "../pages/trade/ViewTrade";
+import { FiSettings } from "react-icons/fi";
 
 const inProdMode = import.meta.env.VITE_ENV !== "development";
 
@@ -119,7 +120,7 @@ export const createRoutesConfig = (ctx = {}) => {
           label: "Create Trade",
           icon: CgAdd,
           // showInSidebar: "top",
-          Component: CreateTrade,
+          Component: ViewTrade,
           title: "Add New Trade",
           subtitle:
             "Fill in the details below to create or update an investment opportunity. Ensure all information is accurate before saving.",
@@ -170,10 +171,10 @@ export const createRoutesConfig = (ctx = {}) => {
       withLayout: false,
     },
     {
-      key: "notification",
+      key: "settings",
       onClick: () => {},
-      icon: PiBellRingingFill,
-      label: "Notification",
+      icon: FiSettings,
+      label: "Settings",
       showInSidebar: "bottom",
     },
     {
