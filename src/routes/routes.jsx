@@ -16,7 +16,6 @@ import ViewLead from "../pages/lead/ViewLead";
 import { RxDashboard } from "react-icons/rx";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import Trades from "../pages/trade/Trades";
-import CreateTrade from "../pages/trade/CreateTrade";
 import ViewTrade from "../pages/trade/ViewTrade";
 import { FiSettings } from "react-icons/fi";
 
