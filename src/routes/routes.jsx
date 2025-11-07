@@ -18,6 +18,8 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import Trades from "../pages/trade/Trades";
 import ViewTrade from "../pages/trade/ViewTrade";
 import { FiSettings } from "react-icons/fi";
+import { RiCoinsLine } from "react-icons/ri";
+import ROIOverview from "../pages/fund_performance/ROIOverview";
 
 const inProdMode = import.meta.env.VITE_ENV !== "development";
 
@@ -135,6 +137,36 @@ export const createRoutesConfig = (ctx = {}) => {
         },
       ],
     },
+    // {
+    //   path: "/roi",
+    //   label: "Fund Performance",
+    //   icon: RiCoinsLine,
+    //   Component: ROIOverview,
+    //   showInSidebar: "top",
+    //   isPrivate: inProdMode,
+    //   title: "ROI Overview",
+    //   subtitle: "Track your portfolio’s performance and analyze monthly returns at a glance.",
+    //   children: [
+    //     {
+    //       path: "/roi/create",
+    //       label: "Create Trade",
+    //       icon: CgAdd,
+    //       // showInSidebar: "top",
+    //       Component: ViewTrade,
+    //       title: "Monthly ROI Input",
+    //       subtitle: "Enter monthly ROI percentages to update investor reports.",
+    //     },
+    //     {
+    //       path: "/roi/:id",
+    //       label: "View Trade",
+    //       icon: CgAdd,
+    //       // showInSidebar: "top",
+    //       Component: ViewTrade,
+    //       title: "Trade Details",
+    //       subtitle: "View and manage trade details.",
+    //     },
+    //   ],
+    // },
     {
       path: "/leads",
       label: "Leads",
