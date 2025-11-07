@@ -72,4 +72,5 @@ export const investorKycStatus = {
 export const tradeStatus = {
   active: "active",
   upcoming: "upcoming",
+  inactive: "inactive",
 };

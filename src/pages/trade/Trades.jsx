@@ -69,9 +69,9 @@ export default function Trades() {
             finalText = "Active";
             finalVariant = "success";
             break;
-          case tradeStatus.upcoming:
-            finalText = "Upcoming";
-            finalVariant = "upcoming";
+          case tradeStatus.inactive:
+            finalText = "Inactive";
+            finalVariant = "danger";
             break;
           default:
             break;

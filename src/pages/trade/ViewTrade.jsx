@@ -115,7 +115,7 @@ export default function ViewTrade() {
       rules: formRules.required("Status"),
       options: [
         { value: "active", label: "Active" },
-        { value: "upcoming", label: "Upcoming" },
+        { value: "inactive", label: "Inactive" },
       ],
       placeholder: "Choose status",
     },

@@ -56,7 +56,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between pt-12 min-h-screen bg-primary bg-center bg-no-repeat bg-contain">
+    <div className="flex flex-col items-center justify-end pt-12 min-h-screen bg-primary bg-center bg-no-repeat bg-contain">
       <AuthCard />
 
       <Card className="w-full max-w-xl flex flex-col items-center p-14 rounded-t-3xl rounded-b-none">
