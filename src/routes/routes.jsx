@@ -21,6 +21,7 @@ import { FiSettings } from "react-icons/fi";
 import { RiCoinsLine } from "react-icons/ri";
 import ROIOverview from "../pages/fund_performance/ROIOverview";
 import { inProdMode } from "../utils/constants";
+import ViewUpdateROI from "../pages/fund_performance/ViewUpdateROI";
 
 /**
  * Route config generator
@@ -147,22 +148,13 @@ export const createRoutesConfig = (ctx = {}) => {
       subtitle: "Track your portfolio’s performance and analyze monthly returns at a glance.",
       children: [
         {
-          path: "/roi/create",
-          label: "Create Trade",
+          path: "/roi/update/:id",
+          label: "View Update ROI",
           icon: CgAdd,
           // showInSidebar: "top",
-          Component: ViewTrade,
+          Component: ViewUpdateROI,
           title: "Monthly ROI Input",
           subtitle: "Enter monthly ROI percentages to update investor reports.",
-        },
-        {
-          path: "/roi/:id",
-          label: "View Trade",
-          icon: CgAdd,
-          // showInSidebar: "top",
-          Component: ViewTrade,
-          title: "Trade Details",
-          subtitle: "View and manage trade details.",
         },
       ],
     },

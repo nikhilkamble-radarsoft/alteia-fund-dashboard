@@ -1,33 +1,32 @@
 import React from "react";
-import { Card, Button } from "antd";
+import { Card } from "antd";
 import CustomButton from "../../components/form/CustomButton";
 
 const MetricCard = ({ value, subtitle, desc, color = "text-black", onView }) => {
   return (
-    <Card>
-      <div className="flex justify-between items-start mb-2">
+    <Card
+      className="!border-0.5 border-[#E1E1E1] !p-0 bg-[linear-gradient(206.23deg,_#DBFFC9_-73.67%,_#FFFFFF_83.49%)] rounded-lg w-full"
+      classNames={{ body: "p-3" }}
+    >
+      <div className="flex justify-between items-start mb-2 gap-1">
         <div>
-          <div className={`text-xl font-bold ${color}`}>{value}</div>
-          <div className="text-gray-500 text-xs">{subtitle}</div>
+          <div className={`text-base sm:text-lg font-semibold ${color}`}>{value}</div>
+          <div className="text-gray-500 text-sm">{subtitle}</div>
         </div>
-        <CustomButton
-          text="View"
-          onClick={onView}
-          noIcon={true}
-          className="!px-4 text-sm"
-          textClassName="!text-sm text-white"
-        />
+        <CustomButton text="View" onClick={onView} width="" />
       </div>
-      <p className="text-gray-400 text-xs">{desc}</p>
+      <p className="text-sm">{desc}</p>
     </Card>
   );
 };
 
 const PortfolioMetrics = ({ metrics = [] }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {metrics.map((metric, index) => (
-        <MetricCard key={index} {...metric} />
+        <div key={index} className="min-h-[110px] flex">
+          <MetricCard {...metric} />
+        </div>
       ))}
     </div>
   );

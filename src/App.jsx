@@ -111,6 +111,12 @@ export default function App() {
               cellSelectedBg: getCssVariable("--color-light-primary"),
               cellSelectedColor: "#fff",
             },
+            Segmented: {
+              fontSizeLG: 14,
+              itemSelectedColor: getCssVariable("--color-light-primary"),
+              itemSelectedBg: "#fff",
+              itemSelectedFontWeight: 600,
+            },
           },
         }}
       >
