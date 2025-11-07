@@ -98,8 +98,8 @@ export default function ViewTrade() {
 
     {
       name: "duration",
-      label: "Duration",
-      type: "input",
+      label: "Duration (months)",
+      type: "number",
       rules: formRules.required("Duration"),
     },
     {
@@ -125,6 +125,18 @@ export default function ViewTrade() {
       type: "number",
       rules: formRules.required("Minimum Investment"),
       placeholder: "Enter minimum investment amount (e.g., 100000)",
+
+      formatter: (value) => {
+        if (value === undefined || value === "") return "";
+        const [intRaw, decRaw] = String(value).split(".");
+        const intFmt = intRaw.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return `$ ${intFmt}${decRaw !== undefined ? `.${decRaw}` : ""}`;
+      },
+      parser: (val) => (val ? val.replace(/\$\s?|,/g, "") : ""),
+      precision: 2,
+      min: 0,
+      max: 100_000_000_000,
+      step: 1000,
     },
     {
       name: "nav_unit",
@@ -139,7 +151,7 @@ export default function ViewTrade() {
       type: "file",
       rules: formRules.required("Proof of Address"),
       placeholder: "Upload fact sheets, PDFs, supporting docs",
-      accept: ["application/pdf", "image/png", "image/jpeg", "image/jpg"],
+      accept: ["application/pdf"],
     },
     {
       name: "banner_image",
@@ -162,7 +174,7 @@ export default function ViewTrade() {
       type: "textarea",
       rules: formRules.required("Short Description"),
       rows: 4,
-      props: { maxLength: 150 },
+      maxLength: 150,
     },
   ];
 

@@ -2,7 +2,9 @@ import { useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalModal } from "./ModalProvider.jsx";
 import { useAxios } from "./useAxios.js";
-import { localStorageTokenKey } from "../utils/constants.js";
+import { inProdMode, localStorageTokenKey } from "../utils/constants.js";
+
+const defaultAutoCloseTime = inProdMode ? 5 : 0;
 
 export default function useApi() {
   const [loading, setLoading] = useState(false);
@@ -40,6 +42,7 @@ export default function useApi() {
         if (successOptions) {
           showSuccess(successMessage, successOptions.subMessage, {
             ...successOptions,
+            autoCloseTime: successOptions.autoCloseTime || defaultAutoCloseTime,
             style: {
               zIndex: 3000,
             },
@@ -78,6 +81,7 @@ export default function useApi() {
           if (errorOptions) {
             showError(errorMessage, errorOptions.subMessage, {
               ...errorOptions,
+              autoCloseTime: errorOptions.autoCloseTime || defaultAutoCloseTime,
               style: {
                 zIndex: 3000,
               },

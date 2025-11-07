@@ -89,7 +89,7 @@ export default function FormBuilder({
       selectProps: field.selectProps,
       render: field.render,
       fieldName: field.name,
-      ...field.props,
+      ...field,
     };
 
     return <Field type={field.type} disabled={mode === "view-only"} form={form} {...props} />;

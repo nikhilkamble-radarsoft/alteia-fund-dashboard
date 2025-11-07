@@ -81,9 +81,7 @@ const Login = () => {
             type="input"
             placeholder="Enter your email"
             rules={formRules.email(true, "Please enter your email address")}
-            props={{
-              suffix: <PiEnvelope style={{ color: "rgba(0,0,0,.45)" }} size={20} />,
-            }}
+            suffix={<PiEnvelope style={{ color: "rgba(0,0,0,.45)" }} size={20} />}
           />
 
           <FormField
@@ -114,7 +112,7 @@ const Login = () => {
               type="submit"
               htmlType="submit"
               width=""
-              className="!text-[16px]"
+              className="!text-[16px] mb-2"
               textClasses=""
             />
 

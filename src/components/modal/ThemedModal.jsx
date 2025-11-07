@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal } from "antd";
 import CustomButton from "../form/CustomButton";
 
@@ -16,8 +16,19 @@ const ThemedModal = ({
   buttons = [],
   footerAlign = "center",
   styles = {},
+  autoCloseTime = 0, // seconds
   ...rest
 }) => {
+  useEffect(() => {
+    if (!visible) return;
+    if (autoCloseTime > 0) {
+      const timer = setTimeout(() => {
+        onClose?.();
+      }, autoCloseTime * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [autoCloseTime, visible]);
+
   return (
     <Modal
       title={title}

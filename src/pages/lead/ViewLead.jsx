@@ -4,14 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../logic/useApi";
 import dayjs from "dayjs";
 import { useTopData } from "../../components/layout/AppLayout";
-import { Form } from "antd";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules, investorKycStatus } from "../../utils/constants";
-import errorAnim from "../../assets/error-animation.lottie";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import Title from "antd/es/typography/Title";
-import { FormField } from "../../components/form/Field";
-import CustomButton from "../../components/form/CustomButton";
 
 export default function ViewLead() {
   const { callApi } = useApi();
@@ -20,9 +14,7 @@ export default function ViewLead() {
   const navigate = useNavigate();
   const { setTitle } = useTopData();
 
-  const { modal, showCustom, closeModal } = useThemedModal();
-
-  const [form] = Form.useForm();
+  const { modal, showConfirm, closeModal } = useThemedModal();
 
   const handleStatusChange = async (newStatus, comment) => {
     if (!newStatus) return;
@@ -47,44 +39,38 @@ export default function ViewLead() {
   };
 
   const handleShowRejectModal = () => {
-    showCustom({
-      content: (
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={(values) => {
-            handleStatusChange(investorKycStatus.rejected, values.comment);
-            form.resetFields();
-          }}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <DotLottieReact src={errorAnim} loop autoplay />
-            <Title level={3} className="text-danger text-center mt-5">
-              Reject KYC Verification
-            </Title>
-            {/* <Paragraph className="mb-0 text-[16px] text-center text-[#828282]">
-              {subMessage}cu
-            </Paragraph> */}
-          </div>
+    showConfirm({
+      title: "",
+      message: "Reject KYC Verification",
+      variant: "error",
+      confirmText: "Reject",
+      cancelText: "Cancel",
+      fields: [
+        {
+          name: "comment",
+          label: "Comments",
+          type: "textarea",
+          placeholder: "Enter your comment",
+          rules: formRules.required("Comments"),
+          rows: 4,
+        },
+      ],
+      onConfirm: (values) => {
+        handleStatusChange(investorKycStatus.rejected, values.comment);
+      },
+    });
+  };
 
-          <FormField
-            name="comment"
-            label="Comments"
-            type="comment"
-            placeholder="Enter your comment"
-            rules={formRules.required("Comments")}
-            formItemProps={{ className: "mb-3" }}
-          />
-
-          <div className="grid grid-cols-2 gap-2 mt-3">
-            <CustomButton btnType="secondary-danger" onClick={closeModal} text="Cancel" />
-
-            <CustomButton htmlType="submit" btnType="danger">
-              Reject
-            </CustomButton>
-          </div>
-        </Form>
-      ),
+  const handleShowApproveModal = () => {
+    showConfirm({
+      title: "",
+      message: "Approve KYC Verification",
+      variant: "success",
+      confirmText: "Approve",
+      cancelText: "Cancel",
+      onConfirm: () => {
+        handleStatusChange(investorKycStatus.approved);
+      },
     });
   };
 
@@ -180,7 +166,7 @@ export default function ViewLead() {
         cancelText="Reject Lead"
         submitText="Approve Lead"
         onCancel={handleShowRejectModal}
-        onFinish={() => handleStatusChange(investorKycStatus.approved)}
+        onFinish={handleShowApproveModal}
       />
       {modal}
     </>

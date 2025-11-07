@@ -87,6 +87,9 @@ export default function App() {
             Input: {
               fontSizeLG: 14,
             },
+            InputNumber: {
+              fontSizeLG: 14,
+            },
             Select: {
               fontSizeLG: 14,
               optionSelectedBg: getCssVariable("--color-light-primary"),

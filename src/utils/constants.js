@@ -74,3 +74,5 @@ export const tradeStatus = {
   upcoming: "upcoming",
   inactive: "inactive",
 };
+
+export const inProdMode = import.meta.env.VITE_ENV !== "development";

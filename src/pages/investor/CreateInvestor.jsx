@@ -1,12 +1,8 @@
-import { useState } from "react";
-import { Typography, Form, Button, Space, Row, Col, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import FormBuilder from "../../components/form/FormBuilder";
 import { formRules } from "../../utils/constants";
 import useApi from "../../logic/useApi";
 import dayjs from "dayjs";
-
-const { Title } = Typography;
 
 export default function CreateInvestor() {
   const navigate = useNavigate();

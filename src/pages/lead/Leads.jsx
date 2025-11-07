@@ -17,7 +17,7 @@ const { Title } = Typography;
 export default function Leads() {
   const navigate = useNavigate();
   const { callApi } = useApi();
-  const { modal, showCustom, closeModal } = useThemedModal();
+  const { modal, showConfirm, closeModal } = useThemedModal();
   const [fetchRefresh, setFetchRefresh] = useState(false);
 
   const [form] = Form.useForm();
@@ -46,44 +46,38 @@ export default function Leads() {
   };
 
   const handleShowRejectModal = (record) => {
-    showCustom({
-      content: (
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={(values) => {
-            handleStatusChange(record._id, investorKycStatus.rejected, values.comment);
-            form.resetFields();
-          }}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <DotLottieReact src={errorAnim} loop autoplay />
-            <Title level={3} className="text-danger text-center mt-5">
-              Reject KYC Verification
-            </Title>
-            {/* <Paragraph className="mb-0 text-[16px] text-center text-[#828282]">
-              {subMessage}cu
-            </Paragraph> */}
-          </div>
+    showConfirm({
+      title: "",
+      message: "Reject KYC Verification",
+      variant: "error",
+      confirmText: "Reject",
+      cancelText: "Cancel",
+      fields: [
+        {
+          name: "comment",
+          label: "Comments",
+          type: "textarea",
+          placeholder: "Enter your comment",
+          rules: formRules.required("Comments"),
+          rows: 4,
+        },
+      ],
+      onConfirm: (values) => {
+        handleStatusChange(record._id, investorKycStatus.rejected, values.comment);
+      },
+    });
+  };
 
-          <FormField
-            name="comment"
-            label="Comments"
-            type="comment"
-            placeholder="Enter your comment"
-            rules={formRules.required("Comments")}
-            formItemProps={{ className: "mb-3" }}
-          />
-
-          <div className="grid grid-cols-2 gap-2 mt-3">
-            <CustomButton btnType="secondary-danger" onClick={closeModal} text="Cancel" />
-
-            <CustomButton htmlType="submit" btnType="danger">
-              Reject
-            </CustomButton>
-          </div>
-        </Form>
-      ),
+  const handleShowApproveModal = (record) => {
+    showConfirm({
+      title: "",
+      message: "Approve KYC Verification",
+      variant: "success",
+      confirmText: "Approve",
+      cancelText: "Cancel",
+      onConfirm: () => {
+        handleStatusChange(record._id, investorKycStatus.approved);
+      },
     });
   };
 
@@ -145,7 +139,7 @@ export default function Leads() {
         {
           type: "update",
           label: "Approve",
-          onClick: (record) => handleStatusChange(record._id, investorKycStatus.approved),
+          onClick: (record) => handleShowApproveModal(record),
         },
         {
           type: "update",
@@ -167,7 +161,7 @@ export default function Leads() {
           method: "post",
           fetchRefresh: fetchRefresh,
           data: {
-            kyc_status: ["pending", "rejectedform"],
+            kyc_status: ["pending", "rejected"],
           },
         }}
       />

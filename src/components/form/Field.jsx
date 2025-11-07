@@ -11,6 +11,7 @@ import {
   Checkbox,
   Form,
   Divider,
+  Alert,
 } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { PiCross, PiEye, PiEyeSlash, PiUploadFill } from "react-icons/pi";
@@ -238,9 +239,13 @@ export default function Field({
         return file.name || "Unknown File";
       };
 
+      const showUploadInput =
+        !common.hidden && !common.disabled && (multiple || internalList.length === 0);
+
+      console.log("internalList", internalList);
       return (
         <div className="space-y-2">
-          {!common.hidden && !common.disabled && (multiple || internalList.length === 0) && (
+          {showUploadInput && (
             <Upload
               {...common}
               {...uploadProps}
@@ -354,6 +359,17 @@ export default function Field({
               </div>
             </div>
           ))}
+
+          {!showUploadInput && internalList.length === 0 && (
+            <div className="rounded-md">
+              <Alert
+                type="warning"
+                showIcon
+                message="Failed to load file(s)"
+                // description="The files couldn't be displayed right now. Please try again later or upload new files."
+              />
+            </div>
+          )}
         </div>
       );
     }
@@ -399,9 +415,9 @@ export function FormField({
   valuePropName,
   placeholder,
   options = [],
-  props = {},
   formItemProps = {},
   form, // AntD form instance
+  ...props
 }) {
   if (type === "checkbox") {
     return (
@@ -418,6 +434,7 @@ export function FormField({
       label={label}
       rules={rules}
       valuePropName={valuePropName}
+      className="w-full"
       {...formItemProps}
     >
       <Field
