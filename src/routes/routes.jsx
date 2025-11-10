@@ -22,6 +22,8 @@ import { RiCoinsLine } from "react-icons/ri";
 import ROIOverview from "../pages/fund_performance/ROIOverview";
 import { inProdMode } from "../utils/constants";
 import ViewUpdateROI from "../pages/fund_performance/ViewUpdateROI";
+import FundPurchases from "../pages/fund_purchase/FundPurchases";
+import ViewPurchase from "../pages/fund_purchase/ViewPurchase";
 
 /**
  * Route config generator
@@ -155,6 +157,37 @@ export const createRoutesConfig = (ctx = {}) => {
           Component: ViewUpdateROI,
           title: "Monthly ROI Input",
           subtitle: "Enter monthly ROI percentages to update investor reports.",
+        },
+      ],
+    },
+    {
+      path: "/purchase",
+      label: "Fund Purchase",
+      icon: RiCoinsLine,
+      Component: FundPurchases,
+      showInSidebar: "top",
+      isPrivate: inProdMode,
+      title: "Fund Purchase",
+      subtitle: "Allot purchase to investor.",
+      children: [
+        {
+          path: "/purchase/create",
+          label: "Create Purchase",
+          icon: CgAdd,
+          // showInSidebar: "top",
+          Component: ViewPurchase,
+          title: "Add New Purchase",
+          subtitle:
+            "Fill in the details below to create or update an investment opportunity. Ensure all information is accurate before saving.",
+        },
+        {
+          path: "/purchase/:id",
+          label: "View Purchase",
+          icon: CgAdd,
+          // showInSidebar: "top",
+          Component: ViewPurchase,
+          title: "Purchase Details",
+          subtitle: "View purchase details.",
         },
       ],
     },

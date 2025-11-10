@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RoiChart from "./RoiChart";
 import { Segmented } from "antd";
 import Field from "../../components/form/Field";
@@ -12,14 +12,35 @@ const PortfolioChartSection = ({
   timeFilters = [],
   rangeFilters = [],
   activeRange = "This Year",
-  onRangeChange,
+  onChange,
+  value, // { year, month, range, period }
+  defaultValue, // { year, month, range, period }
 }) => {
   const periods = ["Today", "This Week", "This Month", "This Year"];
-  const [period, setPeriod] = useState("12 Months");
-  const [range, setRange] = useState(activeRange || "This Year");
+  // Controlled/uncontrolled setup
+  const isPeriodControlled = value?.period !== undefined;
+  const isRangeControlled = value?.range !== undefined;
+  const isYearControlled = value?.year !== undefined;
+  const isMonthControlled = value?.month !== undefined;
+
+  const [periodState, setPeriodState] = useState(defaultValue?.period ?? "12 Months");
+  const [rangeState, setRangeState] = useState(defaultValue?.range ?? activeRange ?? "This Year");
   const years = Array.from({ length: endingYear - startingYear + 1 }, (_, i) => startingYear + i);
-  const [year, setYear] = useState(endingYear);
-  const [month, setMonth] = useState("August");
+  const [yearState, setYearState] = useState(defaultValue?.year ?? endingYear);
+  const [monthState, setMonthState] = useState(defaultValue?.month ?? "August");
+
+  const period = isPeriodControlled ? value.period : periodState;
+  const range = isRangeControlled ? value.range : rangeState;
+  const year = isYearControlled ? value.year : yearState;
+  const month = isMonthControlled ? value.month : monthState;
+
+  const update = (patch) => {
+    onChange?.(patch);
+  };
+
+  useEffect(() => {
+    update({ period, range, year, month });
+  }, [period, range, year, month]);
 
   return (
     <div className="w-full">
@@ -32,7 +53,10 @@ const PortfolioChartSection = ({
             <Segmented
               options={["3 Months", "6 Months", "12 Months"]}
               value={period}
-              onChange={(val) => setPeriod(val)}
+              onChange={(val) => {
+                if (!isPeriodControlled) setPeriodState(val);
+                update({ period: val });
+              }}
               className="bg-gray-100"
             />
             <div className="flex items-center gap-2">
@@ -41,7 +65,10 @@ const PortfolioChartSection = ({
                   type="select"
                   options={years.map((y) => ({ value: y, label: y }))}
                   value={year}
-                  onChange={setYear}
+                  onChange={(val) => {
+                    if (!isYearControlled) setYearState(val);
+                    update({ year: val });
+                  }}
                   className="w-full"
                   selectProps={{ allowClear: false }}
                 />
@@ -64,7 +91,10 @@ const PortfolioChartSection = ({
                     "December",
                   ].map((m) => ({ value: m, label: m }))}
                   value={month}
-                  onChange={setMonth}
+                  onChange={(val) => {
+                    if (!isMonthControlled) setMonthState(val);
+                    update({ month: val });
+                  }}
                   className="w-full"
                   selectProps={{ allowClear: false }}
                 />
@@ -86,8 +116,8 @@ const PortfolioChartSection = ({
                 options={periods}
                 value={range}
                 onChange={(val) => {
-                  setRange(val);
-                  onRangeChange?.(val);
+                  if (!isRangeControlled) setRangeState(val);
+                  update({ range: val, period: val });
                 }}
               />
             </div>

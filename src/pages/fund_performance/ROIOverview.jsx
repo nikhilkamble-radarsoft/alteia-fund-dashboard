@@ -54,6 +54,8 @@ export default function ROIOverview() {
     { value: "alteia_sp", label: "Alteia Commodity Trade Fund SP" },
     { value: "growth_sp", label: "Alteia Growth Fund SP" },
   ];
+
+  const [selectedFilters, setSelectedFilters] = useState({});
   const [selectedTrade, setSelectedTrade] = useState(null);
 
   const fetchFunds = async () => {
@@ -100,7 +102,9 @@ export default function ROIOverview() {
             <CustomButton
               text="Add ROI"
               onClick={() => {
-                navigate(`/roi/update/${selectedTrade}`);
+                navigate(`/roi/update/${selectedTrade || funds?.[0]?._id}`, {
+                  state: selectedFilters,
+                });
               }}
               width="w-fit"
             />
@@ -117,6 +121,8 @@ export default function ROIOverview() {
         months={portfolioData.months}
         timeFilters={portfolioData.timeFilters}
         rangeFilters={portfolioData.rangeFilters}
+        value={selectedFilters}
+        onChange={(patch) => setSelectedFilters((prev) => ({ ...prev, ...patch }))}
         className="mt-6"
       />
     </div>
