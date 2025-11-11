@@ -25,6 +25,7 @@
   --color-text-primary: #333333;
   --color-text-secondary: #a19c84;
   --color-text-light-primary: #ffe6e0;
+  --color-text-disabled: #828282;
 }
 
 :root {
@@ -42,6 +43,7 @@
   --color-text-primary: #4c4c5c;
   --color-text-secondary: #a19c84;
   --color-text-light-primary: #e6edef;
+  --color-text-disabled: #828282;
 }
 
 body {

@@ -41,3 +41,19 @@ export const formatTime = (seconds, { showHours = false } = {}) => {
 
   return formatted;
 };
+
+export const inputFormatters = {
+  money: {
+    formatter: (value) => {
+      if (value === undefined || value === "") return "";
+      const [intRaw, decRaw] = String(value).split(".");
+      const intFmt = intRaw.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return `$ ${intFmt}${decRaw !== undefined ? `.${decRaw}` : ""}`;
+    },
+    parser: (val) => (val ? val.replace(/\$\s?|,/g, "") : ""),
+    precision: 2,
+    min: 0,
+    max: 100_000_000_000,
+    step: 1000,
+  },
+};

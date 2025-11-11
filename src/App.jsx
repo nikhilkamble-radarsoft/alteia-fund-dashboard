@@ -86,14 +86,17 @@ export default function App() {
             },
             Input: {
               fontSizeLG: 14,
+              colorTextDisabled: getCssVariable("--color-text-disabled"),
             },
             InputNumber: {
               fontSizeLG: 14,
+              colorTextDisabled: getCssVariable("--color-text-disabled"),
             },
             Select: {
               fontSizeLG: 14,
               optionSelectedBg: getCssVariable("--color-light-primary"),
               optionSelectedColor: "#fff",
+              colorTextDisabled: getCssVariable("--color-text-disabled"),
             },
             DatePicker: {
               fontSizeLG: 14,
@@ -103,6 +106,7 @@ export default function App() {
               cellActiveBg: getCssVariable("--color-light-primary"),
               cellSelectedBg: getCssVariable("--color-light-primary"),
               cellSelectedColor: "#fff",
+              colorTextDisabled: getCssVariable("--color-text-disabled"),
             },
             TimePicker: {
               fontSizeLG: 14,
@@ -110,12 +114,14 @@ export default function App() {
               cellHoverBg: "rgba(0,0,0,0.04)",
               cellSelectedBg: getCssVariable("--color-light-primary"),
               cellSelectedColor: "#fff",
+              colorTextDisabled: getCssVariable("--color-text-disabled"),
             },
             Segmented: {
               fontSizeLG: 14,
               itemSelectedColor: getCssVariable("--color-light-primary"),
               itemSelectedBg: "#fff",
               itemSelectedFontWeight: 600,
+              colorTextDisabled: getCssVariable("--color-text-disabled"),
             },
           },
         }}

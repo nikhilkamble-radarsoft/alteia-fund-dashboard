@@ -8,7 +8,7 @@ import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules, investorKycStatus } from "../../utils/constants";
 
 export default function ViewLead() {
-  const { callApi } = useApi();
+  const { callApi, loading } = useApi();
   const [lead, setLead] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ export default function ViewLead() {
         user_id: id,
       },
       errorOptions: {
-        onOk: () => navigate("/leads"),
+        onOk: () => navigate(-1),
       },
     });
 
@@ -167,6 +167,7 @@ export default function ViewLead() {
         submitText="Approve Lead"
         onCancel={handleShowRejectModal}
         onFinish={handleShowApproveModal}
+        loading={loading}
       />
       {modal}
     </>

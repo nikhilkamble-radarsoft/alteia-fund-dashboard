@@ -85,7 +85,7 @@ export default function CustomTable({
     data: {},
     fetchRefresh: null,
     dataAccessorKey: "data",
-    totalAccessorKey: "total",
+    totalAccessorKey: "totalRecords",
   },
   getTableData,
   loading = false,
@@ -114,18 +114,45 @@ export default function CustomTable({
     // setSorter: (dataIndex) => setSortBy(dataIndex),
   });
 
+  // Helpers to support nested dataIndex paths like "user_id.full_name"
+  const toPathArray = (di) => {
+    if (Array.isArray(di)) return di;
+    if (typeof di === "string" && di.includes(".")) return di.split(".");
+    return di != null ? [di] : [];
+  };
+
+  const getByPath = (obj, di) => {
+    const path = toPathArray(di);
+    return path.reduce((acc, key) => (acc == null ? acc : acc[key]), obj);
+  };
+
+  // Normalize columns so AntD can resolve nested values natively (array dataIndex)
+  const normalizedColumns = useMemo(() => {
+    return (enhancedColumns || []).map((col) => {
+      if (col?.dataIndex && typeof col.dataIndex === "string" && col.dataIndex.includes(".")) {
+        return { ...col, dataIndex: col.dataIndex.split(".") };
+      }
+      return col;
+    });
+  }, [enhancedColumns]);
+
   const sortedClientData = useMemo(() => {
     if (isServer) return tableData; // server returns already-sorted page
     if (!sortBy || !sortOrder) return tableData;
 
     // find column config for custom sorterFn (if provided)
-    const colDef = enhancedColumns.find((c) => c.dataIndex === sortBy || c.key === sortBy);
+    const colDef = enhancedColumns.find((c) => {
+      const keyMatch = c.key === sortBy;
+      const di = c.dataIndex;
+      const diString = Array.isArray(di) ? di.join(".") : di;
+      return keyMatch || diString === sortBy;
+    });
 
     const sorterFn =
       colDef?.sorterFn ||
       ((a, b) => {
-        const va = a[sortBy];
-        const vb = b[sortBy];
+        const va = getByPath(a, sortBy);
+        const vb = getByPath(b, sortBy);
 
         // handle null/undefined
         if (va == null && vb == null) return 0;
@@ -174,7 +201,7 @@ export default function CustomTable({
   /** Server: fetch page from API */
   const fetchData = async () => {
     if (!isServer) return;
-    const { method, params, data } = apiConfig;
+    const { method = "get", params = {}, data = {} } = apiConfig;
 
     const { response } = await callApi({
       ...apiConfig,
@@ -189,7 +216,7 @@ export default function CustomTable({
     });
 
     const dataKey = apiConfig.dataAccessorKey || "data";
-    const totalKey = apiConfig.totalAccessorKey || "total";
+    const totalKey = apiConfig.totalAccessorKey || "totalRecords";
 
     setTableData(response?.[dataKey] || []);
     setTotal(response?.[totalKey] ?? 0);
@@ -248,7 +275,10 @@ export default function CustomTable({
     // sorter can be object or array (when multiple columns sort)
     const s = Array.isArray(sorter) ? sorter[0] : sorter || {};
     const order = s.order; // "ascend" | "descend" | undefined
-    const columnKey = s.field || s.columnKey || s.column?.dataIndex || s.column?.key;
+    let columnKey = s.field || s.columnKey || s.column?.dataIndex || s.column?.key;
+    // normalize array dataIndex to dot path string for internal state and server params
+    if (Array.isArray(columnKey)) columnKey = columnKey.join(".");
+    if (Array.isArray(s.column?.dataIndex)) columnKey = s.column.dataIndex.join(".");
 
     const resolvedOrder = order ? (order === "ascend" ? "asc" : "desc") : null;
 
@@ -301,7 +331,7 @@ export default function CustomTable({
       <Table
         rowClassName={(_, index) => (index % 2 === 0 ? "!bg-gray-50" : "")}
         rowKey={rowKey}
-        columns={enhancedColumns}
+        columns={normalizedColumns}
         dataSource={displayedData}
         loading={loading || apiLoading}
         onChange={handleTableChange}

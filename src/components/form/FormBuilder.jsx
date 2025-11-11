@@ -43,6 +43,7 @@ export default function FormBuilder({
   onCancel,
   formProps = {},
   twoColumn = true,
+  loading = false,
 }) {
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -51,6 +52,9 @@ export default function FormBuilder({
     if (initialValues && Object.keys(initialValues).length) {
       form.setFieldsValue(initialValues);
     }
+    // initialize computed fields after initial values load
+    // compute all computed fields once on mount/initial change
+    computeAndSetComputedFields();
   }, [initialValues, form]);
 
   const isControlled = (name) =>
@@ -73,6 +77,8 @@ export default function FormBuilder({
 
     const placeholder = field.placeholder || placeholderMap[field.type] || placeholderMap.default;
     const props = {
+      // spread user field props first so our controlled props override
+      ...field,
       className: "w-full",
       placeholder,
       value,
@@ -89,10 +95,41 @@ export default function FormBuilder({
       selectProps: field.selectProps,
       render: field.render,
       fieldName: field.name,
-      ...field,
     };
 
-    return <Field type={field.type} disabled={mode === "view-only"} form={form} {...props} />;
+    return (
+      <Field
+        type={field.type}
+        form={form}
+        {...props}
+        disabled={mode === "view-only" || field.disabled}
+        loading={loading}
+      />
+    );
+  };
+
+  const computeAndSetComputedFields = (changedName) => {
+    const values = form.getFieldsValue(true);
+    const updates = {};
+    formConfig.forEach((f) => {
+      if (typeof f.computed === "function") {
+        // if deps specified, only recompute when a dep changes
+        if (Array.isArray(f.computedDeps) && changedName) {
+          if (!f.computedDeps.includes(changedName)) return;
+        }
+        try {
+          const v = f.computed(values);
+          if (v !== undefined && v !== null && v !== values[f.name]) {
+            updates[f.name] = v;
+          }
+        } catch (e) {
+          // ignore compute errors silently
+        }
+      }
+    });
+    if (Object.keys(updates).length) {
+      form.setFieldsValue(updates);
+    }
   };
 
   const mapFieldToComponent = (field, fieldNamePath) => {
@@ -102,12 +139,31 @@ export default function FormBuilder({
         const newVal = val?.target ? val.target.value : val;
         c.onChange?.(newVal);
         form.setFieldsValue({ [fieldNamePath]: newVal });
+        computeAndSetComputedFields(fieldNamePath);
       };
 
       return renderFieldType(field, c.value, handleChange);
     }
 
-    return renderFieldType(field);
+    // default: wire field to form value/onChange so it's controlled by the form
+    const currentValue = form.getFieldValue(fieldNamePath);
+    const handleChange = (val) => {
+      const newVal = val?.target ? val.target.value : val;
+      form.setFieldsValue({ [fieldNamePath]: newVal });
+      computeAndSetComputedFields(fieldNamePath);
+    };
+
+    // if field has computed function, make it read-only by default
+    const computedValue =
+      typeof field.computed === "function"
+        ? field.computed(form.getFieldsValue(true))
+        : currentValue;
+
+    return renderFieldType(
+      { ...field, disabled: field.disabled ?? typeof field.computed === "function" },
+      computedValue,
+      handleChange
+    );
   };
 
   const handleFinish = (values) => {
@@ -178,6 +234,7 @@ export default function FormBuilder({
                 valuePropName={field.valuePropName}
                 initialValue={field.initialValue}
                 className="w-full"
+                {...field.formItemProps}
               >
                 {mapFieldToComponent(field, field.name)}
               </Form.Item>
@@ -195,9 +252,16 @@ export default function FormBuilder({
             onCancel ? onCancel?.() : navigate(-1);
           }}
           width=""
+          loading={loading}
         />
         {(mode !== "view-only" || submitText) && (
-          <CustomButton className="!px-10" htmlType="submit" text={submitText} width="" />
+          <CustomButton
+            className="!px-10"
+            htmlType="submit"
+            text={submitText}
+            width=""
+            loading={loading}
+          />
         )}
       </div>
     </Form>

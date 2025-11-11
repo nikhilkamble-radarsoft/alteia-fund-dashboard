@@ -1,5 +1,5 @@
 import { Typography, Button, Divider } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
@@ -11,18 +11,14 @@ const { Title } = Typography;
 export default function Investors() {
   const navigate = useNavigate();
 
-  const handleNavigate = (id) => {
-    navigate(`/investors/${id}`, { state: { id } });
-  };
-
   const columns = [
     {
       title: "Customer Name",
       dataIndex: "full_name",
       render: (text, record) => (
-        <Button type="link" onClick={() => handleNavigate(record._id)} className="p-0">
+        <NavLink to={`/investors/${record._id}`} className="p-0">
           {text}
-        </Button>
+        </NavLink>
       ),
     },
     {
@@ -67,16 +63,6 @@ export default function Investors() {
       title: "Country of Residence",
       dataIndex: "country",
     },
-    // {
-    //   title: "Actions",
-    //   actions: [
-    //     {
-    //       type: "view",
-    //       label: "View",
-    //       onClick: (record) => handleNavigate(record._id),
-    //     },
-    //   ],
-    // },
   ];
 
   return (

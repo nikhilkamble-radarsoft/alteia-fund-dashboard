@@ -1,5 +1,5 @@
 import { Typography, Button, Divider } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
@@ -12,18 +12,14 @@ const { Title } = Typography;
 export default function Trades() {
   const navigate = useNavigate();
 
-  const handleNavigate = (id) => {
-    navigate(`/trades/${id}`, { state: { id } });
-  };
-
   const columns = [
     {
       title: "Trade Title",
       dataIndex: "title",
       render: (text, record) => (
-        <Button type="link" onClick={() => handleNavigate(record._id)} className="p-0">
+        <NavLink to={`/trades/${record._id}`} className="p-0">
           {text}
-        </Button>
+        </NavLink>
       ),
     },
     {
@@ -34,7 +30,7 @@ export default function Trades() {
       title: "ROI %",
       dataIndex: "roi_range",
       render: (text, record) =>
-        `${text.endsWith("%") ? text : `${text}%`} ${
+        `${text?.endsWith("%") ? text : `${text}%`} ${
           record.ytd_return ? `(YTD ${record.ytd_return})` : ""
         }`,
     },
@@ -79,16 +75,6 @@ export default function Trades() {
         return <CustomTag variant={finalVariant} text={finalText} customColors={customColors} />;
       },
     },
-    // {
-    //   title: "Actions",
-    //   actions: [
-    //     {
-    //       type: "view",
-    //       label: "View",
-    //       onClick: (record) => handleNavigate(record._id),
-    //     },
-    //   ],
-    // },
   ];
 
   return (
@@ -107,7 +93,6 @@ export default function Trades() {
         apiConfig={{
           url: "/admin/get-trade-list",
           method: "post",
-          totalAccessorKey: "totalRecords",
         }}
       />
     </div>

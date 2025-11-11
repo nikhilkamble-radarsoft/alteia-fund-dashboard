@@ -75,4 +75,11 @@ export const tradeStatus = {
   inactive: "inactive",
 };
 
+export const tradeInterestStatus = {
+  new: "new",
+  contacted: "contacted",
+  reminder_set: "followup",
+  missed_reminder: "missed_reminder",
+};
+
 export const inProdMode = import.meta.env.VITE_ENV !== "development";

@@ -5,9 +5,10 @@ import useApi from "../../logic/useApi";
 import dayjs from "dayjs";
 import { formRules } from "../../utils/constants";
 import { useSelector } from "react-redux";
+import { inputFormatters } from "../../utils/utils";
 
 export default function ViewTrade() {
-  const { callApi } = useApi();
+  const { callApi, loading = { loading } } = useApi();
   const [data, setData] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function ViewTrade() {
         fund_id: id,
       },
       errorOptions: {
-        onOk: () => navigate("/trades"),
+        onOk: () => navigate(-1),
       },
     });
 
@@ -101,6 +102,7 @@ export default function ViewTrade() {
       label: "Duration (months)",
       type: "number",
       rules: formRules.required("Duration"),
+      placeholder: "Enter Duration",
     },
     {
       name: "location",
@@ -121,29 +123,19 @@ export default function ViewTrade() {
     },
     {
       name: "minimum_investment",
-      label: "Minimum Investment",
+      label: "Minimum Investment ($)",
       type: "number",
       rules: formRules.required("Minimum Investment"),
-      placeholder: "Enter minimum investment amount (e.g., 100000)",
-
-      formatter: (value) => {
-        if (value === undefined || value === "") return "";
-        const [intRaw, decRaw] = String(value).split(".");
-        const intFmt = intRaw.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return `$ ${intFmt}${decRaw !== undefined ? `.${decRaw}` : ""}`;
-      },
-      parser: (val) => (val ? val.replace(/\$\s?|,/g, "") : ""),
-      precision: 2,
-      min: 0,
-      max: 100_000_000_000,
-      step: 1000,
+      placeholder: "Enter minimum investment amount (e.g., $100,000)",
+      ...inputFormatters.money,
     },
     {
       name: "nav_unit",
-      label: "NAV/Unit",
+      label: "NAV/Unit ($)",
       type: "number",
-      placeholder: "Enter Net Asset Value per unit (e.g., 1237.18)",
+      placeholder: "Enter Net Asset Value per unit (e.g., $1237.18)",
       rules: formRules.required("NAV/Unit"),
+      ...inputFormatters.money,
     },
     {
       name: "fund_document",
@@ -163,10 +155,11 @@ export default function ViewTrade() {
     },
     {
       name: "aum",
-      label: "AUM (Assets Under Management)",
+      label: "AUM (Assets Under Management) ($)",
       type: "number",
-      placeholder: "Enter current AUM (e.g., 32.87M)",
+      placeholder: "Enter current AUM (e.g., $32.87)",
       rules: formRules.required("AUM"),
+      ...inputFormatters.money,
     },
     {
       name: "short_description",
@@ -187,6 +180,7 @@ export default function ViewTrade() {
       cancelText="Back"
       submitText="Save"
       onFinish={onFinish}
+      loading={loading}
     />
   );
 }

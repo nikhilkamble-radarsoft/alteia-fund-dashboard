@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import FormBuilder from "../../components/form/FormBuilder";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useApi from "../../logic/useApi";
 import dayjs from "dayjs";
 import { formRules } from "../../utils/constants";
 import { useSelector } from "react-redux";
+import { inputFormatters } from "../../utils/utils";
 
 export default function ViewPurchase() {
-  const { callApi } = useApi();
+  const { callApi, loading } = useApi();
   const [data, setData] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [funds, setFunds] = useState([]);
   const [investors, setInvestors] = useState([]);
+  const location = useLocation();
+  const { trade_id, user_id } = location.state || {};
 
   const fetchData = async () => {
     const { response } = await callApi({
@@ -22,9 +25,7 @@ export default function ViewPurchase() {
       data: {
         fund_id: id,
       },
-      errorOptions: {
-        onOk: () => navigate("/trades"),
-      },
+      errorOptions: {},
     });
 
     const localData = response.data;
@@ -58,7 +59,7 @@ export default function ViewPurchase() {
     });
 
     if (status) {
-      navigate("/trades");
+      navigate("/purchase");
     }
   };
 
@@ -106,7 +107,7 @@ export default function ViewPurchase() {
       placeholder: "Select fund",
     },
     {
-      name: "investor_id",
+      name: "user_id",
       label: "Investor",
       type: "select",
       rules: formRules.required("Investor"),
@@ -114,76 +115,53 @@ export default function ViewPurchase() {
       placeholder: "Select investor",
     },
     {
-      name: "amount",
-      label: "Amount",
+      name: "user_amount",
+      label: "Amount ($)",
       type: "number",
       rules: formRules.required("Amount"),
       placeholder: "Enter amount",
+      ...inputFormatters.money,
     },
     {
-      name: "payment_method",
-      label: "Payment Method",
-      type: "select",
-      rules: formRules.required("Payment Method"),
-      options: [
-        { value: "bank_transfer", label: "Bank Transfer" },
-        { value: "cash", label: "Cash" },
-        { value: "cheque", label: "Cheque" },
-      ],
-      placeholder: "Select payment method",
+      name: "fund_roi",
+      label: "Fund ROI",
+      type: "number",
+      rules: formRules.required("Fund ROI"),
+      placeholder: "Enter fund roi (e.g., 7.18)",
+      min: 1,
     },
     {
-      name: "payment_status",
-      label: "Payment Status",
-      type: "select",
-      rules: formRules.required("Payment Status"),
-      options: [
-        { value: "pending", label: "Pending" },
-        { value: "completed", label: "Completed" },
-        { value: "failed", label: "Failed" },
-      ],
-      placeholder: "Select payment status",
-    },
-    {
-      name: "units",
+      name: "fund_unit",
       label: "Units",
       type: "number",
       rules: formRules.required("Units"),
       placeholder: "Enter units (e.g., 1237.18)",
+      min: 1,
     },
+    // {
+    //   name: "unit_price",
+    //   label: "Unit Price ($)",
+    //   type: "number",
+    //   rules: formRules.required("Unit Price"),
+    //   placeholder: "Enter unit price (e.g., $1237.18)",
+    //   computed: (values) => {
+    //     const amount = Number(values?.user_amount ?? 0);
+    //     const units = Number(values?.units ?? 0);
+    //     if (!units) return undefined;
+    //     const price = amount / units;
+    //     if (!Number.isFinite(price)) return undefined;
+    //     return Number(price.toFixed(2));
+    //   },
+    //   computedDeps: ["amount", "units"],
+    //   ...inputFormatters.money,
+    // },
     {
-      name: "unit_price",
-      label: "Unit Price",
+      name: "fund_aum",
+      label: "Current AUM ($)",
       type: "number",
-      rules: formRules.required("Unit Price"),
-      placeholder: "Enter unit price (e.g., 1237.18)",
-
-      formatter: (value) => {
-        if (value === undefined || value === "") return "";
-        const [intRaw, decRaw] = String(value).split(".");
-        const intFmt = intRaw.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return `$ ${intFmt}${decRaw !== undefined ? `.${decRaw}` : ""}`;
-      },
-      parser: (val) => (val ? val.replace(/\$\s?|,/g, "") : ""),
-      precision: 2,
-      min: 0,
-      max: 100_000_000_000,
-      step: 1000,
-    },
-    {
-      name: "aum",
-      label: "Current AUM",
-      type: "number",
-      placeholder: "Enter current AUM (e.g., 32.87M)",
+      placeholder: "Enter current AUM (e.g., $32.87)",
       rules: formRules.required("AUM"),
-    },
-    {
-      name: "proof_of_payment",
-      label: "Proof of Payment",
-      type: "file",
-      rules: formRules.required("Proof of Payment"),
-      placeholder: "Upload proof of payment",
-      accept: ["application/pdf"],
+      ...inputFormatters.money,
     },
     {
       name: "remarks",
@@ -197,13 +175,13 @@ export default function ViewPurchase() {
 
   return (
     <FormBuilder
-      // mode="view-only"
       formProps={{ autoComplete: "off" }}
       formConfig={formConfig}
-      initialValues={data}
+      initialValues={{ ...data, fund_id: trade_id, user_id }}
       cancelText="Back"
       submitText="Save"
       onFinish={onFinish}
+      loading={loading}
     />
   );
 }

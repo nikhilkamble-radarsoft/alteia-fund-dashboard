@@ -1,24 +1,29 @@
 const variantStyles = {
+  // green
   success: {
     bgColor: "#28A7451A",
     textColor: "#000000",
     dotColor: "#009F10",
   },
+  // yellow
   pending: {
     bgColor: "#FFF7E6",
     textColor: "#000000",
     dotColor: "#FFA500",
   },
+  // red
   danger: {
     bgColor: "#FDECEC",
     textColor: "#000000",
     dotColor: "#FF0000",
   },
+  // blue
   upcoming: {
     bgColor: "#1E90FF1A",
     textColor: "#000000",
     dotColor: "#0077B6",
   },
+  // theme color
   primary: {
     bgColor: "#a3343424",
     textColor: "#A33434",

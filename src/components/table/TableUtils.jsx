@@ -25,45 +25,47 @@ export const enhanceColumns = ({ columns }) => {
 
     return {
       ...col,
-      align: "right",
+      align: "center",
       // fixed: "right", // TODO: ask jeet sir
       key: col.key ?? col.dataIndex ?? `col-${i}`,
-      render: (_, record) => {
-        const availableActions = col.actions.filter((a) => (a.visible ? a.visible(record) : true));
+      render: (_, record, index) => {
+        const availableActions = col.actions.filter((a) =>
+          a.visible ? a.visible(record, index) : true
+        );
 
         // ✅ Single action → show link/button directly
-        if (availableActions.length === 1) {
-          const action = availableActions[0];
-          const disabled = action.disabled?.(record);
+        // if (availableActions.length === 1) {
+        //   const action = availableActions[0];
+        //   const disabled = action.disabled?.(record, index);
 
-          return (
-            <Button
-              type="link"
-              disabled={disabled}
-              onClick={() => !disabled && action.onClick(record)}
-              className="p-0"
-            >
-              {typeof action.label === "function" ? action.label?.(record) : action.label}
-            </Button>
-          );
-        }
+        //   return (
+        //     <Button
+        //       type="link"
+        //       disabled={disabled}
+        //       onClick={() => !disabled && action.onClick(record, index)}
+        //       className="p-0"
+        //     >
+        //       {typeof action.label === "function" ? action.label?.(record, index) : action.label}
+        //     </Button>
+        //   );
+        // }
 
         // ✅ Multiple actions → dropdown menu
         const items = availableActions.map((action, idx) => ({
           key: idx,
           label:
             typeof action.label === "function" ? (
-              action.label?.(record)
+              action.label?.(record, index)
             ) : (
               <span className="text-primary">{action.label}</span>
             ),
-          onClick: () => !action.disabled?.(record) && action.onClick(record),
-          disabled: action.disabled?.(record),
-          className: action.disabled?.(record) ? "opacity-40" : "",
+          onClick: () => !action.disabled?.(record, index) && action.onClick(record, index),
+          disabled: action.disabled?.(record, index),
+          className: action.disabled?.(record, index) ? "opacity-40" : "",
         }));
 
         return (
-          <Dropdown className="w-full" menu={{ items }} trigger={["click"]}>
+          <Dropdown align="bottom" menu={{ items }} trigger={["click"]}>
             <Button type="text" className="p-0">
               <MoreOutlined className="text-lg text-primary" />
             </Button>

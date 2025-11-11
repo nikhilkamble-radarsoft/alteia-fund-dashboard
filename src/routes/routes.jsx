@@ -4,11 +4,16 @@ import { FaRegUser, FaVoteYea } from "react-icons/fa";
 import { CgAdd } from "react-icons/cg";
 import Login from "../pages/auth/Login";
 import SMERegister from "../pages/auth/SMERegister";
-import { PiBellRingingFill, PiChartLineUp, PiGridFour } from "react-icons/pi";
+import {
+  PiBellRingingFill,
+  PiChartLineUp,
+  PiGridFour,
+  PiHandshakeFill,
+  PiMoneyWavyFill,
+} from "react-icons/pi";
 import { logout } from "../redux/authSlice";
 import { LuLogOut } from "react-icons/lu";
 import Dashboard from "../pages/Dashboard";
-import CreateInvestor from "../pages/investor/CreateInvestor";
 import ViewInvestor from "../pages/investor/ViewInvestor";
 import Investors from "../pages/investor/Investors";
 import Leads from "../pages/lead/Leads";
@@ -24,6 +29,7 @@ import { inProdMode } from "../utils/constants";
 import ViewUpdateROI from "../pages/fund_performance/ViewUpdateROI";
 import FundPurchases from "../pages/fund_purchase/FundPurchases";
 import ViewPurchase from "../pages/fund_purchase/ViewPurchase";
+import TradeInterests from "../pages/trade_interest/TradeInterests";
 
 /**
  * Route config generator
@@ -92,7 +98,7 @@ export const createRoutesConfig = (ctx = {}) => {
           label: "Create Investor",
           icon: CgAdd,
           // showInSidebar: "top",
-          Component: CreateInvestor,
+          Component: ViewInvestor,
           title: "Add New Customer",
           subtitle:
             "Fill in the details below to register a new customer and initiate KYC verification.",
@@ -163,7 +169,7 @@ export const createRoutesConfig = (ctx = {}) => {
     {
       path: "/purchase",
       label: "Fund Purchase",
-      icon: RiCoinsLine,
+      icon: PiMoneyWavyFill,
       Component: FundPurchases,
       showInSidebar: "top",
       isPrivate: inProdMode,
@@ -188,6 +194,29 @@ export const createRoutesConfig = (ctx = {}) => {
           Component: ViewPurchase,
           title: "Purchase Details",
           subtitle: "View purchase details.",
+        },
+      ],
+    },
+    {
+      path: "/trade-interest",
+      label: "Trade Interest",
+      icon: PiHandshakeFill,
+      Component: TradeInterests,
+      showInSidebar: "top",
+      isPrivate: inProdMode,
+      title: "Interested investors",
+      subtitle:
+        "View investors who have shown interest in funds and set reminders for pending follow-ups.",
+      children: [
+        {
+          path: "/trade-interest/:id",
+          label: "View Investor",
+          icon: CgAdd,
+          // showInSidebar: "top",
+          title: "Investor Details",
+          subtitle: "Review KYC and registration details before approval.",
+          Component: ViewInvestor,
+          showBack: true,
         },
       ],
     },

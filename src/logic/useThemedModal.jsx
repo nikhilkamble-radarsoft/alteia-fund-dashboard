@@ -8,6 +8,7 @@ import successAnim from "../assets/success-animation.lottie";
 import errorAnim from "../assets/error-animation.lottie";
 import { FormField } from "../components/form/Field";
 import { Form } from "antd";
+import FormBuilder from "../components/form/FormBuilder";
 
 /**
  * Hook for controlling ThemedModal programmatically
@@ -144,10 +145,12 @@ export function useThemedModal() {
       confirmText = "Confirm",
       cancelText = "Cancel",
       onConfirm,
+      twoColumn = false,
       showAnimation = true,
       ...options
     } = {}) => {
       const isSuccess = variant === "success";
+
       setModalConfig({
         title,
         content: (
@@ -162,15 +165,17 @@ export function useThemedModal() {
           >
             <div className="flex flex-col items-center justify-center">
               {showAnimation && (
-                <DotLottieReact src={isSuccess ? successAnim : errorAnim} loop autoplay />
+                <div className="mb-5">
+                  <DotLottieReact src={isSuccess ? successAnim : errorAnim} loop autoplay />
+                </div>
               )}
-              <div className="flex flex-col items-center justify-center mb-3">
+              <div className="flex flex-col items-center justify-center mb-8">
                 {message && (
                   <Title
                     level={3}
                     className={`${
                       isSuccess ? "text-light-primary" : "text-danger"
-                    } text-center mt-5 mb-0`}
+                    } text-center mb-0`}
                   >
                     {message}
                   </Title>
@@ -181,9 +186,15 @@ export function useThemedModal() {
                   </Paragraph>
                 )}
               </div>
-              {fields?.map((f) => (
-                <FormField key={f.name} form={confirmForm} {...f} />
-              ))}
+              <div
+                className={`w-full grid gap-x-6 items-start ${
+                  twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+                }`}
+              >
+                {fields.map((f) => (
+                  <FormField key={f.name} form={confirmForm} {...f} />
+                ))}
+              </div>
             </div>
           </Form>
         ),
