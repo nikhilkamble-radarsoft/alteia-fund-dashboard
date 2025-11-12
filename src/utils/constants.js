@@ -82,4 +82,11 @@ export const tradeInterestStatus = {
   missed_reminder: "missed_reminder",
 };
 
+export const fundPurchaseStatus = {
+  completed: "completed",
+  pending: "pending",
+  in_progress: "in_progress",
+  cancelled: "cancelled",
+};
+
 export const inProdMode = import.meta.env.VITE_ENV !== "development";

@@ -13,8 +13,20 @@ export default function ROIOverview() {
   const [funds, setFunds] = useState([]);
   const navigate = useNavigate();
   const portfolioData = {
-    roiData: [0, 2.1, 3.1, 4.8, 6.5, 8.9, 12.4, 11.8, 12.4, 11.9, 11.5, 12.1],
-    months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    roiData: [
+      { month: "Jan", roi: 0 },
+      { month: "Feb", roi: 2.1 },
+      { month: "Mar", roi: 3.1 },
+      { month: "Apr", roi: 4.8 },
+      { month: "May", roi: 6.5 },
+      { month: "Jun", roi: 8.9 },
+      { month: "Jul", roi: 12.4 },
+      { month: "Aug", roi: 11.8 },
+      { month: "Sep", roi: 12.4 },
+      { month: "Oct", roi: 11.9 },
+      { month: "Nov", roi: 11.5 },
+      { month: "Dec", roi: 12.1 },
+    ],
     metrics: [
       {
         value: "9.4% YTD Growth",
@@ -49,14 +61,9 @@ export default function ROIOverview() {
     rangeFilters: ["Today", "This Week", "This Month", "This Year"],
   };
 
-  // Trades dropdown options (replace with real trades list when available)
-  const tradeOptions = [
-    { value: "alteia_sp", label: "Alteia Commodity Trade Fund SP" },
-    { value: "growth_sp", label: "Alteia Growth Fund SP" },
-  ];
-
   const [selectedFilters, setSelectedFilters] = useState({});
   const [selectedTrade, setSelectedTrade] = useState(null);
+  const [roiData, setROIData] = useState([]);
 
   const fetchFunds = async () => {
     try {
@@ -66,6 +73,7 @@ export default function ROIOverview() {
         data: {},
       });
       setFunds(response.data || []);
+      setSelectedTrade(response.data?.[0]?._id);
     } catch (error) {
       console.error("Error fetching funds:", error);
     }
@@ -74,6 +82,28 @@ export default function ROIOverview() {
   useEffect(() => {
     fetchFunds();
   }, []);
+
+  const fetchROIData = async () => {
+    try {
+      const { response } = await callApi({
+        url: "/admin/get-roi-list",
+        params: { fund_id: selectedTrade, year: selectedFilters.year },
+      });
+      const updatedData = response.data?.map((item) => ({
+        month: item.month,
+        roi: item.max_roi,
+      }));
+      setROIData(updatedData);
+    } catch (error) {
+      console.error("Error fetching funds:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedTrade) {
+      fetchROIData();
+    }
+  }, [selectedTrade, selectedFilters]);
 
   return (
     <div className="">
@@ -89,16 +119,18 @@ export default function ROIOverview() {
                 onChange={setSelectedTrade}
                 placeholder={portfolioData.title}
                 className="w-full"
+                allowClear={false}
               />
             </div>
             <p className="text-gray-400 text-xs sm:text-sm mt-1">Portfolio Highlights</p>
           </div>
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-            <Segmented
+            {/* <Segmented
               size="large"
               options={["Portfolio highlights", "ROI table"]}
               className="bg-gray-100"
-            />
+              disabled
+            /> */}
             <CustomButton
               text="Add ROI"
               onClick={() => {
@@ -117,7 +149,7 @@ export default function ROIOverview() {
 
       {/* Chart Section */}
       <PortfolioChartSection
-        roiData={portfolioData.roiData}
+        roiData={roiData}
         months={portfolioData.months}
         timeFilters={portfolioData.timeFilters}
         rangeFilters={portfolioData.rangeFilters}

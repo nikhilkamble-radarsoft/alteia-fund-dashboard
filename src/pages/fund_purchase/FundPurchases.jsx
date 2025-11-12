@@ -4,7 +4,7 @@ import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
-import { tradeStatus } from "../../utils/constants";
+import { fundPurchaseStatus, tradeStatus } from "../../utils/constants";
 import CustomTag from "../../components/common/CustomTag";
 import { formatDate } from "../../utils/utils";
 
@@ -16,7 +16,7 @@ export default function FundPurchases() {
   const columns = [
     {
       title: "Fund Name",
-      dataIndex: "fund_id.title",
+      dataIndex: "fund.title",
       render: (text, record) => (
         <NavLink to={`/purchase/${record._id}`} className="p-0">
           {text}
@@ -25,7 +25,7 @@ export default function FundPurchases() {
     },
     {
       title: "Investor Name",
-      dataIndex: "user_id.full_name",
+      dataIndex: "user.full_name",
     },
     {
       title: "Amount",
@@ -40,27 +40,35 @@ export default function FundPurchases() {
       dataIndex: "purchase_date",
       render: (text) => formatDate(text),
     },
-    {
-      title: "Status",
-      dataIndex: "status",
-      render: (text) => {
-        let finalText = text?.toLowerCase();
-        let finalVariant, customColors;
-        switch (text) {
-          case tradeStatus.active:
-            finalText = "Active";
-            finalVariant = "success";
-            break;
-          case tradeStatus.inactive:
-            finalText = "Inactive";
-            finalVariant = "danger";
-            break;
-          default:
-            break;
-        }
-        return <CustomTag variant={finalVariant} text={finalText} customColors={customColors} />;
-      },
-    },
+    // {
+    //   title: "Status",
+    //   dataIndex: "status",
+    //   render: (text) => {
+    //     let finalText = text?.toLowerCase();
+    //     let finalVariant, customColors;
+    //     switch (text) {
+    //       case fundPurchaseStatus.completed:
+    //         finalText = "Completed";
+    //         finalVariant = "success";
+    //         break;
+    //       case fundPurchaseStatus.pending:
+    //         finalText = "Pending";
+    //         finalVariant = "warning";
+    //         break;
+    //       case fundPurchaseStatus.in_progress:
+    //         finalText = "In Progress";
+    //         finalVariant = "upcoming";
+    //         break;
+    //       case fundPurchaseStatus.cancelled:
+    //         finalText = "Cancelled";
+    //         finalVariant = "danger";
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //     return <CustomTag variant={finalVariant} text={finalText} customColors={customColors} />;
+    //   },
+    // },
   ];
 
   return (

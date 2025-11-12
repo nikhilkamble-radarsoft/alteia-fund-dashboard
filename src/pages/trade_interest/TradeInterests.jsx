@@ -73,7 +73,7 @@ export default function TradeInterests() {
       title: "Customer Name",
       dataIndex: "full_name",
       render: (text, record) => (
-        <NavLink to={`/investors/${record._id}`} className="p-0">
+        <NavLink to={`/investors/${record.user_id}`} className="p-0">
           {text}
         </NavLink>
       ),
@@ -114,6 +114,10 @@ export default function TradeInterests() {
         }
         return <CustomTag variant={finalVariant} text={finalText} customColors={customColors} />;
       },
+    },
+    {
+      title: "Last activity",
+      dataIndex: "last_activity",
     },
     {
       title: "Action",

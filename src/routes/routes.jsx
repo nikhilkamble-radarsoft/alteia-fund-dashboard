@@ -168,13 +168,13 @@ export const createRoutesConfig = (ctx = {}) => {
     },
     {
       path: "/purchase",
-      label: "Fund Purchase",
+      label: "Fund Allocation",
       icon: PiMoneyWavyFill,
       Component: FundPurchases,
       showInSidebar: "top",
       isPrivate: inProdMode,
-      title: "Fund Purchase",
-      subtitle: "Allot purchase to investor.",
+      title: "Fund Allocation",
+      subtitle: "Allocate funds to investors.",
       children: [
         {
           path: "/purchase/create",

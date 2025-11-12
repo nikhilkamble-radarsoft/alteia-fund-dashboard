@@ -20,39 +20,31 @@ export default function ViewPurchase() {
 
   const fetchData = async () => {
     const { response } = await callApi({
-      method: "post",
-      url: `/admin/get-trade-list`,
-      data: {
-        fund_id: id,
+      url: `/admin/purchase/list`,
+      params: {
+        purchasefund_id: id,
       },
-      errorOptions: {},
+      errorOptions: {
+        onOk: () => navigate(-1),
+      },
     });
 
-    const localData = response.data;
-
     const updatedData = {
-      ...localData,
-      dob: dayjs(localData.dob),
+      ...response.data,
+      user_id: response.data.user._id,
+      fund_id: response.data.fund._id,
     };
+
     setData(updatedData);
   };
 
   const onFinish = async (values) => {
-    const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      // Upload files
-      if (["fund_document", "banner_image"].includes(key))
-        return formData.append(key, values[key][0].originFileObj);
-
-      formData.append(key, values[key]);
-    });
-
-    if (!id) formData.append("created_by", user._id);
-    if (id) formData.append("fund_id", id);
+    const formData = { ...values };
+    if (id) formData.id = id;
 
     const { status } = await callApi({
       method: "post",
-      url: id ? "/admin/update-trade" : "/admin/add-trade",
+      url: id ? "/admin/purchase/update" : "/admin/purchase/create",
       data: formData,
       successOptions: {},
       errorOptions: {},
@@ -163,21 +155,20 @@ export default function ViewPurchase() {
       rules: formRules.required("AUM"),
       ...inputFormatters.money,
     },
-    {
-      name: "remarks",
-      label: "Remarks",
-      type: "textarea",
-      rules: formRules.required("Remarks"),
-      rows: 4,
-      maxLength: 150,
-    },
+    // {
+    //   name: "remarks",
+    //   label: "Remarks",
+    //   type: "textarea",
+    //   rows: 4,
+    //   maxLength: 150,
+    // },
   ];
 
   return (
     <FormBuilder
       formProps={{ autoComplete: "off" }}
       formConfig={formConfig}
-      initialValues={{ ...data, fund_id: trade_id, user_id }}
+      initialValues={{ fund_id: trade_id, user_id, ...data }}
       cancelText="Back"
       submitText="Save"
       onFinish={onFinish}

@@ -1,4 +1,4 @@
-const variantStyles = {
+const baseVariants = {
   // green
   success: {
     bgColor: "#28A7451A",
@@ -29,6 +29,20 @@ const variantStyles = {
     textColor: "#A33434",
     dotColor: "#A33434",
   },
+};
+
+const aliases = {
+  green: "success",
+  yellow: "pending",
+  red: "danger",
+  blue: "upcoming",
+};
+
+const variantStyles = {
+  ...baseVariants,
+  ...Object.fromEntries(
+    Object.entries(aliases).map(([alias, target]) => [alias, baseVariants[target]])
+  ),
 };
 
 export const CustomDot = ({ color, size = 6, className }) => {

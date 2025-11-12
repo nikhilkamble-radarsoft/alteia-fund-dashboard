@@ -13,7 +13,7 @@ const MetricCard = ({ value, subtitle, desc, color = "text-black", onView }) => 
           <div className={`text-base sm:text-lg font-semibold ${color}`}>{value}</div>
           <div className="text-gray-500 text-sm">{subtitle}</div>
         </div>
-        <CustomButton text="View" onClick={onView} width="" />
+        {/* <CustomButton text="View" onClick={onView} width="" /> */}
       </div>
       <p className="text-sm">{desc}</p>
     </Card>

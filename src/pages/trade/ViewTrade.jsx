@@ -39,10 +39,14 @@ export default function ViewTrade() {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
       // Upload files
-      if (["fund_document", "banner_image"].includes(key))
+      if (["fund_document", "banner_image"].includes(key) && values[key][0].originFileObj)
         return formData.append(key, values[key][0].originFileObj);
 
-      formData.append(key, values[key]);
+      if (Array.isArray(values[key])) {
+        values[key].forEach((item) => formData.append(key, item));
+      } else {
+        formData.append(key, values[key]);
+      }
     });
 
     if (!id) formData.append("created_by", user._id);
@@ -152,6 +156,20 @@ export default function ViewTrade() {
       placeholder: "Formats: JPG, PNG (Max 5MB)",
       accept: ["image/png", "image/jpeg", "image/jpg"],
       rules: formRules.required("Banner Image"),
+    },
+    {
+      name: "why_invest",
+      label: "Why invest in this trade?",
+      type: "input-list",
+      placeholder: "Enter why invest in this trade",
+      maxLength: 50,
+    },
+    {
+      name: "risks_to_consider",
+      label: "Risks to consider",
+      type: "input-list",
+      placeholder: "Enter risks to consider",
+      maxLength: 50,
     },
     {
       name: "aum",

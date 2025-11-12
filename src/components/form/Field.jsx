@@ -3,6 +3,8 @@ import { PiEye, PiEyeSlash } from "react-icons/pi";
 import { useMediaQuery } from "react-responsive";
 import FileField from "./FileField";
 import { useMemo } from "react";
+import InputList from "./InputList";
+import TagsInput from "./TagsInput";
 
 const { RangePicker } = DatePicker;
 
@@ -54,6 +56,16 @@ export default function Field({
   };
 
   switch (type) {
+    case "input-list":
+      return (
+        <InputList {...common} placeholder={defaultPlaceholder} value={value} onChange={onChange} />
+      );
+
+    case "tags":
+      return (
+        <TagsInput {...common} placeholder={defaultPlaceholder} value={value} onChange={onChange} />
+      );
+
     case "select":
       const shouldVirtualize = useMemo(() => options.length > 100, [options]);
 

@@ -136,14 +136,7 @@ const ViewUpdateROI = () => {
         </div>
 
         <div className="mt-4 flex justify-end">
-          <CustomButton
-            type="primary"
-            htmlType="submit"
-            loading={loading}
-            onClick={() => form.submit()}
-            text="Save"
-            width=""
-          />
+          <CustomButton type="primary" htmlType="submit" loading={loading} text="Save" width="" />
         </div>
       </Form>
     </div>

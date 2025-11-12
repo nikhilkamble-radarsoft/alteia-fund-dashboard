@@ -234,6 +234,7 @@ export default function FormBuilder({
                 valuePropName={field.valuePropName}
                 initialValue={field.initialValue}
                 className="w-full"
+                validateTrigger="onBlur"
                 {...field.formItemProps}
               >
                 {mapFieldToComponent(field, field.name)}

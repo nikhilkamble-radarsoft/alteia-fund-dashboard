@@ -114,7 +114,6 @@ export default function CustomTable({
     // setSorter: (dataIndex) => setSortBy(dataIndex),
   });
 
-  // Helpers to support nested dataIndex paths like "user_id.full_name"
   const toPathArray = (di) => {
     if (Array.isArray(di)) return di;
     if (typeof di === "string" && di.includes(".")) return di.split(".");
