@@ -74,7 +74,7 @@ export default function Field({
           {...selectProps}
           {...common}
           loading={loading}
-          placeholder={defaultPlaceholder === "Select" ? `Select` : defaultPlaceholder}
+          placeholder={defaultPlaceholder}
           allowClear={allowClear}
           showSearch={showSearch}
           optionFilterProp="children"
@@ -98,9 +98,7 @@ export default function Field({
       return (
         <Input.TextArea
           {...common}
-          placeholder={
-            typeof defaultPlaceholder === "string" ? defaultPlaceholder : rest.placeholder
-          }
+          placeholder={defaultPlaceholder}
           rows={rows}
           value={value}
           onChange={onChange}
@@ -156,9 +154,7 @@ export default function Field({
       return (
         <FileField
           className={className}
-          placeholder={
-            typeof defaultPlaceholder === "string" ? defaultPlaceholder : rest.placeholder
-          }
+          placeholder={defaultPlaceholder}
           value={value}
           onChange={onChange}
           accept={accept}
@@ -226,6 +222,19 @@ export function FormField({
     );
   }
 
+  const placeholderMap = {
+    select: `Select ${label}`,
+    textarea: `Enter ${label}`,
+    date: `Select ${label}`,
+    daterange: [placeholder?.[0] || `Start ${label}`, placeholder?.[1] || `End ${label}`],
+    time: `Select ${label}`,
+    number: `Enter ${label}`,
+    file: `Upload ${label}`,
+    default: `Enter ${label}`,
+  };
+
+  const newPlaceholder = placeholder || placeholderMap[type] || placeholderMap.default;
+
   return (
     <Form.Item
       key={name}
@@ -238,7 +247,7 @@ export function FormField({
     >
       <Field
         type={type}
-        placeholder={placeholder}
+        placeholder={newPlaceholder}
         options={options}
         rows={props.rows}
         form={form}

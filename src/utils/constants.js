@@ -1,5 +1,3 @@
-export const votingDurationSeconds = 600; // 10 minutes
-export const minPasswordLength = 6;
 export const localStorageTokenKey = "token";
 export const defaultMaxFileUploadSize = 5; // in MB
 
