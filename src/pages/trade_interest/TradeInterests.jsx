@@ -8,6 +8,7 @@ import CustomTag from "../../components/common/CustomTag";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules } from "../../utils/constants";
 import useApi from "../../logic/useApi";
+import dayjs from "dayjs";
 
 const { Title } = Typography;
 
@@ -27,12 +28,43 @@ export default function TradeInterests() {
           label: "Reminder Date",
           type: "date",
           rules: formRules.required("Reminder Date"),
+          datePickerProps: {
+            disabledDate: (current) => current && current < dayjs().startOf("day"),
+          },
         },
         {
           name: "reminder_time",
           label: "Time",
           type: "time",
-          rules: formRules.required("Time"),
+          rules: [
+            ...formRules.required("Time"),
+            {
+              validator: (_, value) => {
+                if (value && dayjs(value, "HH:mm").isBefore(dayjs().startOf("minute"))) {
+                  return Promise.reject(new Error("No past time allowed"));
+                }
+                return Promise.resolve();
+              },
+            },
+          ],
+          timePickerProps: (form) => ({
+            disabledTime: () => {
+              const selectedDate = form.getFieldValue("reminder_date");
+              if (!selectedDate || !selectedDate.isSame(dayjs(), "day")) {
+                return {};
+              }
+
+              const now = dayjs();
+              const currentHour = now.hour();
+              const currentMinute = now.minute();
+
+              return {
+                disabledHours: () => Array.from({ length: currentHour }, (_, i) => i),
+                disabledMinutes: (hour) =>
+                  hour === currentHour ? Array.from({ length: currentMinute }, (_, i) => i) : [],
+              };
+            },
+          }),
         },
         {
           name: "comment",
@@ -122,10 +154,13 @@ export default function TradeInterests() {
     {
       title: "Action",
       dataIndex: "action",
-      actions: [
+      actions: (record) => [
         {
           label: "Remind me",
           onClick: (record) => handleRemindMe(record),
+          visible: ![tradeInterestStatus.reminder_set, tradeInterestStatus.contacted].includes(
+            record.status
+          ),
         },
         {
           label: "Complete Purchase",

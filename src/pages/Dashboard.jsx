@@ -6,7 +6,14 @@ import ThemedModal from "../components/modal/ThemedModal";
 const { Title } = Typography;
 
 export default function Dashboard() {
-  const [modal, setModal] = useState({ visible: false, title: "", content: "", buttons: [] });
+  const [modal, setModal] = useState({
+    visible: false,
+    title: "",
+    content: "",
+    buttons: [
+      { type: "primary", onClick: () => setModal({ ...modal, visible: false }), text: "Close" },
+    ],
+  });
 
   return (
     <>

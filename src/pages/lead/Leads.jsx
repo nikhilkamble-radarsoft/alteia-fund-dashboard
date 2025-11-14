@@ -135,16 +135,18 @@ export default function Leads() {
     },
     {
       title: "Actions",
-      actions: [
+      actions: (record) => [
         {
           type: "update",
           label: "Approve",
           onClick: (record) => handleShowApproveModal(record),
+          visible: record.kyc_status === investorKycStatus.pending,
         },
         {
           type: "update",
           label: "Reject",
           onClick: (record) => handleShowRejectModal(record),
+          visible: record.kyc_status === investorKycStatus.pending,
         },
       ],
     },

@@ -1,4 +1,4 @@
-import { Dropdown, Menu, Button } from "antd";
+import { Dropdown, Button } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 const customSortIcon = ({ sortOrder }) => (
@@ -14,7 +14,9 @@ const customSortIcon = ({ sortOrder }) => (
 
 export const enhanceColumns = ({ columns }) => {
   return columns.map((col, i) => {
-    if (!col.actions?.length) {
+    const hasActions = !!col.actions;
+
+    if (!hasActions) {
       return {
         ...col,
         // sorter: true, // Enable this line to make all non-action columns sortable
@@ -29,9 +31,20 @@ export const enhanceColumns = ({ columns }) => {
       // fixed: "right", // TODO: ask jeet sir
       key: col.key ?? col.dataIndex ?? `col-${i}`,
       render: (_, record, index) => {
-        const availableActions = col.actions.filter((a) =>
-          a.visible ? a.visible(record, index) : true
+        const rawActions =
+          typeof col.actions === "function" ? col.actions(record, index) : col.actions || [];
+
+        if (!rawActions.length) return null;
+
+        const availableActions = rawActions.filter((a) =>
+          typeof a?.visible === "function"
+            ? a?.visible?.(record, index)
+            : a?.visible !== undefined
+            ? a?.visible
+            : true
         );
+
+        if (!availableActions.length) return null;
 
         // ✅ Single action → show link/button directly
         // if (availableActions.length === 1) {

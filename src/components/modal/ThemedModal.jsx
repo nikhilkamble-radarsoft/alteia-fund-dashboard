@@ -56,14 +56,9 @@ const ThemedModal = ({
 
       {buttons.length > 0 && (
         <div
-          className={`
-            mt-3
-            grid
-            grid-cols-2
-            gap-2
-            w-full
-            ${footerAlign === "right" ? "justify-end" : "justify-center"}
-          `}
+          className={`mt-3 grid gap-2 w-full ${
+            buttons.length === 1 ? "grid-cols-1" : "grid-cols-2"
+          } ${footerAlign === "right" ? "justify-end" : "justify-center"}`}
         >
           {buttons.map((btn, index) => {
             const { type, onClick, text, bgColor, color, icon, ...rest } = btn;

@@ -22,6 +22,7 @@ export default function Field({
   allowClear = true,
   // pass-through props for special controls
   datePickerProps = { format: "DD/MM/YYYY" },
+  timePickerProps = {},
   uploadProps = {},
   selectProps = {},
   form, // AntD form instance
@@ -54,6 +55,9 @@ export default function Field({
     suffix: loading ? <Spin size="small" /> : null,
     disabled: Boolean(loading || rest?.disabled),
   };
+
+  const resolvedTimePickerProps =
+    typeof timePickerProps === "function" && form ? timePickerProps(form) : timePickerProps;
 
   switch (type) {
     case "input-list":
@@ -136,6 +140,7 @@ export default function Field({
           onChange={onChange}
           format="h:mm A"
           use12Hours
+          {...resolvedTimePickerProps}
         />
       );
 
