@@ -38,6 +38,7 @@ export default function ViewTrade() {
   const onFinish = async (values) => {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
+      if (!values[key]) return;
       // Upload files
       if (["fund_document", "banner_image"].includes(key) && values[key][0].originFileObj)
         return formData.append(key, values[key][0].originFileObj);

@@ -8,13 +8,15 @@ export default function CreateNotification() {
   const navigate = useNavigate();
   const { callApi, loading } = useApi();
   const [funds, setFunds] = useState([]);
+  const [purchaseMap, setPurchaseMap] = useState({});
   const [investors, setInvestors] = useState([]);
 
   const onFinish = async (values) => {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
+      if (!values[key]) return;
       // Upload files
-      if (["fund_document", "banner_image"].includes(key) && values[key][0].originFileObj)
+      if (["notification_picture"].includes(key) && values[key][0].originFileObj)
         return formData.append(key, values[key][0].originFileObj);
 
       if (Array.isArray(values[key])) {
@@ -23,6 +25,13 @@ export default function CreateNotification() {
         formData.append(key, values[key]);
       }
     });
+
+    if (values.type === "fund") {
+      const users = purchaseMap[values.fund_id];
+      if (users) {
+        users.forEach((user) => formData.append("send_id", user));
+      }
+    }
 
     const { status } = await callApi({
       method: "post",
@@ -53,9 +62,6 @@ export default function CreateNotification() {
       name: "fund_id",
       label: "Fund",
       type: "select",
-      selectProps: {
-        mode: "multiple",
-      },
       options: funds.map((fund) => ({ value: fund._id, label: fund.title })),
       placeholder: "Select fund",
       shouldShow: (values) => values.type === "fund",
@@ -86,7 +92,7 @@ export default function CreateNotification() {
       type: "textarea",
     },
     {
-      name: "notification_pic",
+      name: "notification_picture",
       label: "Notification Picture",
       type: "file",
       uploadProps: {
@@ -98,11 +104,32 @@ export default function CreateNotification() {
   const fetchFunds = async () => {
     try {
       const { response } = await callApi({
-        url: "/admin/get-trade-list",
-        method: "post",
-        data: {},
+        url: "/admin/purchase/list",
       });
-      setFunds(response.data || []);
+
+      const purchases = response?.data ?? [];
+
+      const { purchaseMap: tempPurchaseMap, funds: uniqueFunds } = purchases.reduce(
+        (acc, purchase) => {
+          const fundId = purchase.fund._id;
+
+          if (!acc.purchaseMap[fundId]) {
+            acc.purchaseMap[fundId] = [];
+          }
+          acc.purchaseMap[fundId].push(purchase.user.user_id);
+
+          if (!acc.fundIdSet.has(fundId)) {
+            acc.fundIdSet.add(fundId);
+            acc.funds.push(purchase.fund);
+          }
+
+          return acc;
+        },
+        { purchaseMap: {}, funds: [], fundIdSet: new Set() }
+      );
+
+      setFunds(uniqueFunds);
+      setPurchaseMap(tempPurchaseMap);
     } catch (error) {
       console.error("Error fetching funds:", error);
     }

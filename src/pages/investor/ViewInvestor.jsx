@@ -41,6 +41,7 @@ export default function ViewInvestor() {
     if (id) return;
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
+      if (!values[key]) return;
       // Ignore fields
       if (["confirmPassword"].includes(key)) return;
 
