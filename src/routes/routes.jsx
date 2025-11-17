@@ -30,6 +30,7 @@ import ViewUpdateROI from "../pages/fund_performance/ViewUpdateROI";
 import FundPurchases from "../pages/fund_purchase/FundPurchases";
 import ViewPurchase from "../pages/fund_purchase/ViewPurchase";
 import TradeInterests from "../pages/trade_interest/TradeInterests";
+import CreateNotification from "../pages/CreateNotification";
 
 /**
  * Route config generator
@@ -241,6 +242,13 @@ export const createRoutesConfig = (ctx = {}) => {
           showBack: true,
         },
       ],
+    },
+    {
+      path: "/create-notification",
+      Component: CreateNotification,
+      isPrivate: inProdMode,
+      title: "Create Notification",
+      subtitle: "Create and manage notifications for investors.",
     },
     {
       path: "/login",

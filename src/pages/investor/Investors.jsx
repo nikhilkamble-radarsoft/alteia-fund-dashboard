@@ -1,12 +1,10 @@
-import { Typography, Button, Divider } from "antd";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Divider } from "antd";
+import { NavLink, useNavigate } from "react-router-dom";
 import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
 import { investorKycStatus } from "../../utils/constants";
-
-const { Title } = Typography;
 
 export default function Investors() {
   const navigate = useNavigate();

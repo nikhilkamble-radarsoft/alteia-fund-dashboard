@@ -13,19 +13,21 @@ const TableTitle = ({
   titleLevel = 5,
 }) => {
   return (
-    <div className="flex flex-wrap gap-3 justify-between w-full items-center">
+    <div className="flex flex-wrap gap-3 justify-between w-full items-center min-w-0">
       {/* Left Section */}
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-3 items-center min-w-0">
         {/* Back button */}
         {showIcon}
 
-        <div className="flex flex-col justify-center h-full max-w-[175px] sm:max-w-full">
-          <Title level={titleLevel} className={`font-bold m-0 truncate min-w-0 ${titleColor}`}>
+        <div className="flex flex-col justify-center h-full min-w-0 max-w-full">
+          <Title title={title} level={titleLevel} className={`font-bold m-0 min-w-0 ${titleColor}`} ellipsis>
             {title}
           </Title>
 
           {subtitle && (
-            <Paragraph className={`mb-0 truncate min-w-0 ${subtitleColor}`}>{subtitle}</Paragraph>
+            <Paragraph title={subtitle} className={`mb-0 min-w-0 ${subtitleColor}`} ellipsis={{ rows: 1 }}>
+              {subtitle}
+            </Paragraph>
           )}
         </div>
       </div>

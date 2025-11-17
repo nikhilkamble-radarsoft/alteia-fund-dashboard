@@ -32,6 +32,14 @@ export const formRules = {
     },
   ],
 
+  url: (required = true, requiredMsg = "Please enter URL.") => [
+    ...(required ? [{ required: true, message: requiredMsg }] : []),
+    {
+      pattern: /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-./?%&=]*)?$/i,
+      message: "Please enter a valid URL.",
+    },
+  ],
+
   password: (required = true, requiredMsg = "Please enter password.") => [
     ...(required ? [{ required: true, message: requiredMsg }] : []),
     { min: 8, message: "Password must be 8-20 characters." },

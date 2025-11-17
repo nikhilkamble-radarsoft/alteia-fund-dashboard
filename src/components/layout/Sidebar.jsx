@@ -7,6 +7,8 @@ import AppLogo from "../common/AppLogo";
 import { useDispatch } from "react-redux";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import CustomButton from "../form/CustomButton";
+import Paragraph from "antd/es/typography/Paragraph";
+import Title from "antd/es/typography/Title";
 
 const { Sider } = Layout;
 
@@ -123,11 +125,11 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
   }, [location.pathname]);
 
   const sidebarClasses = `!bg-primary !text-white flex flex-col h-full`;
-  const menuClasses = `!bg-primary !text-white !text-md px-4 flex-1 overflow-auto`;
+  const menuClasses = `!bg-primary !text-white !text-md px-4 flex-1 overflow-auto flex-1`;
 
   return (
     <Sider collapsed={collapsed} width={256} className={sidebarClasses}>
-      <div className="relative">
+      <div className="relative flex flex-col flex-1">
         <div
           style={{
             height: "64px",
@@ -167,13 +169,27 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
             }
             width=""
             onClick={toggleSidebar}
-            className="!p-1.5 absolute top-[74px] right-[-12px] !bg-light-primary shadow-lg h-auto"
+            className="!p-1.5 absolute top-[74px] right-[-12px] h-auto"
+            btnType="light-primary"
           />
         )}
       </div>
 
       {/* Bottom section */}
       <div className="">
+        {!collapsed && (
+          <div className="bg-[#FFFFFF1A] rounded-2xl p-4 gap-3 mx-4 flex flex-col justify-center items-center">
+            <Title level={5} className="text-white">
+              Push notifications
+            </Title>
+            <CustomButton
+              showIcon
+              text="Add new"
+              onClick={() => navigate("/create-notification")}
+              btnType="light-primary"
+            />
+          </div>
+        )}
         <Divider className="border-[#FFFFFF1A] min-w-[80%] w-[80%] mx-auto mb-2" />
 
         <Menu

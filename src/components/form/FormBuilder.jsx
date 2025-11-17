@@ -180,17 +180,45 @@ export default function FormBuilder({
       form,
       Fields: () => (
         <div className={`grid ${twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"} gap-6`}>
-          {formConfig.map((field) => (
-            <Form.Item
-              key={field.name}
-              name={field.name}
-              label={field.label}
-              rules={field.rules}
-              valuePropName={field.valuePropName}
-            >
-              {mapFieldToComponent(field, field.name)}
-            </Form.Item>
-          ))}
+          {formConfig.map((field) => {
+            // If field has conditional visibility, use shouldUpdate wrapper
+            if (typeof field.shouldShow === "function") {
+              return (
+                <Form.Item shouldUpdate noStyle key={field.name}>
+                  {({ getFieldsValue }) => {
+                    const values = getFieldsValue(true);
+                    const shouldShow = field.shouldShow(values);
+
+                    if (!shouldShow) return null;
+
+                    return (
+                      <Form.Item
+                        name={field.name}
+                        label={field.label}
+                        rules={field.rules}
+                        valuePropName={field.valuePropName}
+                      >
+                        {mapFieldToComponent(field, field.name)}
+                      </Form.Item>
+                    );
+                  }}
+                </Form.Item>
+              );
+            }
+
+            // Default: always show
+            return (
+              <Form.Item
+                key={field.name}
+                name={field.name}
+                label={field.label}
+                rules={field.rules}
+                valuePropName={field.valuePropName}
+              >
+                {mapFieldToComponent(field, field.name)}
+              </Form.Item>
+            );
+          })}
         </div>
       ),
     };
@@ -225,6 +253,36 @@ export default function FormBuilder({
               return rule;
             });
 
+            // Conditional visibility via shouldShow(values)
+            if (typeof field.shouldShow === "function") {
+              return (
+                <Form.Item shouldUpdate noStyle key={field.name}>
+                  {({ getFieldsValue }) => {
+                    const values = getFieldsValue(true);
+                    const shouldShow = field.shouldShow(values);
+
+                    if (!shouldShow) return null;
+
+                    return (
+                      <Form.Item
+                        name={field.name}
+                        label={field.label}
+                        rules={processedRules}
+                        valuePropName={field.valuePropName}
+                        initialValue={field.initialValue}
+                        className="w-full"
+                        validateTrigger="onBlur"
+                        {...field.formItemProps}
+                      >
+                        {mapFieldToComponent(field, field.name)}
+                      </Form.Item>
+                    );
+                  }}
+                </Form.Item>
+              );
+            }
+
+            // Default: always show
             return (
               <Form.Item
                 key={field.name}

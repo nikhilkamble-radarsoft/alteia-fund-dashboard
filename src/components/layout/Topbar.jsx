@@ -1,18 +1,10 @@
-import { Layout, Button, Avatar, Space, Typography } from "antd";
-import { MenuOutlined, BellOutlined, UserOutlined } from "@ant-design/icons";
+import { Layout, Button, Avatar, Popover } from "antd";
+import { MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "react-responsive";
-import {
-  PiAlignLeft,
-  PiBellFill,
-  PiBellRinging,
-  PiBellRingingBold,
-  PiBellRingingFill,
-  PiBellZBold,
-} from "react-icons/pi";
+import { PiBellFill } from "react-icons/pi";
 import { createRoutesConfig } from "../../routes/routes";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import CustomButton from "../form/CustomButton";
-import { BiChevronLeft } from "react-icons/bi";
 import { FiChevronLeft } from "react-icons/fi";
 import TableTitle from "../table/TableTitle";
 import { useSelector } from "react-redux";
@@ -78,13 +70,13 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
       }}
     >
       <div className="flex justify-between items-center w-full bg-white px-4 py-2 rounded-2xl shadow-sm">
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-3 items-center flex-1 min-w-0">
           {isMobile && lineage.length <= 1 && (
             <Button type="text" icon={<MenuOutlined />} onClick={onToggleSidebar} />
           )}
 
           {!hideDetails && (
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center flex-1 min-w-0">
               <TableTitle
                 title={title}
                 subtitle={subtitle}
@@ -110,10 +102,35 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
           )}
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="rounded-full bg-[#4E67271A] p-2">
-            {<PiBellFill fill="#4E6727" style={{ fontSize: "24px" }} />}
-          </div>
+        <div className="flex items-center gap-2 flex-none">
+          <Popover
+            placement={isMobile ? "bottom" : "bottomRight"}
+            trigger="click"
+            styles={{
+              root: {
+                maxWidth: "100vw",
+                width: isMobile ? "100vw" : "320px",
+                paddingInline: 8,
+              },
+            }}
+            content={
+              <div className="w-full">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-semibold text-sm">Notifications</span>
+                  <span className="text-xs text-text-secondary cursor-pointer">
+                    Mark all as read
+                  </span>
+                </div>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  <div className="p-2 rounded-lg bg-[#F5F7F0] text-xs">No new notifications.</div>
+                </div>
+              </div>
+            }
+          >
+            <div className="rounded-full bg-[#4E67271A] p-2 cursor-pointer">
+              <PiBellFill fill="#4E6727" style={{ fontSize: "24px" }} />
+            </div>
+          </Popover>
           <Avatar className="m-0" size={40} icon={<UserOutlined />} />
         </div>
       </div>

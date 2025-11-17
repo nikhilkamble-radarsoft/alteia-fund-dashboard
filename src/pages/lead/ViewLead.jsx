@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FormBuilder from "../../components/form/FormBuilder";
 import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../logic/useApi";
@@ -163,11 +163,15 @@ export default function ViewLead() {
         formProps={{ autoComplete: "off" }}
         formConfig={formConfig}
         initialValues={lead}
-        cancelText="Reject Lead"
-        submitText="Approve Lead"
-        onCancel={handleShowRejectModal}
-        onFinish={handleShowApproveModal}
         loading={loading}
+        {...(lead?.kyc_status === investorKycStatus.pending
+          ? {
+              cancelText: "Reject Lead",
+              submitText: "Approve Lead",
+              onCancel: handleShowRejectModal,
+              onFinish: handleShowApproveModal,
+            }
+          : { cancelText: "Back" })}
       />
       {modal}
     </>

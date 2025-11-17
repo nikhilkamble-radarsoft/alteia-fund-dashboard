@@ -1,18 +1,12 @@
-import { Typography, Button, Divider, Form } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Divider, Form } from "antd";
+import { useNavigate } from "react-router-dom";
 import CustomTable from "../../components/table/CustomTable";
-import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
 import { formRules, investorKycStatus } from "../../utils/constants";
 import useApi from "../../logic/useApi";
 import { useState } from "react";
-import { FormField } from "../../components/form/Field";
 import { useThemedModal } from "../../logic/useThemedModal";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import errorAnim from "../../assets/error-animation.lottie";
-
-const { Title } = Typography;
 
 export default function Leads() {
   const navigate = useNavigate();

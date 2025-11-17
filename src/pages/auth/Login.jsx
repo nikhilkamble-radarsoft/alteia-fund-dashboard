@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Input, Button, message, Typography, Card, Checkbox } from "antd";
+import { Form, Input, Button, message, Typography, Card, Checkbox, Alert } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomButton from "../../components/form/CustomButton";
@@ -19,6 +19,7 @@ const { Title, Paragraph } = Typography;
 const Login = () => {
   const { callApi, loading } = useApi();
   const { showError } = useGlobalModal();
+  const [errorText, setErrorText] = useState("");
 
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -39,7 +40,6 @@ const Login = () => {
           subMessage:
             "The new customer profile has been created and is now pending verification. You can review or manage the customer in the dashboard.",
         },
-        errorOptions: {},
       });
 
       if (status) {
@@ -49,6 +49,8 @@ const Login = () => {
         }
         dispatch(setAuth({ token: response.token, user: response.data }));
         navigate("/");
+      } else {
+        setErrorText(response.message);
       }
     } catch (error) {
       console.error(error);
@@ -66,6 +68,8 @@ const Login = () => {
           </Title>
           <paragraph className="text-[#828282]">Sign in to manage trades, users, and ROI</paragraph>
         </div>
+
+        {errorText && <Alert message={errorText} type="error" showIcon className="mb-6" />}
 
         <Form
           form={form}
