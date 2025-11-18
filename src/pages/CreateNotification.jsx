@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import FormBuilder from "../components/form/FormBuilder";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useApi from "../logic/useApi";
 import { formRules } from "../utils/constants";
 
 export default function CreateNotification() {
   const navigate = useNavigate();
   const { callApi, loading } = useApi();
+  const { state } = useLocation();
   const [funds, setFunds] = useState([]);
   const [purchaseMap, setPurchaseMap] = useState({});
   const [investors, setInvestors] = useState([]);
@@ -42,7 +43,7 @@ export default function CreateNotification() {
     });
 
     if (status) {
-      navigate("/dashboard");
+      navigate("/");
     }
   };
 
@@ -68,13 +69,13 @@ export default function CreateNotification() {
     },
     {
       name: "user_id",
-      label: "Investor",
+      label: "User",
       type: "select",
       selectProps: {
         mode: "multiple",
       },
       options: investors.map((investor) => ({ value: investor._id, label: investor.full_name })),
-      placeholder: "Select investor",
+      placeholder: "Select user",
       shouldShow: (values) => values.type === "user",
     },
     {
@@ -162,6 +163,7 @@ export default function CreateNotification() {
       submitText="Save"
       onFinish={onFinish}
       loading={loading}
+      initialValues={state}
     />
   );
 }

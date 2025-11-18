@@ -1,0 +1,1578 @@
+[
+  {
+    "country_of_residence": "Afghanistan",
+    "country_of_residence_display": "Afghanistan",
+    "nationality": "Afghan",
+    "nationality_display": "Afghan",
+    "country_code": "AF",
+    "phone_code": "+93"
+  },
+  {
+    "country_of_residence": "Albania",
+    "country_of_residence_display": "Albania",
+    "nationality": "Albanian",
+    "nationality_display": "Albanian",
+    "country_code": "AL",
+    "phone_code": "+355"
+  },
+  {
+    "country_of_residence": "Algeria",
+    "country_of_residence_display": "Algeria",
+    "nationality": "Algerian",
+    "nationality_display": "Algerian",
+    "country_code": "DZ",
+    "phone_code": "+213"
+  },
+  {
+    "country_of_residence": "Andorra",
+    "country_of_residence_display": "Andorra",
+    "nationality": "Andorran",
+    "nationality_display": "Andorran",
+    "country_code": "AD",
+    "phone_code": "+376"
+  },
+  {
+    "country_of_residence": "Angola",
+    "country_of_residence_display": "Angola",
+    "nationality": "Angolan",
+    "nationality_display": "Angolan",
+    "country_code": "AO",
+    "phone_code": "+244"
+  },
+  {
+    "country_of_residence": "Antigua and Barbuda",
+    "country_of_residence_display": "Antigua and Barbuda",
+    "nationality": "Antiguan, Barbudan",
+    "nationality_display": "Antiguan, Barbudan",
+    "country_code": "AG",
+    "phone_code": "+1-268"
+  },
+  {
+    "country_of_residence": "Argentina",
+    "country_of_residence_display": "Argentina",
+    "nationality": "Argentine",
+    "nationality_display": "Argentine",
+    "country_code": "AR",
+    "phone_code": "+54"
+  },
+  {
+    "country_of_residence": "Armenia",
+    "country_of_residence_display": "Armenia",
+    "nationality": "Armenian",
+    "nationality_display": "Armenian",
+    "country_code": "AM",
+    "phone_code": "+374"
+  },
+  {
+    "country_of_residence": "Australia",
+    "country_of_residence_display": "Australia",
+    "nationality": "Australian",
+    "nationality_display": "Australian",
+    "country_code": "AU",
+    "phone_code": "+61"
+  },
+  {
+    "country_of_residence": "Austria",
+    "country_of_residence_display": "Austria",
+    "nationality": "Austrian",
+    "nationality_display": "Austrian",
+    "country_code": "AT",
+    "phone_code": "+43"
+  },
+  {
+    "country_of_residence": "Azerbaijan",
+    "country_of_residence_display": "Azerbaijan",
+    "nationality": "Azerbaijani",
+    "nationality_display": "Azerbaijani",
+    "country_code": "AZ",
+    "phone_code": "+994"
+  },
+  {
+    "country_of_residence": "Bahamas",
+    "country_of_residence_display": "Bahamas",
+    "nationality": "Bahamian",
+    "nationality_display": "Bahamian",
+    "country_code": "BS",
+    "phone_code": "+1-242"
+  },
+  {
+    "country_of_residence": "Bahrain",
+    "country_of_residence_display": "Bahrain",
+    "nationality": "Bahraini",
+    "nationality_display": "Bahraini",
+    "country_code": "BH",
+    "phone_code": "+973"
+  },
+  {
+    "country_of_residence": "Bangladesh",
+    "country_of_residence_display": "Bangladesh",
+    "nationality": "Bangladeshi",
+    "nationality_display": "Bangladeshi",
+    "country_code": "BD",
+    "phone_code": "+880"
+  },
+  {
+    "country_of_residence": "Barbados",
+    "country_of_residence_display": "Barbados",
+    "nationality": "Barbadian",
+    "nationality_display": "Barbadian",
+    "country_code": "BB",
+    "phone_code": "+1-246"
+  },
+  {
+    "country_of_residence": "Belarus",
+    "country_of_residence_display": "Belarus",
+    "nationality": "Belarusian",
+    "nationality_display": "Belarusian",
+    "country_code": "BY",
+    "phone_code": "+375"
+  },
+  {
+    "country_of_residence": "Belgium",
+    "country_of_residence_display": "Belgium",
+    "nationality": "Belgian",
+    "nationality_display": "Belgian",
+    "country_code": "BE",
+    "phone_code": "+32"
+  },
+  {
+    "country_of_residence": "Belize",
+    "country_of_residence_display": "Belize",
+    "nationality": "Belizean",
+    "nationality_display": "Belizean",
+    "country_code": "BZ",
+    "phone_code": "+501"
+  },
+  {
+    "country_of_residence": "Benin",
+    "country_of_residence_display": "Benin",
+    "nationality": "Beninese",
+    "nationality_display": "Beninese",
+    "country_code": "BJ",
+    "phone_code": "+229"
+  },
+  {
+    "country_of_residence": "Bhutan",
+    "country_of_residence_display": "Bhutan",
+    "nationality": "Bhutanese",
+    "nationality_display": "Bhutanese",
+    "country_code": "BT",
+    "phone_code": "+975"
+  },
+  {
+    "country_of_residence": "Bolivia",
+    "country_of_residence_display": "Bolivia",
+    "nationality": "Bolivian",
+    "nationality_display": "Bolivian",
+    "country_code": "BO",
+    "phone_code": "+591"
+  },
+  {
+    "country_of_residence": "Bosnia and Herzegovina",
+    "country_of_residence_display": "Bosnia and Herzegovina",
+    "nationality": "Bosnian, Herzegovinian",
+    "nationality_display": "Bosnian, Herzegovinian",
+    "country_code": "BA",
+    "phone_code": "+387"
+  },
+  {
+    "country_of_residence": "Botswana",
+    "country_of_residence_display": "Botswana",
+    "nationality": "Motswana",
+    "nationality_display": "Motswana",
+    "country_code": "BW",
+    "phone_code": "+267"
+  },
+  {
+    "country_of_residence": "Brazil",
+    "country_of_residence_display": "Brazil",
+    "nationality": "Brazilian",
+    "nationality_display": "Brazilian",
+    "country_code": "BR",
+    "phone_code": "+55"
+  },
+  {
+    "country_of_residence": "Brunei",
+    "country_of_residence_display": "Brunei",
+    "nationality": "Bruneian",
+    "nationality_display": "Bruneian",
+    "country_code": "BN",
+    "phone_code": "+673"
+  },
+  {
+    "country_of_residence": "Bulgaria",
+    "country_of_residence_display": "Bulgaria",
+    "nationality": "Bulgarian",
+    "nationality_display": "Bulgarian",
+    "country_code": "BG",
+    "phone_code": "+359"
+  },
+  {
+    "country_of_residence": "Burkina Faso",
+    "country_of_residence_display": "Burkina Faso",
+    "nationality": "Burkinabe",
+    "nationality_display": "Burkinabe",
+    "country_code": "BF",
+    "phone_code": "+226"
+  },
+  {
+    "country_of_residence": "Burundi",
+    "country_of_residence_display": "Burundi",
+    "nationality": "Burundian",
+    "nationality_display": "Burundian",
+    "country_code": "BI",
+    "phone_code": "+257"
+  },
+  {
+    "country_of_residence": "Cabo Verde",
+    "country_of_residence_display": "Cabo Verde",
+    "nationality": "Cape Verdean",
+    "nationality_display": "Cape Verdean",
+    "country_code": "CV",
+    "phone_code": "+238"
+  },
+  {
+    "country_of_residence": "Cambodia",
+    "country_of_residence_display": "Cambodia",
+    "nationality": "Cambodian",
+    "nationality_display": "Cambodian",
+    "country_code": "KH",
+    "phone_code": "+855"
+  },
+  {
+    "country_of_residence": "Cameroon",
+    "country_of_residence_display": "Cameroon",
+    "nationality": "Cameroonian",
+    "nationality_display": "Cameroonian",
+    "country_code": "CM",
+    "phone_code": "+237"
+  },
+  {
+    "country_of_residence": "Canada",
+    "country_of_residence_display": "Canada",
+    "nationality": "Canadian",
+    "nationality_display": "Canadian",
+    "country_code": "CA",
+    "phone_code": "+1"
+  },
+  {
+    "country_of_residence": "Central African Republic",
+    "country_of_residence_display": "Central African Republic",
+    "nationality": "Central African",
+    "nationality_display": "Central African",
+    "country_code": "CF",
+    "phone_code": "+236"
+  },
+  {
+    "country_of_residence": "Chad",
+    "country_of_residence_display": "Chad",
+    "nationality": "Chadian",
+    "nationality_display": "Chadian",
+    "country_code": "TD",
+    "phone_code": "+235"
+  },
+  {
+    "country_of_residence": "Chile",
+    "country_of_residence_display": "Chile",
+    "nationality": "Chilean",
+    "nationality_display": "Chilean",
+    "country_code": "CL",
+    "phone_code": "+56"
+  },
+  {
+    "country_of_residence": "China",
+    "country_of_residence_display": "China",
+    "nationality": "Chinese",
+    "nationality_display": "Chinese",
+    "country_code": "CN",
+    "phone_code": "+86"
+  },
+  {
+    "country_of_residence": "Colombia",
+    "country_of_residence_display": "Colombia",
+    "nationality": "Colombian",
+    "nationality_display": "Colombian",
+    "country_code": "CO",
+    "phone_code": "+57"
+  },
+  {
+    "country_of_residence": "Comoros",
+    "country_of_residence_display": "Comoros",
+    "nationality": "Comoran",
+    "nationality_display": "Comoran",
+    "country_code": "KM",
+    "phone_code": "+269"
+  },
+  {
+    "country_of_residence": "Congo",
+    "country_of_residence_display": "Congo",
+    "nationality": "Congolese",
+    "nationality_display": "Congolese",
+    "country_code": "CG",
+    "phone_code": "+242"
+  },
+  {
+    "country_of_residence": "Congo (Democratic Republic)",
+    "country_of_residence_display": "Congo (Democratic Republic)",
+    "nationality": "Congolese",
+    "nationality_display": "Congolese",
+    "country_code": "CD",
+    "phone_code": "+243"
+  },
+  {
+    "country_of_residence": "Costa Rica",
+    "country_of_residence_display": "Costa Rica",
+    "nationality": "Costa Rican",
+    "nationality_display": "Costa Rican",
+    "country_code": "CR",
+    "phone_code": "+506"
+  },
+  {
+    "country_of_residence": "Croatia",
+    "country_of_residence_display": "Croatia",
+    "nationality": "Croatian",
+    "nationality_display": "Croatian",
+    "country_code": "HR",
+    "phone_code": "+385"
+  },
+  {
+    "country_of_residence": "Cuba",
+    "country_of_residence_display": "Cuba",
+    "nationality": "Cuban",
+    "nationality_display": "Cuban",
+    "country_code": "CU",
+    "phone_code": "+53"
+  },
+  {
+    "country_of_residence": "Cyprus",
+    "country_of_residence_display": "Cyprus",
+    "nationality": "Cypriot",
+    "nationality_display": "Cypriot",
+    "country_code": "CY",
+    "phone_code": "+357"
+  },
+  {
+    "country_of_residence": "Czech Republic",
+    "country_of_residence_display": "Czech Republic",
+    "nationality": "Czech",
+    "nationality_display": "Czech",
+    "country_code": "CZ",
+    "phone_code": "+420"
+  },
+  {
+    "country_of_residence": "Denmark",
+    "country_of_residence_display": "Denmark",
+    "nationality": "Danish",
+    "nationality_display": "Danish",
+    "country_code": "DK",
+    "phone_code": "+45"
+  },
+  {
+    "country_of_residence": "Djibouti",
+    "country_of_residence_display": "Djibouti",
+    "nationality": "Djiboutian",
+    "nationality_display": "Djiboutian",
+    "country_code": "DJ",
+    "phone_code": "+253"
+  },
+  {
+    "country_of_residence": "Dominica",
+    "country_of_residence_display": "Dominica",
+    "nationality": "Dominican",
+    "nationality_display": "Dominican",
+    "country_code": "DM",
+    "phone_code": "+1-767"
+  },
+  {
+    "country_of_residence": "Dominican Republic",
+    "country_of_residence_display": "Dominican Republic",
+    "nationality": "Dominican",
+    "nationality_display": "Dominican",
+    "country_code": "DO",
+    "phone_code": "+1-809"
+  },
+  {
+    "country_of_residence": "Ecuador",
+    "country_of_residence_display": "Ecuador",
+    "nationality": "Ecuadorian",
+    "nationality_display": "Ecuadorian",
+    "country_code": "EC",
+    "phone_code": "+593"
+  },
+  {
+    "country_of_residence": "Egypt",
+    "country_of_residence_display": "Egypt",
+    "nationality": "Egyptian",
+    "nationality_display": "Egyptian",
+    "country_code": "EG",
+    "phone_code": "+20"
+  },
+  {
+    "country_of_residence": "El Salvador",
+    "country_of_residence_display": "El Salvador",
+    "nationality": "Salvadoran",
+    "nationality_display": "Salvadoran",
+    "country_code": "SV",
+    "phone_code": "+503"
+  },
+  {
+    "country_of_residence": "Equatorial Guinea",
+    "country_of_residence_display": "Equatorial Guinea",
+    "nationality": "Equatorial Guinean",
+    "nationality_display": "Equatorial Guinean",
+    "country_code": "GQ",
+    "phone_code": "+240"
+  },
+  {
+    "country_of_residence": "Eritrea",
+    "country_of_residence_display": "Eritrea",
+    "nationality": "Eritrean",
+    "nationality_display": "Eritrean",
+    "country_code": "ER",
+    "phone_code": "+291"
+  },
+  {
+    "country_of_residence": "Estonia",
+    "country_of_residence_display": "Estonia",
+    "nationality": "Estonian",
+    "nationality_display": "Estonian",
+    "country_code": "EE",
+    "phone_code": "+372"
+  },
+  {
+    "country_of_residence": "Eswatini",
+    "country_of_residence_display": "Eswatini",
+    "nationality": "Swazi",
+    "nationality_display": "Swazi",
+    "country_code": "SZ",
+    "phone_code": "+268"
+  },
+  {
+    "country_of_residence": "Ethiopia",
+    "country_of_residence_display": "Ethiopia",
+    "nationality": "Ethiopian",
+    "nationality_display": "Ethiopian",
+    "country_code": "ET",
+    "phone_code": "+251"
+  },
+  {
+    "country_of_residence": "Fiji",
+    "country_of_residence_display": "Fiji",
+    "nationality": "Fijian",
+    "nationality_display": "Fijian",
+    "country_code": "FJ",
+    "phone_code": "+679"
+  },
+  {
+    "country_of_residence": "Finland",
+    "country_of_residence_display": "Finland",
+    "nationality": "Finnish",
+    "nationality_display": "Finnish",
+    "country_code": "FI",
+    "phone_code": "+358"
+  },
+  {
+    "country_of_residence": "France",
+    "country_of_residence_display": "France",
+    "nationality": "French",
+    "nationality_display": "French",
+    "country_code": "FR",
+    "phone_code": "+33"
+  },
+  {
+    "country_of_residence": "Gabon",
+    "country_of_residence_display": "Gabon",
+    "nationality": "Gabonese",
+    "nationality_display": "Gabonese",
+    "country_code": "GA",
+    "phone_code": "+241"
+  },
+  {
+    "country_of_residence": "Gambia",
+    "country_of_residence_display": "Gambia",
+    "nationality": "Gambian",
+    "nationality_display": "Gambian",
+    "country_code": "GM",
+    "phone_code": "+220"
+  },
+  {
+    "country_of_residence": "Georgia",
+    "country_of_residence_display": "Georgia",
+    "nationality": "Georgian",
+    "nationality_display": "Georgian",
+    "country_code": "GE",
+    "phone_code": "+995"
+  },
+  {
+    "country_of_residence": "Germany",
+    "country_of_residence_display": "Germany",
+    "nationality": "German",
+    "nationality_display": "German",
+    "country_code": "DE",
+    "phone_code": "+49"
+  },
+  {
+    "country_of_residence": "Ghana",
+    "country_of_residence_display": "Ghana",
+    "nationality": "Ghanaian",
+    "nationality_display": "Ghanaian",
+    "country_code": "GH",
+    "phone_code": "+233"
+  },
+  {
+    "country_of_residence": "Greece",
+    "country_of_residence_display": "Greece",
+    "nationality": "Greek",
+    "nationality_display": "Greek",
+    "country_code": "GR",
+    "phone_code": "+30"
+  },
+  {
+    "country_of_residence": "Grenada",
+    "country_of_residence_display": "Grenada",
+    "nationality": "Grenadian",
+    "nationality_display": "Grenadian",
+    "country_code": "GD",
+    "phone_code": "+1-473"
+  },
+  {
+    "country_of_residence": "Guatemala",
+    "country_of_residence_display": "Guatemala",
+    "nationality": "Guatemalan",
+    "nationality_display": "Guatemalan",
+    "country_code": "GT",
+    "phone_code": "+502"
+  },
+  {
+    "country_of_residence": "Guinea",
+    "country_of_residence_display": "Guinea",
+    "nationality": "Guinean",
+    "nationality_display": "Guinean",
+    "country_code": "GN",
+    "phone_code": "+224"
+  },
+  {
+    "country_of_residence": "Guinea-Bissau",
+    "country_of_residence_display": "Guinea-Bissau",
+    "nationality": "Bissau-Guinean",
+    "nationality_display": "Bissau-Guinean",
+    "country_code": "GW",
+    "phone_code": "+245"
+  },
+  {
+    "country_of_residence": "Guyana",
+    "country_of_residence_display": "Guyana",
+    "nationality": "Guyanese",
+    "nationality_display": "Guyanese",
+    "country_code": "GY",
+    "phone_code": "+592"
+  },
+  {
+    "country_of_residence": "Haiti",
+    "country_of_residence_display": "Haiti",
+    "nationality": "Haitian",
+    "nationality_display": "Haitian",
+    "country_code": "HT",
+    "phone_code": "+509"
+  },
+  {
+    "country_of_residence": "Honduras",
+    "country_of_residence_display": "Honduras",
+    "nationality": "Honduran",
+    "nationality_display": "Honduran",
+    "country_code": "HN",
+    "phone_code": "+504"
+  },
+  {
+    "country_of_residence": "Hungary",
+    "country_of_residence_display": "Hungary",
+    "nationality": "Hungarian",
+    "nationality_display": "Hungarian",
+    "country_code": "HU",
+    "phone_code": "+36"
+  },
+  {
+    "country_of_residence": "Iceland",
+    "country_of_residence_display": "Iceland",
+    "nationality": "Icelandic",
+    "nationality_display": "Icelandic",
+    "country_code": "IS",
+    "phone_code": "+354"
+  },
+  {
+    "country_of_residence": "India",
+    "country_of_residence_display": "India",
+    "nationality": "Indian",
+    "nationality_display": "Indian",
+    "country_code": "IN",
+    "phone_code": "+91"
+  },
+  {
+    "country_of_residence": "Indonesia",
+    "country_of_residence_display": "Indonesia",
+    "nationality": "Indonesian",
+    "nationality_display": "Indonesian",
+    "country_code": "ID",
+    "phone_code": "+62"
+  },
+  {
+    "country_of_residence": "Iran",
+    "country_of_residence_display": "Iran",
+    "nationality": "Iranian",
+    "nationality_display": "Iranian",
+    "country_code": "IR",
+    "phone_code": "+98"
+  },
+  {
+    "country_of_residence": "Iraq",
+    "country_of_residence_display": "Iraq",
+    "nationality": "Iraqi",
+    "nationality_display": "Iraqi",
+    "country_code": "IQ",
+    "phone_code": "+964"
+  },
+  {
+    "country_of_residence": "Ireland",
+    "country_of_residence_display": "Ireland",
+    "nationality": "Irish",
+    "nationality_display": "Irish",
+    "country_code": "IE",
+    "phone_code": "+353"
+  },
+  {
+    "country_of_residence": "Israel",
+    "country_of_residence_display": "Israel",
+    "nationality": "Israeli",
+    "nationality_display": "Israeli",
+    "country_code": "IL",
+    "phone_code": "+972"
+  },
+  {
+    "country_of_residence": "Italy",
+    "country_of_residence_display": "Italy",
+    "nationality": "Italian",
+    "nationality_display": "Italian",
+    "country_code": "IT",
+    "phone_code": "+39"
+  },
+  {
+    "country_of_residence": "Ivory Coast",
+    "country_of_residence_display": "Ivory Coast",
+    "nationality": "Ivorian",
+    "nationality_display": "Ivorian",
+    "country_code": "CI",
+    "phone_code": "+225"
+  },
+  {
+    "country_of_residence": "Jamaica",
+    "country_of_residence_display": "Jamaica",
+    "nationality": "Jamaican",
+    "nationality_display": "Jamaican",
+    "country_code": "JM",
+    "phone_code": "+1-876"
+  },
+  {
+    "country_of_residence": "Japan",
+    "country_of_residence_display": "Japan",
+    "nationality": "Japanese",
+    "nationality_display": "Japanese",
+    "country_code": "JP",
+    "phone_code": "+81"
+  },
+  {
+    "country_of_residence": "Jordan",
+    "country_of_residence_display": "Jordan",
+    "nationality": "Jordanian",
+    "nationality_display": "Jordanian",
+    "country_code": "JO",
+    "phone_code": "+962"
+  },
+  {
+    "country_of_residence": "Kazakhstan",
+    "country_of_residence_display": "Kazakhstan",
+    "nationality": "Kazakhstani",
+    "nationality_display": "Kazakhstani",
+    "country_code": "KZ",
+    "phone_code": "+7"
+  },
+  {
+    "country_of_residence": "Kenya",
+    "country_of_residence_display": "Kenya",
+    "nationality": "Kenyan",
+    "nationality_display": "Kenyan",
+    "country_code": "KE",
+    "phone_code": "+254"
+  },
+  {
+    "country_of_residence": "Kiribati",
+    "country_of_residence_display": "Kiribati",
+    "nationality": "I-Kiribati",
+    "nationality_display": "I-Kiribati",
+    "country_code": "KI",
+    "phone_code": "+686"
+  },
+  {
+    "country_of_residence": "Kosovo",
+    "country_of_residence_display": "Kosovo",
+    "nationality": "Kosovar",
+    "nationality_display": "Kosovar",
+    "country_code": "XK",
+    "phone_code": "+383"
+  },
+  {
+    "country_of_residence": "Kuwait",
+    "country_of_residence_display": "Kuwait",
+    "nationality": "Kuwaiti",
+    "nationality_display": "Kuwaiti",
+    "country_code": "KW",
+    "phone_code": "+965"
+  },
+  {
+    "country_of_residence": "Kyrgyzstan",
+    "country_of_residence_display": "Kyrgyzstan",
+    "nationality": "Kyrgyzstani",
+    "nationality_display": "Kyrgyzstani",
+    "country_code": "KG",
+    "phone_code": "+996"
+  },
+  {
+    "country_of_residence": "Laos",
+    "country_of_residence_display": "Laos",
+    "nationality": "Laotian",
+    "nationality_display": "Laotian",
+    "country_code": "LA",
+    "phone_code": "+856"
+  },
+  {
+    "country_of_residence": "Latvia",
+    "country_of_residence_display": "Latvia",
+    "nationality": "Latvian",
+    "nationality_display": "Latvian",
+    "country_code": "LV",
+    "phone_code": "+371"
+  },
+  {
+    "country_of_residence": "Lebanon",
+    "country_of_residence_display": "Lebanon",
+    "nationality": "Lebanese",
+    "nationality_display": "Lebanese",
+    "country_code": "LB",
+    "phone_code": "+961"
+  },
+  {
+    "country_of_residence": "Lesotho",
+    "country_of_residence_display": "Lesotho",
+    "nationality": "Basotho",
+    "nationality_display": "Basotho",
+    "country_code": "LS",
+    "phone_code": "+266"
+  },
+  {
+    "country_of_residence": "Liberia",
+    "country_of_residence_display": "Liberia",
+    "nationality": "Liberian",
+    "nationality_display": "Liberian",
+    "country_code": "LR",
+    "phone_code": "+231"
+  },
+  {
+    "country_of_residence": "Libya",
+    "country_of_residence_display": "Libya",
+    "nationality": "Libyan",
+    "nationality_display": "Libyan",
+    "country_code": "LY",
+    "phone_code": "+218"
+  },
+  {
+    "country_of_residence": "Liechtenstein",
+    "country_of_residence_display": "Liechtenstein",
+    "nationality": "Liechtensteiner",
+    "nationality_display": "Liechtensteiner",
+    "country_code": "LI",
+    "phone_code": "+423"
+  },
+  {
+    "country_of_residence": "Lithuania",
+    "country_of_residence_display": "Lithuania",
+    "nationality": "Lithuanian",
+    "nationality_display": "Lithuanian",
+    "country_code": "LT",
+    "phone_code": "+370"
+  },
+  {
+    "country_of_residence": "Luxembourg",
+    "country_of_residence_display": "Luxembourg",
+    "nationality": "Luxembourgish",
+    "nationality_display": "Luxembourgish",
+    "country_code": "LU",
+    "phone_code": "+352"
+  },
+  {
+    "country_of_residence": "Madagascar",
+    "country_of_residence_display": "Madagascar",
+    "nationality": "Malagasy",
+    "nationality_display": "Malagasy",
+    "country_code": "MG",
+    "phone_code": "+261"
+  },
+  {
+    "country_of_residence": "Malawi",
+    "country_of_residence_display": "Malawi",
+    "nationality": "Malawian",
+    "nationality_display": "Malawian",
+    "country_code": "MW",
+    "phone_code": "+265"
+  },
+  {
+    "country_of_residence": "Malaysia",
+    "country_of_residence_display": "Malaysia",
+    "nationality": "Malaysian",
+    "nationality_display": "Malaysian",
+    "country_code": "MY",
+    "phone_code": "+60"
+  },
+  {
+    "country_of_residence": "Maldives",
+    "country_of_residence_display": "Maldives",
+    "nationality": "Maldivian",
+    "nationality_display": "Maldivian",
+    "country_code": "MV",
+    "phone_code": "+960"
+  },
+  {
+    "country_of_residence": "Mali",
+    "country_of_residence_display": "Mali",
+    "nationality": "Malian",
+    "nationality_display": "Malian",
+    "country_code": "ML",
+    "phone_code": "+223"
+  },
+  {
+    "country_of_residence": "Malta",
+    "country_of_residence_display": "Malta",
+    "nationality": "Maltese",
+    "nationality_display": "Maltese",
+    "country_code": "MT",
+    "phone_code": "+356"
+  },
+  {
+    "country_of_residence": "Marshall Islands",
+    "country_of_residence_display": "Marshall Islands",
+    "nationality": "Marshallese",
+    "nationality_display": "Marshallese",
+    "country_code": "MH",
+    "phone_code": "+692"
+  },
+  {
+    "country_of_residence": "Mauritania",
+    "country_of_residence_display": "Mauritania",
+    "nationality": "Mauritanian",
+    "nationality_display": "Mauritanian",
+    "country_code": "MR",
+    "phone_code": "+222"
+  },
+  {
+    "country_of_residence": "Mauritius",
+    "country_of_residence_display": "Mauritius",
+    "nationality": "Mauritian",
+    "nationality_display": "Mauritian",
+    "country_code": "MU",
+    "phone_code": "+230"
+  },
+  {
+    "country_of_residence": "Mexico",
+    "country_of_residence_display": "Mexico",
+    "nationality": "Mexican",
+    "nationality_display": "Mexican",
+    "country_code": "MX",
+    "phone_code": "+52"
+  },
+  {
+    "country_of_residence": "Micronesia",
+    "country_of_residence_display": "Micronesia",
+    "nationality": "Micronesian",
+    "nationality_display": "Micronesian",
+    "country_code": "FM",
+    "phone_code": "+691"
+  },
+  {
+    "country_of_residence": "Moldova",
+    "country_of_residence_display": "Moldova",
+    "nationality": "Moldovan",
+    "nationality_display": "Moldovan",
+    "country_code": "MD",
+    "phone_code": "+373"
+  },
+  {
+    "country_of_residence": "Monaco",
+    "country_of_residence_display": "Monaco",
+    "nationality": "Monegasque",
+    "nationality_display": "Monegasque",
+    "country_code": "MC",
+    "phone_code": "+377"
+  },
+  {
+    "country_of_residence": "Mongolia",
+    "country_of_residence_display": "Mongolia",
+    "nationality": "Mongolian",
+    "nationality_display": "Mongolian",
+    "country_code": "MN",
+    "phone_code": "+976"
+  },
+  {
+    "country_of_residence": "Montenegro",
+    "country_of_residence_display": "Montenegro",
+    "nationality": "Montenegrin",
+    "nationality_display": "Montenegrin",
+    "country_code": "ME",
+    "phone_code": "+382"
+  },
+  {
+    "country_of_residence": "Morocco",
+    "country_of_residence_display": "Morocco",
+    "nationality": "Moroccan",
+    "nationality_display": "Moroccan",
+    "country_code": "MA",
+    "phone_code": "+212"
+  },
+  {
+    "country_of_residence": "Mozambique",
+    "country_of_residence_display": "Mozambique",
+    "nationality": "Mozambican",
+    "nationality_display": "Mozambican",
+    "country_code": "MZ",
+    "phone_code": "+258"
+  },
+  {
+    "country_of_residence": "Myanmar",
+    "country_of_residence_display": "Myanmar",
+    "nationality": "Burmese",
+    "nationality_display": "Burmese",
+    "country_code": "MM",
+    "phone_code": "+95"
+  },
+  {
+    "country_of_residence": "Namibia",
+    "country_of_residence_display": "Namibia",
+    "nationality": "Namibian",
+    "nationality_display": "Namibian",
+    "country_code": "NA",
+    "phone_code": "+264"
+  },
+  {
+    "country_of_residence": "Nauru",
+    "country_of_residence_display": "Nauru",
+    "nationality": "Nauruan",
+    "nationality_display": "Nauruan",
+    "country_code": "NR",
+    "phone_code": "+674"
+  },
+  {
+    "country_of_residence": "Nepal",
+    "country_of_residence_display": "Nepal",
+    "nationality": "Nepalese",
+    "nationality_display": "Nepalese",
+    "country_code": "NP",
+    "phone_code": "+977"
+  },
+  {
+    "country_of_residence": "Netherlands",
+    "country_of_residence_display": "Netherlands",
+    "nationality": "Dutch",
+    "nationality_display": "Dutch",
+    "country_code": "NL",
+    "phone_code": "+31"
+  },
+  {
+    "country_of_residence": "New Zealand",
+    "country_of_residence_display": "New Zealand",
+    "nationality": "New Zealander",
+    "nationality_display": "New Zealander",
+    "country_code": "NZ",
+    "phone_code": "+64"
+  },
+  {
+    "country_of_residence": "Nicaragua",
+    "country_of_residence_display": "Nicaragua",
+    "nationality": "Nicaraguan",
+    "nationality_display": "Nicaraguan",
+    "country_code": "NI",
+    "phone_code": "+505"
+  },
+  {
+    "country_of_residence": "Niger",
+    "country_of_residence_display": "Niger",
+    "nationality": "Nigerien",
+    "nationality_display": "Nigerien",
+    "country_code": "NE",
+    "phone_code": "+227"
+  },
+  {
+    "country_of_residence": "Nigeria",
+    "country_of_residence_display": "Nigeria",
+    "nationality": "Nigerian",
+    "nationality_display": "Nigerian",
+    "country_code": "NG",
+    "phone_code": "+234"
+  },
+  {
+    "country_of_residence": "North Korea",
+    "country_of_residence_display": "North Korea",
+    "nationality": "North Korean",
+    "nationality_display": "North Korean",
+    "country_code": "KP",
+    "phone_code": "+850"
+  },
+  {
+    "country_of_residence": "North Macedonia",
+    "country_of_residence_display": "North Macedonia",
+    "nationality": "Macedonian",
+    "nationality_display": "Macedonian",
+    "country_code": "MK",
+    "phone_code": "+389"
+  },
+  {
+    "country_of_residence": "Norway",
+    "country_of_residence_display": "Norway",
+    "nationality": "Norwegian",
+    "nationality_display": "Norwegian",
+    "country_code": "NO",
+    "phone_code": "+47"
+  },
+  {
+    "country_of_residence": "Oman",
+    "country_of_residence_display": "Oman",
+    "nationality": "Omani",
+    "nationality_display": "Omani",
+    "country_code": "OM",
+    "phone_code": "+968"
+  },
+  {
+    "country_of_residence": "Pakistan",
+    "country_of_residence_display": "Pakistan",
+    "nationality": "Pakistani",
+    "nationality_display": "Pakistani",
+    "country_code": "PK",
+    "phone_code": "+92"
+  },
+  {
+    "country_of_residence": "Palau",
+    "country_of_residence_display": "Palau",
+    "nationality": "Palauan",
+    "nationality_display": "Palauan",
+    "country_code": "PW",
+    "phone_code": "+680"
+  },
+  {
+    "country_of_residence": "Palestine",
+    "country_of_residence_display": "Palestine",
+    "nationality": "Palestinian",
+    "nationality_display": "Palestinian",
+    "country_code": "PS",
+    "phone_code": "+970"
+  },
+  {
+    "country_of_residence": "Panama",
+    "country_of_residence_display": "Panama",
+    "nationality": "Panamanian",
+    "nationality_display": "Panamanian",
+    "country_code": "PA",
+    "phone_code": "+507"
+  },
+  {
+    "country_of_residence": "Papua New Guinea",
+    "country_of_residence_display": "Papua New Guinea",
+    "nationality": "Papua New Guinean",
+    "nationality_display": "Papua New Guinean",
+    "country_code": "PG",
+    "phone_code": "+675"
+  },
+  {
+    "country_of_residence": "Paraguay",
+    "country_of_residence_display": "Paraguay",
+    "nationality": "Paraguayan",
+    "nationality_display": "Paraguayan",
+    "country_code": "PY",
+    "phone_code": "+595"
+  },
+  {
+    "country_of_residence": "Peru",
+    "country_of_residence_display": "Peru",
+    "nationality": "Peruvian",
+    "nationality_display": "Peruvian",
+    "country_code": "PE",
+    "phone_code": "+51"
+  },
+  {
+    "country_of_residence": "Philippines",
+    "country_of_residence_display": "Philippines",
+    "nationality": "Filipino",
+    "nationality_display": "Filipino",
+    "country_code": "PH",
+    "phone_code": "+63"
+  },
+  {
+    "country_of_residence": "Poland",
+    "country_of_residence_display": "Poland",
+    "nationality": "Polish",
+    "nationality_display": "Polish",
+    "country_code": "PL",
+    "phone_code": "+48"
+  },
+  {
+    "country_of_residence": "Portugal",
+    "country_of_residence_display": "Portugal",
+    "nationality": "Portuguese",
+    "nationality_display": "Portuguese",
+    "country_code": "PT",
+    "phone_code": "+351"
+  },
+  {
+    "country_of_residence": "Qatar",
+    "country_of_residence_display": "Qatar",
+    "nationality": "Qatari",
+    "nationality_display": "Qatari",
+    "country_code": "QA",
+    "phone_code": "+974"
+  },
+  {
+    "country_of_residence": "Romania",
+    "country_of_residence_display": "Romania",
+    "nationality": "Romanian",
+    "nationality_display": "Romanian",
+    "country_code": "RO",
+    "phone_code": "+40"
+  },
+  {
+    "country_of_residence": "Russia",
+    "country_of_residence_display": "Russia",
+    "nationality": "Russian",
+    "nationality_display": "Russian",
+    "country_code": "RU",
+    "phone_code": "+7"
+  },
+  {
+    "country_of_residence": "Rwanda",
+    "country_of_residence_display": "Rwanda",
+    "nationality": "Rwandan",
+    "nationality_display": "Rwandan",
+    "country_code": "RW",
+    "phone_code": "+250"
+  },
+  {
+    "country_of_residence": "Saint Kitts and Nevis",
+    "country_of_residence_display": "Saint Kitts and Nevis",
+    "nationality": "Kittitian, Nevisian",
+    "nationality_display": "Kittitian, Nevisian",
+    "country_code": "KN",
+    "phone_code": "+1-869"
+  },
+  {
+    "country_of_residence": "Saint Lucia",
+    "country_of_residence_display": "Saint Lucia",
+    "nationality": "Saint Lucian",
+    "nationality_display": "Saint Lucian",
+    "country_code": "LC",
+    "phone_code": "+1-758"
+  },
+  {
+    "country_of_residence": "Saint Vincent and the Grenadines",
+    "country_of_residence_display": "Saint Vincent and the Grenadines",
+    "nationality": "Vincentian",
+    "nationality_display": "Vincentian",
+    "country_code": "VC",
+    "phone_code": "+1-784"
+  },
+  {
+    "country_of_residence": "Samoa",
+    "country_of_residence_display": "Samoa",
+    "nationality": "Samoan",
+    "nationality_display": "Samoan",
+    "country_code": "WS",
+    "phone_code": "+685"
+  },
+  {
+    "country_of_residence": "San Marino",
+    "country_of_residence_display": "San Marino",
+    "nationality": "Sammarinese",
+    "nationality_display": "Sammarinese",
+    "country_code": "SM",
+    "phone_code": "+378"
+  },
+  {
+    "country_of_residence": "Sao Tome and Principe",
+    "country_of_residence_display": "Sao Tome and Principe",
+    "nationality": "Sao Tomean",
+    "nationality_display": "Sao Tomean",
+    "country_code": "ST",
+    "phone_code": "+239"
+  },
+  {
+    "country_of_residence": "Saudi Arabia",
+    "country_of_residence_display": "Saudi Arabia",
+    "nationality": "Saudi",
+    "nationality_display": "Saudi",
+    "country_code": "SA",
+    "phone_code": "+966"
+  },
+  {
+    "country_of_residence": "Senegal",
+    "country_of_residence_display": "Senegal",
+    "nationality": "Senegalese",
+    "nationality_display": "Senegalese",
+    "country_code": "SN",
+    "phone_code": "+221"
+  },
+  {
+    "country_of_residence": "Serbia",
+    "country_of_residence_display": "Serbia",
+    "nationality": "Serbian",
+    "nationality_display": "Serbian",
+    "country_code": "RS",
+    "phone_code": "+381"
+  },
+  {
+    "country_of_residence": "Seychelles",
+    "country_of_residence_display": "Seychelles",
+    "nationality": "Seychellois",
+    "nationality_display": "Seychellois",
+    "country_code": "SC",
+    "phone_code": "+248"
+  },
+  {
+    "country_of_residence": "Sierra Leone",
+    "country_of_residence_display": "Sierra Leone",
+    "nationality": "Sierra Leonean",
+    "nationality_display": "Sierra Leonean",
+    "country_code": "SL",
+    "phone_code": "+232"
+  },
+  {
+    "country_of_residence": "Singapore",
+    "country_of_residence_display": "Singapore",
+    "nationality": "Singaporean",
+    "nationality_display": "Singaporean",
+    "country_code": "SG",
+    "phone_code": "+65"
+  },
+  {
+    "country_of_residence": "Slovakia",
+    "country_of_residence_display": "Slovakia",
+    "nationality": "Slovak",
+    "nationality_display": "Slovak",
+    "country_code": "SK",
+    "phone_code": "+421"
+  },
+  {
+    "country_of_residence": "Slovenia",
+    "country_of_residence_display": "Slovenia",
+    "nationality": "Slovenian",
+    "nationality_display": "Slovenian",
+    "country_code": "SI",
+    "phone_code": "+386"
+  },
+  {
+    "country_of_residence": "Solomon Islands",
+    "country_of_residence_display": "Solomon Islands",
+    "nationality": "Solomon Islander",
+    "nationality_display": "Solomon Islander",
+    "country_code": "SB",
+    "phone_code": "+677"
+  },
+  {
+    "country_of_residence": "Somalia",
+    "country_of_residence_display": "Somalia",
+    "nationality": "Somali",
+    "nationality_display": "Somali",
+    "country_code": "SO",
+    "phone_code": "+252"
+  },
+  {
+    "country_of_residence": "South Africa",
+    "country_of_residence_display": "South Africa",
+    "nationality": "South African",
+    "nationality_display": "South African",
+    "country_code": "ZA",
+    "phone_code": "+27"
+  },
+  {
+    "country_of_residence": "South Korea",
+    "country_of_residence_display": "South Korea",
+    "nationality": "South Korean",
+    "nationality_display": "South Korean",
+    "country_code": "KR",
+    "phone_code": "+82"
+  },
+  {
+    "country_of_residence": "South Sudan",
+    "country_of_residence_display": "South Sudan",
+    "nationality": "South Sudanese",
+    "nationality_display": "South Sudanese",
+    "country_code": "SS",
+    "phone_code": "+211"
+  },
+  {
+    "country_of_residence": "Spain",
+    "country_of_residence_display": "Spain",
+    "nationality": "Spanish",
+    "nationality_display": "Spanish",
+    "country_code": "ES",
+    "phone_code": "+34"
+  },
+  {
+    "country_of_residence": "Sri Lanka",
+    "country_of_residence_display": "Sri Lanka",
+    "nationality": "Sri Lankan",
+    "nationality_display": "Sri Lankan",
+    "country_code": "LK",
+    "phone_code": "+94"
+  },
+  {
+    "country_of_residence": "Sudan",
+    "country_of_residence_display": "Sudan",
+    "nationality": "Sudanese",
+    "nationality_display": "Sudanese",
+    "country_code": "SD",
+    "phone_code": "+249"
+  },
+  {
+    "country_of_residence": "Suriname",
+    "country_of_residence_display": "Suriname",
+    "nationality": "Surinamese",
+    "nationality_display": "Surinamese",
+    "country_code": "SR",
+    "phone_code": "+597"
+  },
+  {
+    "country_of_residence": "Sweden",
+    "country_of_residence_display": "Sweden",
+    "nationality": "Swedish",
+    "nationality_display": "Swedish",
+    "country_code": "SE",
+    "phone_code": "+46"
+  },
+  {
+    "country_of_residence": "Switzerland",
+    "country_of_residence_display": "Switzerland",
+    "nationality": "Swiss",
+    "nationality_display": "Swiss",
+    "country_code": "CH",
+    "phone_code": "+41"
+  },
+  {
+    "country_of_residence": "Syria",
+    "country_of_residence_display": "Syria",
+    "nationality": "Syrian",
+    "nationality_display": "Syrian",
+    "country_code": "SY",
+    "phone_code": "+963"
+  },
+  {
+    "country_of_residence": "Taiwan",
+    "country_of_residence_display": "Taiwan",
+    "nationality": "Taiwanese",
+    "nationality_display": "Taiwanese",
+    "country_code": "TW",
+    "phone_code": "+886"
+  },
+  {
+    "country_of_residence": "Tajikistan",
+    "country_of_residence_display": "Tajikistan",
+    "nationality": "Tajikistani",
+    "nationality_display": "Tajikistani",
+    "country_code": "TJ",
+    "phone_code": "+992"
+  },
+  {
+    "country_of_residence": "Tanzania",
+    "country_of_residence_display": "Tanzania",
+    "nationality": "Tanzanian",
+    "nationality_display": "Tanzanian",
+    "country_code": "TZ",
+    "phone_code": "+255"
+  },
+  {
+    "country_of_residence": "Thailand",
+    "country_of_residence_display": "Thailand",
+    "nationality": "Thai",
+    "nationality_display": "Thai",
+    "country_code": "TH",
+    "phone_code": "+66"
+  },
+  {
+    "country_of_residence": "Timor-Leste",
+    "country_of_residence_display": "Timor-Leste",
+    "nationality": "Timorese",
+    "nationality_display": "Timorese",
+    "country_code": "TL",
+    "phone_code": "+670"
+  },
+  {
+    "country_of_residence": "Togo",
+    "country_of_residence_display": "Togo",
+    "nationality": "Togolese",
+    "nationality_display": "Togolese",
+    "country_code": "TG",
+    "phone_code": "+228"
+  },
+  {
+    "country_of_residence": "Tonga",
+    "country_of_residence_display": "Tonga",
+    "nationality": "Tongan",
+    "nationality_display": "Tongan",
+    "country_code": "TO",
+    "phone_code": "+676"
+  },
+  {
+    "country_of_residence": "Trinidad and Tobago",
+    "country_of_residence_display": "Trinidad and Tobago",
+    "nationality": "Trinidadian, Tobagonian",
+    "nationality_display": "Trinidadian, Tobagonian",
+    "country_code": "TT",
+    "phone_code": "+1-868"
+  },
+  {
+    "country_of_residence": "Tunisia",
+    "country_of_residence_display": "Tunisia",
+    "nationality": "Tunisian",
+    "nationality_display": "Tunisian",
+    "country_code": "TN",
+    "phone_code": "+216"
+  },
+  {
+    "country_of_residence": "Turkey",
+    "country_of_residence_display": "Turkey",
+    "nationality": "Turkish",
+    "nationality_display": "Turkish",
+    "country_code": "TR",
+    "phone_code": "+90"
+  },
+  {
+    "country_of_residence": "Turkmenistan",
+    "country_of_residence_display": "Turkmenistan",
+    "nationality": "Turkmen",
+    "nationality_display": "Turkmen",
+    "country_code": "TM",
+    "phone_code": "+993"
+  },
+  {
+    "country_of_residence": "Tuvalu",
+    "country_of_residence_display": "Tuvalu",
+    "nationality": "Tuvaluan",
+    "nationality_display": "Tuvaluan",
+    "country_code": "TV",
+    "phone_code": "+688"
+  },
+  {
+    "country_of_residence": "Uganda",
+    "country_of_residence_display": "Uganda",
+    "nationality": "Ugandan",
+    "nationality_display": "Ugandan",
+    "country_code": "UG",
+    "phone_code": "+256"
+  },
+  {
+    "country_of_residence": "Ukraine",
+    "country_of_residence_display": "Ukraine",
+    "nationality": "Ukrainian",
+    "nationality_display": "Ukrainian",
+    "country_code": "UA",
+    "phone_code": "+380"
+  },
+  {
+    "country_of_residence": "United Arab Emirates",
+    "country_of_residence_display": "United Arab Emirates",
+    "nationality": "Emirati",
+    "nationality_display": "Emirati",
+    "country_code": "AE",
+    "phone_code": "+971"
+  },
+  {
+    "country_of_residence": "United Kingdom",
+    "country_of_residence_display": "United Kingdom",
+    "nationality": "British",
+    "nationality_display": "British",
+    "country_code": "GB",
+    "phone_code": "+44"
+  },
+  {
+    "country_of_residence": "United States",
+    "country_of_residence_display": "United States",
+    "nationality": "American",
+    "nationality_display": "American",
+    "country_code": "US",
+    "phone_code": "+1"
+  },
+  {
+    "country_of_residence": "Uruguay",
+    "country_of_residence_display": "Uruguay",
+    "nationality": "Uruguayan",
+    "nationality_display": "Uruguayan",
+    "country_code": "UY",
+    "phone_code": "+598"
+  },
+  {
+    "country_of_residence": "Uzbekistan",
+    "country_of_residence_display": "Uzbekistan",
+    "nationality": "Uzbekistani",
+    "nationality_display": "Uzbekistani",
+    "country_code": "UZ",
+    "phone_code": "+998"
+  },
+  {
+    "country_of_residence": "Vanuatu",
+    "country_of_residence_display": "Vanuatu",
+    "nationality": "Ni-Vanuatu",
+    "nationality_display": "Ni-Vanuatu",
+    "country_code": "VU",
+    "phone_code": "+678"
+  },
+  {
+    "country_of_residence": "Vatican City",
+    "country_of_residence_display": "Vatican City",
+    "nationality": "Vatican",
+    "nationality_display": "Vatican",
+    "country_code": "VA",
+    "phone_code": "+379"
+  },
+  {
+    "country_of_residence": "Venezuela",
+    "country_of_residence_display": "Venezuela",
+    "nationality": "Venezuelan",
+    "nationality_display": "Venezuelan",
+    "country_code": "VE",
+    "phone_code": "+58"
+  },
+  {
+    "country_of_residence": "Vietnam",
+    "country_of_residence_display": "Vietnam",
+    "nationality": "Vietnamese",
+    "nationality_display": "Vietnamese",
+    "country_code": "VN",
+    "phone_code": "+84"
+  },
+  {
+    "country_of_residence": "Yemen",
+    "country_of_residence_display": "Yemen",
+    "nationality": "Yemeni",
+    "nationality_display": "Yemeni",
+    "country_code": "YE",
+    "phone_code": "+967"
+  },
+  {
+    "country_of_residence": "Zambia",
+    "country_of_residence_display": "Zambia",
+    "nationality": "Zambian",
+    "nationality_display": "Zambian",
+    "country_code": "ZM",
+    "phone_code": "+260"
+  },
+  {
+    "country_of_residence": "Zimbabwe",
+    "country_of_residence_display": "Zimbabwe",
+    "nationality": "Zimbabwean",
+    "nationality_display": "Zimbabwean",
+    "country_code": "ZW",
+    "phone_code": "+263"
+  }
+]

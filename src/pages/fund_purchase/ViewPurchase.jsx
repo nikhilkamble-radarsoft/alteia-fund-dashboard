@@ -72,7 +72,9 @@ export default function ViewPurchase() {
       const { response } = await callApi({
         url: "/admin/investor-list",
         method: "post",
-        data: {},
+        data: {
+          kyc_status: ["approved"],
+        },
       });
       setInvestors(response.data || []);
     } catch (error) {

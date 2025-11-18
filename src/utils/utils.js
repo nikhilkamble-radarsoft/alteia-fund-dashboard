@@ -57,3 +57,8 @@ export const inputFormatters = {
     step: 1000,
   },
 };
+
+export const checkUserKycDocument = (user) => {
+  if (!user) return false;
+  return user.document_file && user.address_file && user.signature_file;
+};

@@ -303,17 +303,19 @@ export default function FormBuilder({
       </div>
 
       <div className="flex flex-wrap gap-2 w-full">
-        <CustomButton
-          className="!px-10 ms-auto"
-          text={cancelText}
-          btnType="secondary"
-          onClick={() => {
-            onCancel ? onCancel?.() : navigate(-1);
-          }}
-          width=""
-          loading={loading}
-        />
-        {(mode !== "view-only" || submitText) && (
+        {cancelText ? (
+          <CustomButton
+            className="!px-10 ms-auto"
+            text={cancelText}
+            btnType="secondary"
+            onClick={() => {
+              onCancel ? onCancel?.() : navigate(-1);
+            }}
+            width=""
+            loading={loading}
+          />
+        ) : null}
+        {mode !== "view-only" || submitText ? (
           <CustomButton
             className="!px-10"
             htmlType="submit"
@@ -321,7 +323,7 @@ export default function FormBuilder({
             width=""
             loading={loading}
           />
-        )}
+        ) : null}
       </div>
     </Form>
   );

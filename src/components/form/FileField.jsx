@@ -160,7 +160,7 @@ export default function FileField({
               <CustomButton
                 btnType="secondary"
                 onClick={() => window.open(getFileUrl(file), "_blank")}
-                className="!rounded-none !h-[39px]"
+                className={`${showDownload ? "!rounded-none" : "!rounded-l-none"} !h-[39px]`}
                 text="View"
               />
             )}

@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { useTopData } from "../../components/layout/AppLayout";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules, investorKycStatus } from "../../utils/constants";
+import { checkUserKycDocument } from "../../utils/utils";
 
 export default function ViewLead() {
   const { callApi, loading } = useApi();
@@ -103,39 +104,14 @@ export default function ViewLead() {
   }, [id]);
 
   const formConfig = [
-    {
-      name: "full_name",
-      label: "Full Name",
-      type: "input",
-    },
+    { name: "full_name", label: "Full Name", type: "input" },
     { name: "email", label: "Email Address", type: "input" },
     { name: "phone", label: "Phone Number", type: "input" },
-
-    {
-      name: "dob",
-      label: "Date of Birth",
-      type: "date",
-    },
-    {
-      name: "nationality",
-      label: "Nationality",
-      type: "input",
-    },
-    {
-      name: "residential_address",
-      label: "Residential Address",
-      type: "input",
-    },
-    {
-      name: "country",
-      label: "Country of residence",
-      type: "input",
-    },
-    {
-      name: "postal_code",
-      label: "Postal Code",
-      type: "input",
-    },
+    { name: "dob", label: "Date of Birth", type: "date" },
+    { name: "nationality", label: "Nationality", type: "input" },
+    { name: "residential_address", label: "Residential Address", type: "input" },
+    { name: "country", label: "Country of residence", type: "input" },
+    { name: "postal_code", label: "Postal Code", type: "input" },
     {
       name: "address_file",
       label: "Proof of Address",
@@ -164,7 +140,7 @@ export default function ViewLead() {
         formConfig={formConfig}
         initialValues={lead}
         loading={loading}
-        {...(lead?.kyc_status === investorKycStatus.pending
+        {...(lead?.kyc_status === investorKycStatus.pending && checkUserKycDocument(lead)
           ? {
               cancelText: "Reject Lead",
               submitText: "Approve Lead",

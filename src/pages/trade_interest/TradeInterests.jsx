@@ -104,11 +104,11 @@ export default function TradeInterests() {
     {
       title: "Customer Name",
       dataIndex: "full_name",
-      render: (text, record) => (
-        <NavLink to={`/investors/${record.user_id}`} className="p-0">
-          {text}
-        </NavLink>
-      ),
+      // render: (text, record) => (
+      //   <NavLink to={`/investors/${record.user_id}`} className="p-0">
+      //     {text}
+      //   </NavLink>
+      // ),
     },
     {
       title: "Email",

@@ -7,6 +7,7 @@ import { formRules, investorKycStatus } from "../../utils/constants";
 import useApi from "../../logic/useApi";
 import { useState } from "react";
 import { useThemedModal } from "../../logic/useThemedModal";
+import { checkUserKycDocument } from "../../utils/utils";
 
 export default function Leads() {
   const navigate = useNavigate();
@@ -75,6 +76,10 @@ export default function Leads() {
     });
   };
 
+  const handleKycNavigate = (record) => {
+    navigate(`/create-notification`, { state: { user_id: record._id, type: "user" } });
+  };
+
   const columns = [
     {
       title: "Customer Name",
@@ -85,14 +90,10 @@ export default function Leads() {
         </Button>
       ),
     },
-    {
-      title: "Email",
-      dataIndex: "email",
-    },
+    { title: "Email", dataIndex: "email" },
     {
       title: "Phone",
       dataIndex: "phone",
-      render: (text) => `${text}`,
     },
     {
       title: "KYC Status",
@@ -119,14 +120,8 @@ export default function Leads() {
         return <CustomBadge variant={finalVariant} label={finalText} />;
       },
     },
-    {
-      title: "Nationality",
-      dataIndex: "nationality",
-    },
-    {
-      title: "Country of Residence",
-      dataIndex: "country",
-    },
+    { title: "Nationality", dataIndex: "nationality" },
+    { title: "Country of Residence", dataIndex: "country" },
     {
       title: "Actions",
       actions: (record) => [
@@ -134,13 +129,19 @@ export default function Leads() {
           type: "update",
           label: "Approve",
           onClick: (record) => handleShowApproveModal(record),
-          visible: record.kyc_status === investorKycStatus.pending,
+          visible: record.kyc_status === investorKycStatus.pending && record.hasKycDocument,
         },
         {
           type: "update",
           label: "Reject",
           onClick: (record) => handleShowRejectModal(record),
-          visible: record.kyc_status === investorKycStatus.pending,
+          visible: record.kyc_status === investorKycStatus.pending && record.hasKycDocument,
+        },
+        {
+          type: "update",
+          label: "Request KYC",
+          onClick: (record) => handleKycNavigate(record),
+          visible: !record.hasKycDocument,
         },
       ],
     },
@@ -159,6 +160,8 @@ export default function Leads() {
           data: {
             kyc_status: ["pending", "rejected"],
           },
+          dataMapper: (data) =>
+            data.map((item) => ({ ...item, hasKycDocument: checkUserKycDocument(item) })),
         }}
       />
       {modal}

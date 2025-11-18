@@ -5,6 +5,7 @@ import useApi from "../../logic/useApi";
 import dayjs from "dayjs";
 import { useTopData } from "../../components/layout/AppLayout";
 import { formRules } from "../../utils/constants";
+import countryList from "../../utils/country_list.json";
 
 export default function ViewInvestor() {
   const { callApi, loading } = useApi();
@@ -104,7 +105,11 @@ export default function ViewInvestor() {
     {
       name: "nationality",
       label: "Nationality",
-      type: "input",
+      type: "select",
+      options: countryList.map((country) => ({
+        label: country.nationality_display,
+        value: country.nationality,
+      })),
       rules: formRules.required("Nationality"),
     },
     {
@@ -116,14 +121,17 @@ export default function ViewInvestor() {
     {
       name: "country",
       label: "Country of residence",
-      type: "input",
+      type: "select",
+      options: countryList.map((country) => ({
+        label: country.country_of_residence_display,
+        value: country.country_of_residence,
+      })),
       rules: formRules.required("Country of residence"),
     },
     {
       name: "postal_code",
       label: "Postal Code",
       type: "input",
-      rules: formRules.postalCode(),
     },
     ...(!id
       ? [

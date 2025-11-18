@@ -5,6 +5,7 @@ import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
 import { investorKycStatus } from "../../utils/constants";
+import countryList from "../../utils/country_list.json";
 
 export default function Investors() {
   const navigate = useNavigate();
@@ -26,7 +27,12 @@ export default function Investors() {
     {
       title: "Phone",
       dataIndex: "phone",
-      render: (text) => `${text}`,
+      render: (text, record) => {
+        const phoneCode = countryList.find(
+          (item) => item.country_of_residence === record.country
+        )?.phone_code;
+        return `${phoneCode ? phoneCode + " " : ""}${text}`;
+      },
     },
     {
       title: "KYC Status",

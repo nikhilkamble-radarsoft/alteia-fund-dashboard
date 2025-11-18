@@ -86,6 +86,7 @@ export default function CustomTable({
     fetchRefresh: null,
     dataAccessorKey: "data",
     totalAccessorKey: "totalRecords",
+    dataMapper: null,
   },
   getTableData,
   loading = false,
@@ -200,7 +201,7 @@ export default function CustomTable({
   /** Server: fetch page from API */
   const fetchData = async () => {
     if (!isServer) return;
-    const { method = "get", params = {}, data = {} } = apiConfig;
+    const { method = "get", params = {}, data = {}, dataMapper } = apiConfig;
 
     const { response } = await callApi({
       ...apiConfig,
@@ -217,9 +218,10 @@ export default function CustomTable({
     const dataKey = apiConfig.dataAccessorKey || "data";
     const totalKey = apiConfig.totalAccessorKey || "totalRecords";
 
-    setTableData(response?.[dataKey] || []);
+    const updatedData = dataMapper ? dataMapper(response?.[dataKey]) : response?.[dataKey];
+    setTableData(updatedData || []);
     setTotal(response?.[totalKey] ?? 0);
-    getTableData?.({ response: response[dataKey], meta: commonData });
+    getTableData?.({ response: updatedData, meta: commonData });
   };
 
   useEffect(() => {
