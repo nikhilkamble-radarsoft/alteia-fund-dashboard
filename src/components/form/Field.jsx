@@ -52,7 +52,7 @@ export default function Field({
     ...rest,
     className,
     size: "large",
-    suffix: loading ? <Spin size="small" /> : null,
+    suffix: rest.suffix || (loading ? <Spin size="small" /> : null),
     disabled: Boolean(loading || rest?.disabled),
   };
 

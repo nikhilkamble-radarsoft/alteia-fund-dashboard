@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
-import { tradeInterestStatus } from "../../utils/constants";
+import { investorKycStatus, tradeInterestStatus } from "../../utils/constants";
 import CustomTag from "../../components/common/CustomTag";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules } from "../../utils/constants";
@@ -100,6 +100,10 @@ export default function TradeInterests() {
     });
   };
 
+  const handleKycNavigate = (record) => {
+    navigate(`/create-notification`, { state: { user_id: record.user_id, type: "user" } });
+  };
+
   const columns = [
     {
       title: "Customer Name",
@@ -163,11 +167,17 @@ export default function TradeInterests() {
           ),
         },
         {
+          label: "Request KYC",
+          onClick: (record) => handleKycNavigate(record),
+          visible: investorKycStatus.pending === record.kyc_status,
+        },
+        {
           label: "Complete Purchase",
           onClick: (record) =>
             navigate(`/purchase/create`, {
               state: { trade_id: record.fund_id, user_id: record.user_id },
             }),
+          visible: investorKycStatus.approved === record.kyc_status,
         },
       ],
     },

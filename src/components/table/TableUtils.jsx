@@ -18,6 +18,7 @@ export const enhanceColumns = ({ columns }) => {
 
     if (!hasActions) {
       return {
+        render: (val) => (val ? val : "-"),
         ...col,
         // sorter: true, // Enable this line to make all non-action columns sortable
         sorterIcon: customSortIcon,
