@@ -30,8 +30,7 @@ export default function Trades() {
       title: "ROI %",
       dataIndex: "roi_range",
       render: (text, record) =>
-        `${text?.endsWith("%") ? text : `${text}%`} ${
-          record.ytd_return ? `(YTD ${record.ytd_return})` : ""
+        `${text?.endsWith("%") ? text : `${text}%`} ${record.ytd_return ? `(YTD ${record.ytd_return})` : ""
         }`,
     },
     {
@@ -51,7 +50,7 @@ export default function Trades() {
       },
     },
     {
-      title: "Duration",
+      title: "Duration (months)",
       dataIndex: "duration",
     },
     {

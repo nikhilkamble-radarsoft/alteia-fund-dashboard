@@ -217,6 +217,8 @@ export function FormField({
   options = [],
   formItemProps = {},
   form, // AntD form instance
+  shouldShow,
+  children,
   ...props
 }) {
   if (type === "checkbox") {
@@ -240,7 +242,7 @@ export function FormField({
 
   const newPlaceholder = placeholder || placeholderMap[type] || placeholderMap.default;
 
-  return (
+  const inner = (
     <Form.Item
       key={name}
       name={name}
@@ -250,14 +252,31 @@ export function FormField({
       className="w-full"
       {...formItemProps}
     >
-      <Field
-        type={type}
-        placeholder={newPlaceholder}
-        options={options}
-        rows={props.rows}
-        form={form}
-        {...props}
-      />
+      {children || (
+        <Field
+          type={type}
+          placeholder={newPlaceholder}
+          options={options}
+          rows={props.rows}
+          form={form}
+          {...props}
+        />
+      )}
     </Form.Item>
   );
+
+  if (typeof shouldShow === "function") {
+    return (
+      <Form.Item shouldUpdate noStyle>
+        {({ getFieldsValue }) => {
+          const values = getFieldsValue(true);
+          const visible = shouldShow(values, form);
+          if (!visible) return null;
+          return inner;
+        }}
+      </Form.Item>
+    );
+  }
+
+  return inner;
 }

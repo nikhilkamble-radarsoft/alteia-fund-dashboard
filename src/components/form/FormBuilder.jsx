@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Form, Button, Space, Divider } from "antd";
-import Field from "./Field";
+import Field, { FormField } from "./Field";
 import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router-dom";
 import TableTitle from "../table/TableTitle";
@@ -35,7 +35,7 @@ export default function FormBuilder({
   formSubtitle = "",
   formConfig = [],
   initialValues = {},
-  onFinish = () => {},
+  onFinish = () => { },
   layout = "vertical",
   controlled = {},
   submitText,
@@ -44,6 +44,7 @@ export default function FormBuilder({
   formProps = {},
   twoColumn = true,
   loading = false,
+  formHeight = "min-h-[calc(100vh-135px)]",
 }) {
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -166,6 +167,35 @@ export default function FormBuilder({
     );
   };
 
+  const getProcessedRules = (field) =>
+    field.rules?.map((rule) => {
+      if (rule.required && !rule.message) {
+        const msgFn = defaultRequiredMsg[field.type] || defaultRequiredMsg.default;
+        return { ...rule, message: msgFn(field.label) };
+      }
+      return rule;
+    });
+
+  const renderFormItem = (field, itemProps = {}) => {
+    const processedRules = getProcessedRules(field);
+
+    return (
+      <FormField
+        key={field.name}
+        name={field.name}
+        label={field.label}
+        type={field.type}
+        rules={processedRules}
+        valuePropName={field.valuePropName}
+        formItemProps={itemProps}
+        form={form}
+        shouldShow={field.shouldShow}
+      >
+        {mapFieldToComponent(field, field.name)}
+      </FormField>
+    );
+  };
+
   const handleFinish = (values) => {
     const controlledValues = Object.keys(controlled || {}).reduce((acc, key) => {
       acc[key] = controlled[key].value;
@@ -178,47 +208,9 @@ export default function FormBuilder({
   if (mode === "fields-only") {
     return {
       form,
-      Fields: () => (
+      Fields: (
         <div className={`grid ${twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"} gap-6`}>
-          {formConfig.map((field) => {
-            // If field has conditional visibility, use shouldUpdate wrapper
-            if (typeof field.shouldShow === "function") {
-              return (
-                <Form.Item shouldUpdate noStyle key={field.name}>
-                  {({ getFieldsValue }) => {
-                    const values = getFieldsValue(true);
-                    const shouldShow = field.shouldShow(values);
-
-                    if (!shouldShow) return null;
-
-                    return (
-                      <Form.Item
-                        name={field.name}
-                        label={field.label}
-                        rules={field.rules}
-                        valuePropName={field.valuePropName}
-                      >
-                        {mapFieldToComponent(field, field.name)}
-                      </Form.Item>
-                    );
-                  }}
-                </Form.Item>
-              );
-            }
-
-            // Default: always show
-            return (
-              <Form.Item
-                key={field.name}
-                name={field.name}
-                label={field.label}
-                rules={field.rules}
-                valuePropName={field.valuePropName}
-              >
-                {mapFieldToComponent(field, field.name)}
-              </Form.Item>
-            );
-          })}
+          {formConfig.map((field) => renderFormItem(field))}
         </div>
       ),
     };
@@ -229,8 +221,8 @@ export default function FormBuilder({
       form={form}
       layout={layout}
       onFinish={handleFinish}
+      className={`${formHeight} flex flex-col justify-between gap-6`}
       {...formProps}
-      className="min-h-[calc(100vh-135px)] flex flex-col justify-between gap-6"
     >
       <div>
         {(formTitle || formSubtitle) && (
@@ -240,82 +232,32 @@ export default function FormBuilder({
           </>
         )}
         <div
-          className={`grid ${
-            twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-          } gap-x-6  items-start`}
+          className={`grid ${twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+            } gap-x-4  items-start`}
         >
-          {formConfig.map((field) => {
-            const processedRules = field.rules?.map((rule) => {
-              if (rule.required && !rule.message) {
-                const msgFn = defaultRequiredMsg[field.type] || defaultRequiredMsg.default;
-                return { ...rule, message: msgFn(field.label) };
-              }
-              return rule;
-            });
-
-            // Conditional visibility via shouldShow(values)
-            if (typeof field.shouldShow === "function") {
-              return (
-                <Form.Item shouldUpdate noStyle key={field.name}>
-                  {({ getFieldsValue }) => {
-                    const values = getFieldsValue(true);
-                    const shouldShow = field.shouldShow(values);
-
-                    if (!shouldShow) return null;
-
-                    return (
-                      <Form.Item
-                        name={field.name}
-                        label={field.label}
-                        rules={processedRules}
-                        valuePropName={field.valuePropName}
-                        initialValue={field.initialValue}
-                        className="w-full"
-                        validateTrigger="onBlur"
-                        {...field.formItemProps}
-                      >
-                        {mapFieldToComponent(field, field.name)}
-                      </Form.Item>
-                    );
-                  }}
-                </Form.Item>
-              );
-            }
-
-            // Default: always show
-            return (
-              <Form.Item
-                key={field.name}
-                name={field.name}
-                label={field.label}
-                rules={processedRules}
-                valuePropName={field.valuePropName}
-                initialValue={field.initialValue}
-                className="w-full"
-                validateTrigger="onBlur"
-                {...field.formItemProps}
-              >
-                {mapFieldToComponent(field, field.name)}
-              </Form.Item>
-            );
-          })}
+          {formConfig.map((field) =>
+            renderFormItem(field, {
+              initialValue: field.initialValue,
+              className: "w-full",
+              validateTrigger: "onBlur",
+              ...field.formItemProps,
+            })
+          )}
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2 w-full">
-        {cancelText ? (
-          <CustomButton
-            className="!px-10 ms-auto"
-            text={cancelText}
-            btnType="secondary"
-            onClick={() => {
-              onCancel ? onCancel?.() : navigate(-1);
-            }}
-            width=""
-            loading={loading}
-          />
-        ) : null}
-        {mode !== "view-only" || submitText ? (
+        <CustomButton
+          className="!px-10 ms-auto"
+          text={cancelText}
+          btnType="secondary"
+          onClick={() => {
+            onCancel ? onCancel?.() : navigate(-1);
+          }}
+          width=""
+          loading={loading}
+        />
+        {(mode !== "view-only" || submitText) && (
           <CustomButton
             className="!px-10"
             htmlType="submit"
@@ -323,7 +265,7 @@ export default function FormBuilder({
             width=""
             loading={loading}
           />
-        ) : null}
+        )}
       </div>
     </Form>
   );
