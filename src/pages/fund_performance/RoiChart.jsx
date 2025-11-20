@@ -24,9 +24,9 @@ const RoiChart = ({
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
-      <div className="bg-white rounded-lg overflow-hidden">
-        <ResponsiveContainer width="100%" height={height} className={"focus:border-none"}>
+    <div className="w-full ">
+      <div className="bg-white rounded-lg w-full max-w-full overflow-hidden">
+        <ResponsiveContainer height={height} className={"focus:border-none"} >
           <AreaChart data={data} margin={{ top: 20, right: 30, left: 30, bottom: 0 }}>
             <defs>
               <linearGradient id="colorRoi" x1="0" y1="0" x2="0" y2="1">
@@ -41,7 +41,12 @@ const RoiChart = ({
               tick={{ fill: "#9CA3AF", fontSize: 13 }}
               padding={{ left: 10, right: 10 }}
             />
-            <YAxis hide={true} />
+            <YAxis
+              dataKey={yDataKey}
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: "#9CA3AF", fontSize: 13 }}
+              padding={{ left: 10, right: 10 }} />
             <Tooltip
               content={<CustomTooltip />}
               cursor={{ stroke: gradientColor, strokeWidth: 1, strokeDasharray: "3 3" }}

@@ -9,50 +9,46 @@ import { useGlobalModal } from "../../logic/ModalProvider";
 
 const ViewUpdateROI = () => {
   const { title, setTitle } = useTopData();
-  const { id } = useParams();
   const { callApi, loading } = useApi();
   const location = useLocation();
-  const { year = new Date().getFullYear() } = location.state || {};
+  const { year = new Date().getFullYear(), fund } = location.state || {};
   const { showError } = useGlobalModal();
 
   const navigate = useNavigate();
 
-  const [currentROI, setCurrentROI] = useState({});
+  const [currentROI, setCurrentROI] = useState(fund?.roi_data || []);
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    setTitle(`Monthly ROI Input - Year ${year}`);
-  }, [year, title]);
 
   const fetchROI = async () => {
     try {
-      const { response } = await callApi({
-        url: `/admin/get-roi-list`,
-        method: "get",
-        params: { year, fund_id: id },
-        errorOptions: {
-          onOk: () => navigate(-1),
-        },
-      });
+      // const { response } = await callApi({
+      //   url: `/admin/get-roi-list`,
+      //   method: "get",
+      //   params: { year, fund_id: id },
+      //   errorOptions: {
+      //     onOk: () => navigate(-1),
+      //   },
+      // });
 
-      const localROI = response.data;
-      const updatedROI = {};
-      localROI.map((roi) => {
-        updatedROI[roi.month] = roi;
-      });
-      setCurrentROI(updatedROI);
+      // const localROI = response.data;
+      // const updatedROI = {};
+      // localROI.map((roi) => {
+      //   updatedROI[roi.month] = roi;
+      // });
+      setCurrentROI(fund?.roi_data || []);
+      setTitle(`Monthly ROI Input ${fund.title ? `- ${fund.title}` : ""} ${year ? `(Year-${year})` : ""}`);
     } catch (error) {
       console.error("Error fetching ROI:", error);
     }
   };
 
   useEffect(() => {
-    if (id) {
+    if (fund) {
       fetchROI();
     } else {
       navigate(-1);
     }
-  }, [id]);
+  }, [fund]);
 
   const monthsList = [
     "January",
@@ -70,12 +66,13 @@ const ViewUpdateROI = () => {
   ];
 
   // keep form in sync when ROI data loads
-  useEffect(() => {
-    const mapped = Object.fromEntries(
-      monthsList.map((m) => [m, currentROI[m]?.max_roi ?? undefined])
-    );
-    form.setFieldsValue(mapped);
-  }, [currentROI, form]);
+  // useEffect(() => {
+  //   const mapped = Object.fromEntries(
+  //     // monthsList.map((m) => [m, currentROI[m]?.max_roi ?? undefined])
+  //     currentROI.map((m) => [m.month, m.max_roi])
+  //   );
+  //   form.setFieldsValue(mapped);
+  // }, [currentROI, form]);
 
   const handleSubmit = async (values) => {
     try {
@@ -83,12 +80,12 @@ const ViewUpdateROI = () => {
         .map((m) =>
           values[m] !== undefined && values[m] !== null
             ? {
-                fund_id: id,
-                year: `${year}`,
-                month: m,
-                less_roi: "0",
-                max_roi: `${Number(values?.[m] || 0)}`,
-              }
+              fund_id: fund._id,
+              year: `${year}`,
+              month: m,
+              less_roi: "0",
+              max_roi: `${Number(values?.[m] || 0)}`,
+            }
             : null
         )
         .filter(Boolean);
@@ -117,7 +114,7 @@ const ViewUpdateROI = () => {
         layout="vertical"
         form={form}
         initialValues={Object.fromEntries(
-          monthsList.map((m) => [m, currentROI[m]?.roi?.max_roi ?? undefined])
+          currentROI.map((m) => [m.month, m.max_roi])
         )}
         onFinish={handleSubmit}
       >
@@ -139,7 +136,7 @@ const ViewUpdateROI = () => {
           <CustomButton type="primary" htmlType="submit" loading={loading} text="Save" width="" />
         </div>
       </Form>
-    </div>
+    </div >
   );
 };
 

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import { Layout, Drawer } from "antd";
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
@@ -10,9 +10,9 @@ const { Content } = Layout;
 const TitleContext = createContext({
   title: null,
   subtitle: null,
-  setTitle: () => {},
-  setSubtitle: () => {},
-  clearTopData: () => {},
+  setTitle: () => { },
+  setSubtitle: () => { },
+  clearTopData: () => { },
 });
 
 export default function AppLayout() {
@@ -37,9 +37,12 @@ export default function AppLayout() {
     setShowBack(null);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // const depth = location.pathname.split("/").filter(Boolean).length;
+    // if (depth <= 2) clearTopData();
     clearTopData();
   }, [location.pathname]);
+
 
   return (
     <TitleContext.Provider

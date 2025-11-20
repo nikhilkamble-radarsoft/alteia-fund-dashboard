@@ -132,11 +132,8 @@ const PortfolioChartSection = ({
             title="Yearly ROI Performance"
             periods={periods}
             data={roiData}
-            xDataKey="month"
-            yDataKey="roi"
             gradientColor="#8BC34A"
             lineColor="#558B2F"
-            height={280}
           />
         </div>
       </div>

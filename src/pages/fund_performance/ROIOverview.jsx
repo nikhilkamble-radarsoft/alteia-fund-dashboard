@@ -134,8 +134,11 @@ export default function ROIOverview() {
             <CustomButton
               text="Add ROI"
               onClick={() => {
-                navigate(`/roi/update/${selectedTrade || funds?.[0]?._id}`, {
-                  state: selectedFilters,
+                // navigate(`/roi/update/${selectedTrade || funds?.[0]?._id}`, {
+                //   state: { ...selectedFilters, fund: funds.find((fund) => fund._id === selectedTrade) },
+                // });
+                navigate(`/roi/update`, {
+                  state: { ...selectedFilters, fund: funds.find((fund) => fund._id === selectedTrade) },
                 });
               }}
               width="w-fit"
@@ -150,7 +153,6 @@ export default function ROIOverview() {
       {/* Chart Section */}
       <PortfolioChartSection
         roiData={roiData}
-        months={portfolioData.months}
         timeFilters={portfolioData.timeFilters}
         rangeFilters={portfolioData.rangeFilters}
         value={selectedFilters}

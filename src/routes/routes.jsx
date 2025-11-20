@@ -157,7 +157,7 @@ export const createRoutesConfig = (ctx = {}) => {
       subtitle: "Track your portfolio’s performance and analyze monthly returns at a glance.",
       children: [
         {
-          path: "/roi/update/:id",
+          path: "/roi/update",
           label: "View Update ROI",
           icon: CgAdd,
           // showInSidebar: "top",
@@ -264,7 +264,7 @@ export const createRoutesConfig = (ctx = {}) => {
     },
     {
       key: "settings",
-      onClick: () => {},
+      onClick: () => { },
       icon: FiSettings,
       label: "Settings",
       showInSidebar: "bottom",
