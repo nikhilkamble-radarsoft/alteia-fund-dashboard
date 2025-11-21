@@ -219,7 +219,7 @@ export default function CustomTable({
     const totalKey = apiConfig.totalAccessorKey || "totalRecords";
 
     const updatedData = dataMapper ? dataMapper(response?.[dataKey] || []) : response?.[dataKey] || [];
-    console.log("updatedData", updatedData)
+
     setTableData(updatedData);
     setTotal(response?.[totalKey] ?? 0);
     getTableData?.({ response: updatedData, meta: commonData });

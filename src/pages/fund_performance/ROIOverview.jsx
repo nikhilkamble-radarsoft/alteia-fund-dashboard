@@ -89,10 +89,16 @@ export default function ROIOverview() {
         url: "/admin/get-roi-list",
         params: { fund_id: selectedTrade, year: selectedFilters.year },
       });
-      const updatedData = response.data?.map((item) => ({
-        month: item.month,
-        roi: item.max_roi,
-      }));
+      const updatedData = (response?.data || [])?.map((item) => {
+        const selectedFund = funds.find(f => f._id === selectedTrade)
+        const updatedROI = Number(selectedFund.nav_unit) + ((Number(item.max_roi) / 100) * Number(selectedFund.nav_unit));
+
+        return {
+          month: item.month,
+          fundValue: updatedROI,
+          roi: item.max_roi,
+        }
+      });
       setROIData(updatedData);
     } catch (error) {
       console.error("Error fetching funds:", error);

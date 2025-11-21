@@ -4,7 +4,7 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "rec
 const RoiChart = ({
   data = [],
   xDataKey = "month",
-  yDataKey = "roi",
+  yDataKey = "fundValue",
   height = 300,
   gradientColor = "linear-gradient(180deg, rgba(155, 205, 78, 0.4) 0%, rgba(155, 205, 78, 0) 100%)",
   lineColor = "#6DBD45",
@@ -12,10 +12,11 @@ const RoiChart = ({
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const dataPoint = payload[0];
+
       return (
         <div className="bg-white px-3 py-2 rounded shadow-lg border border-gray-200">
           <p className="text-sm font-medium text-gray-900">
-            {dataPoint.payload[xDataKey]} — {Number(dataPoint.value).toFixed(1)}%
+            {dataPoint.payload[xDataKey]} — {Number(dataPoint.payload["roi"]).toFixed(1)}%
           </p>
         </div>
       );
@@ -27,7 +28,7 @@ const RoiChart = ({
     <div className="w-full ">
       <div className="bg-white rounded-lg w-full max-w-full overflow-hidden">
         <ResponsiveContainer height={height} className={"focus:border-none"} >
-          <AreaChart data={data} margin={{ top: 20, right: 30, left: 30, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 20, right: 30, }}> {/* changes the size of the chart */}
             <defs>
               <linearGradient id="colorRoi" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="10%" stopColor={gradientColor} stopOpacity={0.4} />
@@ -63,7 +64,7 @@ const RoiChart = ({
           </AreaChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </div >
   );
 };
 
