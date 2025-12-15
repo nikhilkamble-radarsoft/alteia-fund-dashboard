@@ -6,6 +6,10 @@ import Field from "../../components/form/Field";
 const startingYear = 1990;
 const endingYear = new Date().getFullYear();
 const currentMonth = new Date().getMonth();
+export const years = Array.from(
+  { length: endingYear - startingYear + 1 },
+  (_, i) => startingYear + i
+);
 
 const months = [
   "January",
@@ -39,7 +43,6 @@ const PortfolioChartSection = ({
   const isMonthControlled = value?.month !== undefined;
 
   const [rangeState, setRangeState] = useState(defaultValue?.range ?? activeRange ?? "1Y");
-  const years = Array.from({ length: endingYear - startingYear + 1 }, (_, i) => startingYear + i);
   const [yearState, setYearState] = useState(defaultValue?.year ?? endingYear);
   const [monthState, setMonthState] = useState(defaultValue?.month ?? months[currentMonth]);
 

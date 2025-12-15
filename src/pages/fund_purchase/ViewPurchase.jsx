@@ -108,20 +108,24 @@ export default function ViewPurchase() {
       placeholder: "Select investor",
     },
     {
+      name: "fund_roi",
+      label: "Fund ROI",
+      type: "number",
+      placeholder: "Enter fund roi (e.g., 7.18)",
+      min: 1,
+      computed: (values) => {
+        const selectedFund = funds.find((fund) => fund._id === values.fund_id);
+        return Number(selectedFund?.roi_range) || undefined;
+      },
+      computedDeps: ["fund_id"],
+    },
+    {
       name: "user_amount",
       label: "Amount ($)",
       type: "number",
       rules: formRules.required("Amount"),
       placeholder: "Enter amount",
       ...inputFormatters.money,
-    },
-    {
-      name: "fund_roi",
-      label: "Fund ROI",
-      type: "number",
-      rules: formRules.required("Fund ROI"),
-      placeholder: "Enter fund roi (e.g., 7.18)",
-      min: 1,
     },
     {
       name: "fund_unit",

@@ -33,28 +33,28 @@ export default function ROIOverview() {
         subtitle: "Total Portfolio ROI",
         color: "text-light-primary",
         desc: "Your portfolio's year-to-date return indicates steady growth.",
-        onView: () => { },
+        onView: () => {},
       },
       {
         value: "0.8% average per month",
         subtitle: "Average Monthly ROI",
         color: "text-light-primary",
         desc: "Consistent monthly returns help build long-term wealth.",
-        onView: () => { },
+        onView: () => {},
       },
       {
         value: "ROI Peaked at 12.4%",
         subtitle: "Top Performer Month",
         color: "text-light-primary",
         desc: "June delivered the highest return in the portfolio this year.",
-        onView: () => { },
+        onView: () => {},
       },
       {
         value: "ROI Dipped to 3.1%",
         subtitle: "Toughest Month",
         color: "text-light-primary",
         desc: "February was the most challenging month, with reduced returns.",
-        onView: () => { },
+        onView: () => {},
       },
     ],
     timeFilters: ["3 Months", "6 Months", "12 Months", "📅", "2025", "August ▼"],
@@ -90,14 +90,16 @@ export default function ROIOverview() {
         params: { fund_id: selectedTrade, year: selectedFilters.year },
       });
       const updatedData = (response?.data || [])?.map((item) => {
-        const selectedFund = funds.find(f => f._id === selectedTrade)
-        const updatedROI = Number(selectedFund.nav_unit) + ((Number(item.max_roi) / 100) * Number(selectedFund.nav_unit));
+        const selectedFund = funds.find((f) => f._id === selectedTrade);
+        const updatedROI =
+          Number(selectedFund.nav_unit) +
+          (Number(item.max_roi) / 100) * Number(selectedFund.nav_unit);
 
         return {
           month: item.month,
           fundValue: updatedROI,
           roi: item.max_roi,
-        }
+        };
       });
       setROIData(updatedData);
     } catch (error) {
@@ -144,10 +146,14 @@ export default function ROIOverview() {
                 //   state: { ...selectedFilters, fund: funds.find((fund) => fund._id === selectedTrade) },
                 // });
                 navigate(`/roi/update`, {
-                  state: { ...selectedFilters, fund: funds.find((fund) => fund._id === selectedTrade) },
+                  state: {
+                    ...selectedFilters,
+                    fund: funds.find((fund) => fund._id === selectedTrade),
+                  },
                 });
               }}
               width="w-fit"
+              disabled={!selectedTrade}
             />
           </div>
         </div>

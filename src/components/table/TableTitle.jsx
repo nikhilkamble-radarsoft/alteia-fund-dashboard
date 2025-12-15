@@ -20,12 +20,21 @@ const TableTitle = ({
         {showIcon}
 
         <div className="flex flex-col justify-center h-full min-w-0 max-w-full">
-          <Title title={title} level={titleLevel} className={`font-bold m-0 min-w-0 ${titleColor}`} ellipsis>
+          <Title
+            title={title}
+            level={titleLevel}
+            className={`font-bold m-0 min-w-0 ${titleColor}`}
+            ellipsis
+          >
             {title}
           </Title>
 
           {subtitle && (
-            <Paragraph title={subtitle} className={`mb-0 min-w-0 ${subtitleColor}`} ellipsis={{ rows: 1 }}>
+            <Paragraph
+              title={subtitle}
+              className={`mb-0 min-w-0 ${subtitleColor}`}
+              ellipsis={{ rows: 1 }}
+            >
               {subtitle}
             </Paragraph>
           )}
