@@ -42,11 +42,13 @@ const TableTitle = ({
       </div>
 
       {/* Right section - buttons */}
-      <div className="flex flex-wrap gap-2">
-        {buttons?.map((button, idx) => (
-          <div key={idx}>{button}</div>
-        ))}
-      </div>
+      {buttons?.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {buttons?.map((button, idx) => (
+            <div key={idx}>{button}</div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

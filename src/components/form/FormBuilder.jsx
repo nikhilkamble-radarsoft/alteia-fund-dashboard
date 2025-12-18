@@ -35,7 +35,7 @@ export default function FormBuilder({
   formSubtitle = "",
   formConfig = [],
   initialValues = {},
-  onFinish = () => { },
+  onFinish = () => {},
   layout = "vertical",
   controlled = {},
   submitText,
@@ -44,7 +44,7 @@ export default function FormBuilder({
   formProps = {},
   twoColumn = true,
   loading = false,
-  formHeight = "min-h-[calc(100vh-135px)]",
+  formHeight = "",
 }) {
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -232,8 +232,9 @@ export default function FormBuilder({
           </>
         )}
         <div
-          className={`grid ${twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-            } gap-x-4  items-start`}
+          className={`grid ${
+            twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+          } gap-x-4  items-start`}
         >
           {formConfig.map((field) =>
             renderFormItem(field, {

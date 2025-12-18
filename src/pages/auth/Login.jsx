@@ -66,7 +66,7 @@ const Login = () => {
           <Title level={3} className="mb-0 font-bold">
             Log in to your account
           </Title>
-          <paragraph className="text-[#828282]">Sign in to manage trades, users, and ROI</paragraph>
+          <paragraph className="text-[#828282]">Sign in to manage funds, users, and ROI</paragraph>
         </div>
 
         {errorText && <Alert message={errorText} type="error" showIcon className="mb-6" />}

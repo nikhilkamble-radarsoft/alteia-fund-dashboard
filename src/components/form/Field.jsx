@@ -5,6 +5,8 @@ import FileField from "./FileField";
 import { useMemo } from "react";
 import InputList from "./InputList";
 import TagsInput from "./TagsInput";
+import IconPicker from "./IconPicker";
+import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
 
@@ -21,7 +23,7 @@ export default function Field({
   showSearch = true,
   allowClear = true,
   // pass-through props for special controls
-  datePickerProps = { format: "DD/MM/YYYY" },
+  datePickerProps = {},
   timePickerProps = {},
   uploadProps = {},
   selectProps = {},
@@ -58,6 +60,9 @@ export default function Field({
 
   const resolvedTimePickerProps =
     typeof timePickerProps === "function" && form ? timePickerProps(form) : timePickerProps;
+
+  const resolvedDatePickerProps =
+    typeof datePickerProps === "function" && form ? datePickerProps(form) : datePickerProps;
 
   switch (type) {
     case "input-list":
@@ -98,6 +103,19 @@ export default function Field({
         </Select>
       );
 
+    case "icon":
+      return (
+        <IconPicker
+          {...common}
+          value={value}
+          onChange={onChange}
+          placeholder={defaultPlaceholder}
+          allowClear={true}
+          iconSize={20}
+          columns={6}
+        />
+      );
+
     case "textarea":
       return (
         <Input.TextArea
@@ -114,9 +132,10 @@ export default function Field({
         <DatePicker
           {...common}
           placeholder={defaultPlaceholder}
-          value={value}
+          value={value ? dayjs(value) : null}
           onChange={onChange}
-          {...datePickerProps}
+          format="DD/MM/YYYY"
+          {...resolvedDatePickerProps}
         />
       );
 
@@ -125,9 +144,9 @@ export default function Field({
         <RangePicker
           {...common}
           placeholder={Array.isArray(defaultPlaceholder) ? defaultPlaceholder : ["Start", "End"]}
-          value={value}
+          value={value ? [dayjs(value[0]), dayjs(value[1])] : []}
           onChange={onChange}
-          {...datePickerProps}
+          {...resolvedDatePickerProps}
         />
       );
 

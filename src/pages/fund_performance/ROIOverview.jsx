@@ -140,6 +140,7 @@ export default function ROIOverview() {
               disabled
             /> */}
             <CustomButton
+              showIcon
               text="Add ROI"
               onClick={() => {
                 // navigate(`/roi/update/${selectedTrade || funds?.[0]?._id}`, {
@@ -160,7 +161,7 @@ export default function ROIOverview() {
       </div>
 
       {/* Metrics Section */}
-      <PortfolioMetrics metrics={portfolioData.metrics} />
+      {/* <PortfolioMetrics metrics={portfolioData.metrics} /> */}
 
       {/* Chart Section */}
       <PortfolioChartSection

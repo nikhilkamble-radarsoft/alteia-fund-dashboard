@@ -119,7 +119,7 @@ export default function TradeInterests() {
       dataIndex: "email",
     },
     {
-      title: "Trade Interest",
+      title: "Fund Interest",
       dataIndex: "title",
     },
     {
@@ -185,7 +185,7 @@ export default function TradeInterests() {
 
   return (
     <>
-      <TableTitle title="Trades Interest" titleColor="text-black" subtitleColor="text-black" />
+      <TableTitle title="Funds Interest" titleColor="text-black" subtitleColor="text-black" />
       <Divider variant="dashed" className="my-2" />
       <CustomTable
         columns={columns}

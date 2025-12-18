@@ -124,12 +124,12 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
     setOpenKeys(newOpenKeys);
   }, [location.pathname]);
 
-  const sidebarClasses = `!bg-primary !text-white flex flex-col h-full`;
+  const sidebarClasses = `!bg-primary !text-white flex flex-col h-screen overflow-hidden`;
   const menuClasses = `!bg-primary !text-white !text-md px-4 flex-1 overflow-auto flex-1`;
 
   return (
     <Sider collapsed={collapsed} width={256} className={sidebarClasses}>
-      <div className="relative flex flex-col flex-1">
+      <div className="relative flex flex-col h-full overflow-hidden">
         <div
           style={{
             height: "64px",
@@ -147,15 +147,17 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
           {/* MAIN */}
         </Divider>
 
-        {/* TOP MENU */}
-        <Menu
-          mode="inline"
-          selectedKeys={selectedKeys}
-          openKeys={openKeys}
-          onOpenChange={(keys) => setOpenKeys(keys)}
-          items={topMenuItems}
-          className={menuClasses}
-        />
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+          <Menu
+            mode="inline"
+            selectedKeys={selectedKeys}
+            openKeys={openKeys}
+            onOpenChange={(keys) => setOpenKeys(keys)}
+            items={topMenuItems}
+            className="!bg-primary !text-white !text-md px-4"
+          />
+        </div>
+
         {!isMobile && (
           <CustomButton
             showIcon
@@ -169,7 +171,11 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
             }
             width=""
             onClick={toggleSidebar}
-            className="!p-1.5 absolute top-[74px] right-[-12px] h-auto"
+            className="!p-1.5 fixed top-[74px] h-auto z-[2000]"
+            style={{
+              left: collapsed ? 68 : 244,
+              transition: "left 0.2s",
+            }}
             btnType="light-primary"
           />
         )}

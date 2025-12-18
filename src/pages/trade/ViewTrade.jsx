@@ -13,6 +13,7 @@ export default function ViewTrade() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const [fundCategories, setFundCategories] = useState([]);
 
   const fetchData = async () => {
     const { response } = await callApi({
@@ -33,6 +34,17 @@ export default function ViewTrade() {
       dob: dayjs(localData.dob),
     };
     setData(updatedData);
+  };
+
+  const fetchFundCategories = async () => {
+    const { response } = await callApi({
+      method: "get",
+      url: `/admin/fund-category`,
+      errorOptions: {
+        onOk: () => navigate(-1),
+      },
+    });
+    setFundCategories(response.data || []);
   };
 
   const onFinish = async (values) => {
@@ -62,7 +74,7 @@ export default function ViewTrade() {
     });
 
     if (status) {
-      navigate("/trades");
+      navigate("/funds");
     }
   };
 
@@ -70,6 +82,7 @@ export default function ViewTrade() {
     if (id) {
       fetchData();
     }
+    fetchFundCategories();
   }, [id]);
 
   const formConfig = [
@@ -78,20 +91,14 @@ export default function ViewTrade() {
       label: "Title",
       type: "input",
       rules: formRules.required("Title"),
-      placeholder: "Enter fund or trade name",
+      placeholder: "Enter Fund name",
     },
     {
       name: "category",
       label: "Category",
       type: "select",
       rules: formRules.required("Category"),
-      options: [
-        { value: "Featured", label: "Featured" },
-        { value: "Top ROI", label: "Top ROI" },
-        { value: "Real Estate", label: "Real Estate" },
-        { value: "Short-Term", label: "Short-Term" },
-        { value: "Goal-Based", label: "Goal-Based" },
-      ],
+      options: fundCategories.map((cat) => ({ value: cat._id, label: cat.name })),
       placeholder: "Select category (e.g., Real Estate, Energy)",
     },
     {
@@ -103,11 +110,64 @@ export default function ViewTrade() {
     },
 
     {
-      name: "duration",
-      label: "Duration (months)",
-      type: "number",
-      rules: formRules.required("Duration"),
-      placeholder: "Enter Duration",
+      name: "duration_type",
+      label: "Duration Type",
+      type: "select",
+      rules: formRules.required("Duration Type", "select"),
+      options: [
+        { value: "open-ended", label: "Open-ended" },
+        { value: "close-ended", label: "Close-ended" },
+      ],
+    },
+    {
+      name: "start_date",
+      label: "Start Date",
+      type: "date",
+      rules: formRules.required("Start Date", "date"),
+      shouldShow: (formValues) => formValues.duration_type,
+      datePickerProps: (form) => ({
+        disabledDate: (current) => {
+          if (!current) return false;
+
+          const today = dayjs().startOf("day");
+          const endDate = form.getFieldValue("end_date");
+
+          // cannot be future
+          if (current.isAfter(today)) return true;
+
+          // cannot be after end_date
+          if (endDate && current.isAfter(dayjs(endDate).startOf("day"))) {
+            return true;
+          }
+
+          return false;
+        },
+      }),
+    },
+    {
+      name: "end_date",
+      label: "End Date",
+      type: "date",
+      rules: formRules.required("End Date", "date"),
+      shouldShow: (formValues) => formValues.duration_type === "close-ended",
+      datePickerProps: (form) => ({
+        disabledDate: (current) => {
+          if (!current) return false;
+
+          const today = dayjs().startOf("day");
+          const startDate = form.getFieldValue("start_date");
+
+          // cannot be future
+          if (current.isAfter(today)) return true;
+
+          // cannot be before start_date
+          if (startDate && current.isBefore(dayjs(startDate).startOf("day"))) {
+            return true;
+          }
+
+          return false;
+        },
+      }),
     },
     {
       name: "location",
@@ -152,7 +212,7 @@ export default function ViewTrade() {
     },
     {
       name: "banner_image",
-      label: "Upload Trade Banner",
+      label: "Upload Fund Banner",
       type: "file",
       placeholder: "Formats: JPG, PNG (Max 5MB)",
       accept: ["image/png", "image/jpeg", "image/jpg"],
@@ -160,9 +220,9 @@ export default function ViewTrade() {
     },
     {
       name: "why_invest",
-      label: "Why invest in this trade?",
+      label: "Why invest in this Fund?",
       type: "input-list",
-      placeholder: "Enter why invest in this trade",
+      placeholder: "Enter why invest in this Fund",
       maxLength: 50,
     },
     {
@@ -195,7 +255,7 @@ export default function ViewTrade() {
       // mode="view-only"
       formProps={{ autoComplete: "off" }}
       formConfig={formConfig}
-      initialValues={data}
+      initialValues={{ ...data, category: data?.category?._id }}
       cancelText="Back"
       submitText="Save"
       onFinish={onFinish}

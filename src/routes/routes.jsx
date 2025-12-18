@@ -10,6 +10,7 @@ import {
   PiGridFour,
   PiHandshakeFill,
   PiMoneyWavyFill,
+  PiRowsPlusTop,
 } from "react-icons/pi";
 import { logout } from "../redux/authSlice";
 import { LuLogOut } from "react-icons/lu";
@@ -31,6 +32,7 @@ import FundPurchases from "../pages/fund_purchase/FundPurchases";
 import ViewPurchase from "../pages/fund_purchase/ViewPurchase";
 import TradeInterests from "../pages/trade_interest/TradeInterests";
 import CreateNotification from "../pages/CreateNotification";
+import FundCategories from "../pages/fund_category/FundCategories";
 
 /**
  * Route config generator
@@ -116,33 +118,33 @@ export const createRoutesConfig = (ctx = {}) => {
       ],
     },
     {
-      path: "/trades",
+      path: "/funds",
       label: "Funds",
       icon: PiChartLineUp,
       Component: Trades,
       showInSidebar: "top",
       isPrivate: inProdMode,
-      title: "Trades management",
+      title: "Funds management",
       subtitle: "Browse and explore every available investment opportunity in one place.",
       children: [
         {
-          path: "/trades/create",
-          label: "Create Trade",
+          path: "/funds/create",
+          label: "Create Fund",
           icon: CgAdd,
           // showInSidebar: "top",
           Component: ViewTrade,
-          title: "Add New Trade",
+          title: "Add New Fund",
           subtitle:
             "Fill in the details below to create or update an investment opportunity. Ensure all information is accurate before saving.",
         },
         {
-          path: "/trades/:id",
-          label: "View Trade",
+          path: "/funds/:id",
+          label: "View Fund",
           icon: CgAdd,
           // showInSidebar: "top",
           Component: ViewTrade,
-          title: "Trade Details",
-          subtitle: "View and manage trade details.",
+          title: "Fund Details",
+          subtitle: "View and manage Fund details.",
         },
       ],
     },
@@ -199,8 +201,8 @@ export const createRoutesConfig = (ctx = {}) => {
       ],
     },
     {
-      path: "/trade-interest",
-      label: "Trade Interest",
+      path: "/fund-interest",
+      label: "Fund Interest",
       icon: PiHandshakeFill,
       Component: TradeInterests,
       showInSidebar: "top",
@@ -210,7 +212,7 @@ export const createRoutesConfig = (ctx = {}) => {
         "View investors who have shown interest in funds and set reminders for pending follow-ups.",
       children: [
         {
-          path: "/trade-interest/:id",
+          path: "/fund-interest/:id",
           label: "View Investor",
           icon: CgAdd,
           // showInSidebar: "top",
@@ -244,6 +246,17 @@ export const createRoutesConfig = (ctx = {}) => {
       ],
     },
     {
+      path: "/fund-categories",
+      label: "Fund Categories",
+      icon: PiRowsPlusTop,
+      Component: FundCategories,
+      showInSidebar: "top",
+      isPrivate: inProdMode,
+      title: "Fund Categories",
+      subtitle:
+        "Create and manage fund categories used across the platform. Categories help structure funds, reporting, and allocations.",
+    },
+    {
       path: "/create-notification",
       Component: CreateNotification,
       isPrivate: inProdMode,
@@ -264,7 +277,7 @@ export const createRoutesConfig = (ctx = {}) => {
     },
     {
       key: "settings",
-      onClick: () => { },
+      onClick: () => {},
       icon: FiSettings,
       label: "Settings",
       showInSidebar: "bottom",

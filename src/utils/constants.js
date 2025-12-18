@@ -11,13 +11,15 @@ export const defaultRequiredMsg = {
   default: (label) => `Please enter ${label}`,
 };
 
+const requiredRule = true;
+
 export const formRules = {
   required: (label, type = "default", customMsg) => {
     const message = customMsg || (defaultRequiredMsg[type] || defaultRequiredMsg.default)(label);
-    return [{ required: true, message }];
+    return [{ required: requiredRule, message }];
   },
   phone: (required = true, requiredMsg = "Please enter phone number.") => [
-    ...(required ? [{ required: true, message: requiredMsg }] : []),
+    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
     {
       pattern: /^[0-9]{4,17}$/,
       message: "Please enter a valid phone number.",
@@ -25,7 +27,7 @@ export const formRules = {
   ],
 
   email: (required = true, requiredMsg = "Please enter email.") => [
-    ...(required ? [{ required: true, message: requiredMsg }] : []),
+    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
     {
       pattern: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
       message: "Please enter a valid email address.",
@@ -33,7 +35,7 @@ export const formRules = {
   ],
 
   url: (required = true, requiredMsg = "Please enter URL.") => [
-    ...(required ? [{ required: true, message: requiredMsg }] : []),
+    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
     {
       pattern: /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-./?%&=]*)?$/i,
       message: "Please enter a valid URL.",
@@ -41,7 +43,7 @@ export const formRules = {
   ],
 
   password: (required = true, requiredMsg = "Please enter password.") => [
-    ...(required ? [{ required: true, message: requiredMsg }] : []),
+    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
     { min: 8, message: "Password must be 8-20 characters." },
     { max: 20, message: "Password must be 8-20 characters." },
     {
@@ -51,7 +53,7 @@ export const formRules = {
   ],
 
   confirmPass: (key = "password", required = true, requiredMsg = "Please confirm password.") => [
-    ...(required ? [{ required: true, message: requiredMsg }] : []),
+    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
     ({ getFieldValue }) => ({
       validator(_, value) {
         if (!value || getFieldValue(key) === value) {
@@ -63,7 +65,7 @@ export const formRules = {
   ],
 
   postalCode: (required = true, requiredMsg = "Please enter postal code.") => [
-    ...(required ? [{ required: true, message: requiredMsg }] : []),
+    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
     { pattern: /^[0-9]+$/, message: "Postal code must be a number." },
     // { len: 6, message: "Postal code must be exactly 6 digits." },
   ],

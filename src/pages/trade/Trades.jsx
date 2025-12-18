@@ -14,23 +14,24 @@ export default function Trades() {
 
   const columns = [
     {
-      title: "Trade Title",
+      title: "Fund Title",
       dataIndex: "title",
       render: (text, record) => (
-        <NavLink to={`/trades/${record._id}`} className="p-0">
+        <NavLink to={`/funds/${record._id}`} className="p-0">
           {text}
         </NavLink>
       ),
     },
     {
       title: "Category",
-      dataIndex: "category",
+      dataIndex: "category.name",
     },
     {
       title: "ROI %",
       dataIndex: "roi_range",
       render: (text, record) =>
-        `${text?.endsWith("%") ? text : `${text}%`} ${record.ytd_return ? `(YTD ${record.ytd_return})` : ""
+        `${text?.endsWith("%") ? text : `${text}%`} ${
+          record.ytd_return ? `(YTD ${record.ytd_return})` : ""
         }`,
     },
     {
@@ -79,11 +80,11 @@ export default function Trades() {
   return (
     <div>
       <TableTitle
-        title="Trades Listing"
+        title="Funds Listing"
         titleColor="text-black"
         subtitleColor="text-black"
         buttons={[
-          <CustomButton text="Add New Trade" showIcon onClick={() => navigate("/trades/create")} />,
+          <CustomButton text="Add New Fund" showIcon onClick={() => navigate("/funds/create")} />,
         ]}
       />
       <Divider variant="dashed" className="my-2" />
