@@ -62,3 +62,74 @@ export const checkUserKycDocument = (user) => {
   if (!user) return false;
   return user.document_file && user.address_file && user.signature_file;
 };
+
+/**
+ * Sanitize text into human-readable format
+ *
+ * Examples:
+ *  close-ended        => "Close Ended"
+ *  close_ended        => "Close Ended"
+ *  closeEnded         => "Close Ended"
+ *  CLOSE_ENDED        => "Close Ended"
+ *
+ * @param {string} text
+ * @param {object} options
+ * @param {boolean} options.capitalizeFirst   Capitalize only first letter
+ * @param {boolean} options.capitalizeWords   Capitalize each word (default)
+ * @param {boolean} options.lowercase         Force lowercase
+ * @param {boolean} options.uppercase         Force uppercase
+ * @param {string}  options.separator         Custom separator (default: space)
+ * @param {object}  options.acronyms          Preserve acronyms (e.g. { id: "ID" })
+ *
+ * @returns {string}
+ */
+export const sanitizeText = (text, options = {}) => {
+  if (!text || typeof text !== "string") return "";
+
+  const {
+    capitalizeFirst = false,
+    capitalizeWords = true,
+    lowercase = false,
+    uppercase = false,
+    separator = " ",
+    acronyms = {},
+  } = options;
+
+  let result = text
+    // Replace separators with space
+    .replace(/[_\-]+/g, " ")
+
+    // Split camelCase / PascalCase
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+
+    // Normalize spaces
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Apply casing rules
+  if (uppercase) {
+    result = result.toUpperCase();
+  } else if (lowercase) {
+    result = result.toLowerCase();
+  } else {
+    result = result.toLowerCase();
+
+    if (capitalizeWords) {
+      result = result.replace(/\b\w/g, (c) => c.toUpperCase());
+    } else if (capitalizeFirst) {
+      result = result.charAt(0).toUpperCase() + result.slice(1);
+    }
+  }
+
+  // Apply acronym overrides
+  if (Object.keys(acronyms).length) {
+    result = result
+      .split(" ")
+      .map((word) => acronyms[word.toLowerCase()] || word)
+      .join(separator);
+  } else {
+    result = result.split(" ").join(separator);
+  }
+
+  return result;
+};

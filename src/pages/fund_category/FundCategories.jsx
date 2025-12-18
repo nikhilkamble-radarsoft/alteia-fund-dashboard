@@ -131,6 +131,7 @@ export default function FundCategories() {
         {
           label: "Delete",
           onClick: (record) => handleDelete(record),
+          visible: record.status !== "active",
         },
       ],
     },

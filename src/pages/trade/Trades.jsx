@@ -6,6 +6,7 @@ import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
 import { tradeStatus } from "../../utils/constants";
 import CustomTag from "../../components/common/CustomTag";
+import { formatDate, sanitizeText } from "../../utils/utils";
 
 const { Title } = Typography;
 
@@ -51,8 +52,19 @@ export default function Trades() {
       },
     },
     {
-      title: "Duration (months)",
-      dataIndex: "duration",
+      title: "Duration Type",
+      dataIndex: "duration_type",
+      render: (text) => sanitizeText(text),
+    },
+    {
+      title: "Start Date",
+      dataIndex: "start_date",
+      render: (text) => formatDate(text),
+    },
+    {
+      title: "End Date",
+      dataIndex: "end_date",
+      render: (text) => formatDate(text),
     },
     {
       title: "Status",
