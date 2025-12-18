@@ -45,24 +45,27 @@ export const enhanceColumns = ({ columns }) => {
             : true
         );
 
-        if (!availableActions.length) return null;
+        if (!availableActions.length) return "-";
 
         // ✅ Single action → show link/button directly
-        // if (availableActions.length === 1) {
-        //   const action = availableActions[0];
-        //   const disabled = action.disabled?.(record, index);
+        if (availableActions.length === 1) {
+          const action = availableActions[0];
+          const disabled =
+            typeof action.disabled === "function"
+              ? action.disabled?.(record, index)
+              : action.disabled;
 
-        //   return (
-        //     <Button
-        //       type="link"
-        //       disabled={disabled}
-        //       onClick={() => !disabled && action.onClick(record, index)}
-        //       className="p-0"
-        //     >
-        //       {typeof action.label === "function" ? action.label?.(record, index) : action.label}
-        //     </Button>
-        //   );
-        // }
+          return (
+            <Button
+              type="link"
+              disabled={disabled}
+              onClick={() => !disabled && action.onClick(record, index)}
+              className="p-0"
+            >
+              {typeof action.label === "function" ? action.label?.(record, index) : action.label}
+            </Button>
+          );
+        }
 
         // ✅ Multiple actions → dropdown menu
         const items = availableActions.map((action, idx) => ({
