@@ -1,5 +1,6 @@
 export const localStorageTokenKey = "token";
 export const defaultMaxFileUploadSize = 5; // in MB
+export const tableFallbackText = "-";
 
 export const defaultRequiredMsg = {
   file: (label) => `Please upload ${label}`,

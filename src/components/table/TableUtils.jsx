@@ -1,5 +1,6 @@
 import { Dropdown, Button } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import { tableFallbackText } from "../../utils/constants";
 
 const customSortIcon = ({ sortOrder }) => (
   <span className="flex flex-col ml-1">
@@ -18,7 +19,7 @@ export const enhanceColumns = ({ columns }) => {
 
     if (!hasActions) {
       return {
-        render: (val) => (val ? val : "-"),
+        render: (val) => (val ? val : tableFallbackText),
         ...col,
         // sorter: true, // Enable this line to make all non-action columns sortable
         sorterIcon: customSortIcon,
@@ -45,7 +46,7 @@ export const enhanceColumns = ({ columns }) => {
             : true
         );
 
-        if (!availableActions.length) return "-";
+        if (!availableActions.length) return tableFallbackText;
 
         // ✅ Single action → show link/button directly
         if (availableActions.length === 1) {

@@ -13,20 +13,6 @@ export default function ROIOverview() {
   const [funds, setFunds] = useState([]);
   const navigate = useNavigate();
   const portfolioData = {
-    roiData: [
-      { month: "Jan", roi: 0 },
-      { month: "Feb", roi: 2.1 },
-      { month: "Mar", roi: 3.1 },
-      { month: "Apr", roi: 4.8 },
-      { month: "May", roi: 6.5 },
-      { month: "Jun", roi: 8.9 },
-      { month: "Jul", roi: 12.4 },
-      { month: "Aug", roi: 11.8 },
-      { month: "Sep", roi: 12.4 },
-      { month: "Oct", roi: 11.9 },
-      { month: "Nov", roi: 11.5 },
-      { month: "Dec", roi: 12.1 },
-    ],
     metrics: [
       {
         value: "9.4% YTD Growth",
@@ -166,6 +152,7 @@ export default function ROIOverview() {
       {/* Chart Section */}
       <PortfolioChartSection
         roiData={roiData}
+        selectedFund={funds.find((fund) => fund._id === selectedTrade)}
         timeFilters={portfolioData.timeFilters}
         rangeFilters={portfolioData.rangeFilters}
         value={selectedFilters}

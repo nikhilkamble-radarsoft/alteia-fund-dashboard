@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { tableFallbackText } from "./constants";
 
 /**
  * Flexible date formatter
@@ -10,7 +11,7 @@ import dayjs from "dayjs";
  */
 export const formatDate = (date, options = {}) => {
   const { inputFormat, outputFormat = "DD/MM/YYYY" } = options;
-  if (!date) return "";
+  if (!date) return tableFallbackText;
 
   return inputFormat
     ? dayjs(date, inputFormat).format(outputFormat)
@@ -40,6 +41,23 @@ export const formatTime = (seconds, { showHours = false } = {}) => {
     .join(":");
 
   return formatted;
+};
+
+export const outputFormatters = {
+  money: (raw, { currency = "USD", locale = "en-US" } = {}) => {
+    if (raw === null || raw === undefined || raw === "") return tableFallbackText;
+    const n = typeof raw === "number" ? raw : parseFloat(String(raw).replace(/,/g, ""));
+    if (!isFinite(n)) return tableFallbackText;
+
+    const opts = {
+      style: "currency",
+      currency,
+      minimumFractionDigits: n % 1 === 0 ? 0 : 2,
+      maximumFractionDigits: n % 1 === 0 ? 0 : 2,
+    };
+
+    return new Intl.NumberFormat(locale, opts).format(n);
+  },
 };
 
 export const inputFormatters = {

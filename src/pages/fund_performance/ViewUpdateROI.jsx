@@ -23,6 +23,18 @@ const ViewUpdateROI = () => {
   const [currentROI, setCurrentROI] = useState({});
   const [form] = Form.useForm();
 
+  const fundStart = fund?.start_date ? new Date(fund.start_date) : null;
+  const fundEnd = fund?.end_date ? new Date(fund.end_date) : null;
+
+  const startYear = fundStart?.getFullYear();
+  const endYear = fundEnd?.getFullYear();
+
+  const validYears = years.filter((y) => {
+    if (startYear && y < startYear) return false;
+    if (endYear && y > endYear) return false;
+    return true;
+  });
+
   const fetchROI = async () => {
     try {
       const { response } = await callApi({
@@ -39,7 +51,6 @@ const ViewUpdateROI = () => {
       localROI.map((roi) => {
         updatedROI[roi.month] = roi?.max_roi;
       });
-      console.log("updatedROI", updatedROI);
 
       setCurrentROI(updatedROI || {});
       setTitle(
@@ -60,6 +71,13 @@ const ViewUpdateROI = () => {
     }
   }, [fund, selectedYear]);
 
+  useEffect(() => {
+    if (!validYears.includes(selectedYear)) {
+      const fallbackYear = validYears[validYears.length - 1];
+      setSelectedYear(fallbackYear);
+    }
+  }, [validYears]);
+
   const monthsList = [
     "January",
     "February",
@@ -74,6 +92,22 @@ const ViewUpdateROI = () => {
     "November",
     "December",
   ];
+
+  const filteredMonths = monthsList.filter((month, index) => {
+    if (!fundStart && !fundEnd) return true;
+
+    const monthIndex = index; // 0–11
+
+    if (startYear && selectedYear === startYear && monthIndex < fundStart.getMonth()) {
+      return false;
+    }
+
+    if (endYear && selectedYear === endYear && monthIndex > fundEnd.getMonth()) {
+      return false;
+    }
+
+    return true;
+  });
 
   // keep form in sync when ROI data loads
   useEffect(() => {
@@ -131,11 +165,9 @@ const ViewUpdateROI = () => {
 
         <Field
           type="select"
-          options={years.map((y) => ({ value: y, label: y }))}
+          options={validYears.map((y) => ({ value: y, label: y }))}
           value={selectedYear}
-          onChange={(val) => {
-            setSelectedYear(val);
-          }}
+          onChange={setSelectedYear}
           className="w-32"
           allowClear={false}
         />
@@ -150,7 +182,7 @@ const ViewUpdateROI = () => {
         </div>
 
         <div className="rounded-lg">
-          {monthsList.map((m) => (
+          {filteredMonths.map((m) => (
             <div key={m} className="grid grid-cols-2 gap-3 px-3 py-2">
               <FormField value={m} type="input" placeholder="Month" disabled={true} form={form} />
               <FormField name={m} type="number" placeholder="ROI%" disabled={loading} form={form} />

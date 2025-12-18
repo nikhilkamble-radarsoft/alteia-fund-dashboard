@@ -4,9 +4,9 @@ import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
-import { tradeStatus } from "../../utils/constants";
+import { tableFallbackText, tradeStatus } from "../../utils/constants";
 import CustomTag from "../../components/common/CustomTag";
-import { formatDate, sanitizeText } from "../../utils/utils";
+import { formatDate, outputFormatters, sanitizeText } from "../../utils/utils";
 
 const { Title } = Typography;
 
@@ -38,33 +38,22 @@ export default function Trades() {
     {
       title: "Min. Investment",
       dataIndex: "minimum_investment",
-      render: (text) => {
-        const num = parseFloat(text);
-
-        if (!isNaN(num)) {
-          return `$${num.toLocaleString("en-US", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          })}`;
-        }
-
-        return text;
-      },
+      render: (text) => outputFormatters.money(text) || tableFallbackText,
     },
     {
       title: "Duration Type",
       dataIndex: "duration_type",
-      render: (text) => sanitizeText(text),
+      render: (text) => sanitizeText(text) || tableFallbackText,
     },
     {
       title: "Start Date",
       dataIndex: "start_date",
-      render: (text) => formatDate(text),
+      render: (text) => formatDate(text) || tableFallbackText,
     },
     {
       title: "End Date",
       dataIndex: "end_date",
-      render: (text) => formatDate(text),
+      render: (text) => formatDate(text) || tableFallbackText,
     },
     {
       title: "Status",

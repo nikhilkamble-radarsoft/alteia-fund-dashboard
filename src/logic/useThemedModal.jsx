@@ -5,6 +5,7 @@ import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import successAnim from "../assets/success-animation.lottie";
+import successAnimJson from "../assets/success-animation.json";
 import errorAnim from "../assets/error-animation.lottie";
 import { FormField } from "../components/form/Field";
 import { Form } from "antd";
@@ -151,16 +152,20 @@ export function useThemedModal() {
     } = {}) => {
       const isSuccess = variant === "success";
 
+      confirmForm.resetFields();
+
+      if (initialValues && typeof initialValues === "object") {
+        confirmForm.setFieldsValue(initialValues);
+      }
+
       setModalConfig({
         title,
         content: (
           <Form
             form={confirmForm}
             layout="vertical"
-            initialValues={initialValues}
             onFinish={(values) => {
               onConfirm?.(values);
-              confirmForm.resetFields();
             }}
           >
             <div className="flex flex-col items-center justify-center">

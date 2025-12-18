@@ -76,7 +76,7 @@ export default function FundCategories() {
               ],
               onConfirm: async (values) => {
                 await callApi({
-                  url: `/admin/fund-category`,
+                  url: `/admin/fund-category/${record._id}`,
                   method: "PUT",
                   data: { ...values },
                   successOptions: {

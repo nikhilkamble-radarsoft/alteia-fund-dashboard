@@ -3,7 +3,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
-import { formatDate } from "../../utils/utils";
+import { formatDate, outputFormatters } from "../../utils/utils";
+import { tableFallbackText } from "../../utils/constants";
 
 export default function FundPurchases() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export default function FundPurchases() {
     {
       title: "Amount",
       dataIndex: "user_amount",
+      render: (text) => outputFormatters.money(text),
     },
     {
       title: "Units",

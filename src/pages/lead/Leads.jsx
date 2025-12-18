@@ -8,6 +8,7 @@ import useApi from "../../logic/useApi";
 import { useState } from "react";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { checkUserKycDocument } from "../../utils/utils";
+import countryList from "../../utils/country_list.json";
 
 export default function Leads() {
   const navigate = useNavigate();
@@ -94,6 +95,12 @@ export default function Leads() {
     {
       title: "Phone",
       dataIndex: "phone",
+      render: (text, record) => {
+        const phoneCode = countryList.find(
+          (item) => item.country_of_residence === record.country
+        )?.phone_code;
+        return `${phoneCode ? phoneCode + " " : ""}${text}`;
+      },
     },
     {
       title: "KYC Status",
