@@ -9,6 +9,7 @@ import { useGlobalModal } from "../../logic/ModalProvider";
 import TableTitle from "../../components/table/TableTitle";
 import { years } from "./PortfolioChartSection";
 import Title from "antd/es/typography/Title";
+import { formatDate } from "../../utils/utils";
 
 const ViewUpdateROI = () => {
   const { title, setTitle } = useTopData();
@@ -160,7 +161,8 @@ const ViewUpdateROI = () => {
           className={`font-bold m-0 min-w-0 text-primary`}
           ellipsis
         >
-          {fund.title}
+          {fund.title} ({formatDate(fund.start_date)}
+          {fund.end_date && `- ${formatDate(fund.end_date)}`})
         </Title>
 
         <Field

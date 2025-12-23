@@ -68,7 +68,7 @@ export default function CreateNotification() {
       shouldShow: (values) => values.type === "fund",
     },
     {
-      name: "user_id",
+      name: "send_id",
       label: "User",
       type: "select",
       selectProps: {
@@ -81,6 +81,7 @@ export default function CreateNotification() {
     {
       name: "title",
       label: "Title",
+      rules: formRules.required("Title"),
     },
     {
       name: "url",
