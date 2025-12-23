@@ -38,19 +38,36 @@ export default function TradeInterests() {
           type: "time",
           rules: [
             ...formRules.required("Time"),
-            {
+            ({ getFieldValue }) => ({
               validator: (_, value) => {
-                if (value && dayjs(value, "HH:mm").isBefore(dayjs().startOf("minute"))) {
-                  return Promise.reject(new Error("No past time allowed"));
+                const reminderDate = getFieldValue("reminder_date");
+
+                // If either is missing, let required rules handle it
+                if (!value || !reminderDate) {
+                  return Promise.resolve();
                 }
+
+                // Combine date + time into a single datetime
+                const selectedDateTime = dayjs(reminderDate)
+                  .hour(dayjs(value).hour())
+                  .minute(dayjs(value).minute())
+                  .second(0);
+
+                if (selectedDateTime.isBefore(dayjs())) {
+                  return Promise.reject(new Error("No past date or time allowed"));
+                }
+
                 return Promise.resolve();
               },
-            },
+            }),
           ],
+
           timePickerProps: (form) => ({
             disabledTime: () => {
               const selectedDate = form.getFieldValue("reminder_date");
-              if (!selectedDate || !selectedDate.isSame(dayjs(), "day")) {
+
+              // If no date or not today → no restrictions
+              if (!selectedDate || !dayjs(selectedDate).isSame(dayjs(), "day")) {
                 return {};
               }
 
@@ -60,12 +77,14 @@ export default function TradeInterests() {
 
               return {
                 disabledHours: () => Array.from({ length: currentHour }, (_, i) => i),
+
                 disabledMinutes: (hour) =>
                   hour === currentHour ? Array.from({ length: currentMinute }, (_, i) => i) : [],
               };
             },
           }),
         },
+
         {
           name: "comment",
           label: "Comments",
