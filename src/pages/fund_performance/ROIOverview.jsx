@@ -69,24 +69,58 @@ export default function ROIOverview() {
     fetchFunds();
   }, []);
 
+  // ROIOverview.js — replace fetchROIData with this
   const fetchROIData = async () => {
     try {
+      // build params: include year only when selectedFilters.year is truthy
+      const params = { fund_id: selectedTrade };
+      if (selectedFilters?.year) params.year = selectedFilters.year;
+
       const { response } = await callApi({
         url: "/admin/get-roi-list",
-        params: { fund_id: selectedTrade, year: selectedFilters.year },
+        params,
       });
-      const updatedData = (response?.data || [])?.map((item) => {
-        const selectedFund = funds.find((f) => f._id === selectedTrade);
-        const updatedROI =
-          Number(selectedFund.nav_unit) +
-          (Number(item.max_roi) / 100) * Number(selectedFund.nav_unit);
 
-        return {
-          month: item.month,
-          fundValue: updatedROI,
-          roi: item.max_roi,
-        };
-      });
+      const rows = response?.data || [];
+      const selectedFund = funds.find((f) => f._id === selectedTrade) || {};
+
+      // Helper to turn "January" + "2025" into a Date object (first day of month)
+      const makeDate = (monthName, yearStr) => {
+        // Use JS to parse, fallback if invalid
+        try {
+          // e.g. new Date('January 1, 2025') -> month index
+          const d = new Date(`${monthName} 1, ${yearStr}`);
+          if (isNaN(d)) return null;
+          return d;
+        } catch {
+          return null;
+        }
+      };
+
+      const navUnit = Number(selectedFund?.nav_unit || 0);
+
+      const updatedData = rows
+        .map((item) => {
+          const monthName = item.month;
+          const yearStr = item.year;
+          const dt = makeDate(monthName, yearStr);
+          const roiPercent = Number(item.max_roi || 0);
+          const fundValue = navUnit + (roiPercent / 100) * navUnit; // preserve previous logic
+          return {
+            ...item,
+            monthLabel: params.year ? monthName : `${monthName} ${yearStr}`, // e.g. "September 2025"
+            date: dt ? dt.getTime() : undefined, // timestamp for sorting
+            fundValue,
+            roi: roiPercent,
+          };
+        })
+        .sort((a, b) => {
+          // Put undefined dates at the end
+          if (a.date === undefined) return 1;
+          if (b.date === undefined) return -1;
+          return a.date - b.date;
+        });
+
       setROIData(updatedData);
     } catch (error) {
       console.error("Error fetching funds:", error);

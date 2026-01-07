@@ -37,7 +37,7 @@ const PortfolioChartSection = ({ roiData, selectedFund, activeRange, onChange, v
 
   const [internal, setInternal] = useState(() => ({
     range: activeRange ?? "1Y",
-    year: years.at(-1),
+    // year: years.at(-1),
     month: MONTHS[CURRENT_MONTH],
   }));
 
@@ -58,7 +58,8 @@ const PortfolioChartSection = ({ roiData, selectedFund, activeRange, onChange, v
 
   useEffect(() => {
     if (!years.includes(internal.year)) {
-      const fallbackYear = years[years.length - 1];
+      // const fallbackYear = years[years.length - 1];
+      const fallbackYear = undefined;
       setInternal((prev) => ({
         ...prev,
         year: fallbackYear,
@@ -66,6 +67,18 @@ const PortfolioChartSection = ({ roiData, selectedFund, activeRange, onChange, v
       onChange?.({ ...internal, year: fallbackYear });
     }
   }, [years]);
+
+  const chartData = useMemo(() => {
+    // roiData expected as [{ monthLabel, fundValue, roi, date }, ...]
+    if (!Array.isArray(roiData)) return [];
+    return roiData.map((r) => ({
+      // RoiChart previously used `month` as label; supply a month that includes year
+      month: r.monthLabel || `${r.month} ${r.year || ""}`,
+      fundValue: r.fundValue,
+      roi: r.roi,
+      date: r.date,
+    }));
+  }, [roiData]);
 
   return (
     <div className="w-full">
@@ -83,7 +96,6 @@ const PortfolioChartSection = ({ roiData, selectedFund, activeRange, onChange, v
                 value={state.year}
                 onChange={(val) => update({ year: val })}
                 className="w-full"
-                allowClear={false}
               />
             </div>
           </div>
@@ -112,7 +124,7 @@ const PortfolioChartSection = ({ roiData, selectedFund, activeRange, onChange, v
           <RoiChart
             title="Yearly ROI Performance"
             periods={PERIODS}
-            data={roiData}
+            data={chartData}
             gradientColor="#8BC34A"
             lineColor="#558B2F"
           />
