@@ -125,7 +125,7 @@ const ViewUpdateROI = () => {
           values[m] !== undefined && values[m] !== null
             ? {
                 fund_id: fund._id,
-                year: `${year}`,
+                year: `${selectedYear}`,
                 month: m,
                 less_roi: "0",
                 max_roi: `${Number(values?.[m] || 0)}`,
