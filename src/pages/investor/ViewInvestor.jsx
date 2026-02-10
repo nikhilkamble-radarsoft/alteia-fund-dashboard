@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { useTopData } from "../../components/layout/AppLayout";
 import { formRules } from "../../utils/constants";
 import countryList from "../../utils/country_list.json";
+import { useTranslation } from "react-i18next";
 
 export default function ViewInvestor() {
   const { callApi, loading } = useApi();
@@ -14,6 +15,7 @@ export default function ViewInvestor() {
   const navigate = useNavigate();
 
   const { setTitle } = useTopData();
+  const { t } = useTranslation("form");
 
   const fetchInvestor = async () => {
     const { response } = await callApi({
@@ -34,19 +36,17 @@ export default function ViewInvestor() {
       dob: dayjs(localInvestor.dob),
     };
     setInvestor(updatedInvestor);
-    setTitle(`Investor Details - ${updatedInvestor.full_name}`);
+
+    setTitle(t("investor.title_details", { name: updatedInvestor.full_name }));
   };
 
   const onFinish = async (values) => {
-    // Only create when no id
     if (id) return;
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
       if (!values[key]) return;
-      // Ignore fields
       if (["confirmPassword"].includes(key)) return;
 
-      // Upload files
       if (["address_file", "document_file", "signature_file"].includes(key))
         return formData.append(key, values[key][0].originFileObj);
 
@@ -73,77 +73,78 @@ export default function ViewInvestor() {
     }
   }, [id]);
 
+  // 4. Update Form Config with t()
   const formConfig = [
     {
       name: "full_name",
-      label: "Full Name",
+      label: t("investor.full_name"),
       type: "input",
-      rules: formRules.required("Full Name"),
+      rules: formRules.required(t("investor.full_name")),
     },
     {
       name: "email",
-      label: "Email Address",
+      label: t("investor.email"),
       type: "input",
       rules: formRules.email(),
     },
     {
       name: "phone",
-      label: "Phone Number",
+      label: t("investor.phone"),
       type: "input",
       rules: formRules.phone(),
     },
 
     {
       name: "dob",
-      label: "Date of Birth",
+      label: t("investor.dob"),
       type: "date",
-      rules: formRules.required("Date of Birth"),
+      rules: formRules.required(t("investor.dob")),
       datePickerProps: {
         disabledDate: (current) => current && current >= dayjs().startOf("day"),
       },
     },
     {
       name: "nationality",
-      label: "Nationality",
+      label: t("investor.nationality"),
       type: "select",
       options: countryList.map((country) => ({
         label: country.nationality_display,
         value: country.nationality,
       })),
-      rules: formRules.required("Nationality"),
+      rules: formRules.required(t("investor.nationality")),
     },
     {
       name: "residential_address",
-      label: "Residential Address",
+      label: t("investor.address"),
       type: "input",
-      rules: formRules.required("Address"),
+      rules: formRules.required(t("investor.address")),
     },
     {
       name: "country",
-      label: "Country of residence",
+      label: t("investor.country"),
       type: "select",
       options: countryList.map((country) => ({
         label: country.country_of_residence_display,
         value: country.country_of_residence,
       })),
-      rules: formRules.required("Country of residence"),
+      rules: formRules.required(t("investor.country")),
     },
     {
       name: "postal_code",
-      label: "Postal Code",
+      label: t("investor.postal_code"),
       type: "input",
     },
     ...(!id
       ? [
           {
             name: "password",
-            label: "Create Password",
+            label: t("investor.password"),
             type: "password",
             rules: formRules.password(),
           },
           {
             name: "confirmPassword",
-            label: "Confirm Password",
+            label: t("investor.confirm_password"),
             type: "password",
             rules: formRules.confirmPass(),
           },
@@ -152,26 +153,26 @@ export default function ViewInvestor() {
     // files
     {
       name: "address_file",
-      label: "Proof of Address",
+      label: t("investor.proof_address"),
       type: "file",
-      rules: formRules.required("Proof of Address"),
-      placeholder: "Upload proof of address (e.g., utility bill)",
+      rules: formRules.required(t("investor.proof_address")),
+      placeholder: t("investor.proof_address_ph"),
       accept: ["application/pdf", "image/png", "image/jpeg", "image/jpg"],
     },
     {
       name: "document_file",
-      label: "Identity Document",
+      label: t("investor.identity_doc"),
       type: "file",
-      rules: formRules.required("Identity Document"),
-      placeholder: "Upload identity proof (e.g., Valid Passport, ID card, passport)",
+      rules: formRules.required(t("investor.identity_doc")),
+      placeholder: t("investor.identity_doc_ph"),
       accept: ["application/pdf", "image/png", "image/jpeg", "image/jpg"],
     },
     {
       name: "signature_file",
-      label: "Signature",
+      label: t("investor.signature"),
       type: "file",
-      rules: formRules.required("Signature"),
-      placeholder: "Accepted Formats: JPEG, PNG, PDF (Max 5MB)",
+      rules: formRules.required(t("investor.signature")),
+      placeholder: t("investor.signature_ph"),
       accept: ["application/pdf", "image/png", "image/jpeg", "image/jpg"],
     },
   ];
@@ -182,10 +183,11 @@ export default function ViewInvestor() {
       formProps={{ autoComplete: "off" }}
       formConfig={formConfig}
       initialValues={investor}
-      cancelText="Back"
-      submitText={id ? undefined : "Save"}
+      cancelText={t("common.back")}
+      submitText={id ? undefined : t("common.save")}
       onFinish={onFinish}
       loading={loading}
+      multiLanguage
     />
   );
 }

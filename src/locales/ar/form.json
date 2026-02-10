@@ -1,0 +1,49 @@
+{
+  "field": {
+    "phone": "رقم الهاتف",
+    "email": "البريد الإلكتروني",
+    "url": "الرابط",
+    "password": "كلمة المرور",
+    "postal_code": "الرمز البريدي"
+  },
+  "common": {
+    "save": "حفظ",
+    "back": "رجوع",
+    "submit": "إرسال",
+    "file_placeholder": "تحميل الملف",
+    "view": "عرض",
+    "download": "تحميل",
+    "filling_form_msg": "النموذج الذي تملؤه لمنصة {{lang}}."
+  },
+  "validation": {
+    "required": "الرجاء إدخال {{label}}",
+    "required_select": "الرجاء تحديد {{label}}",
+    "required_upload": "الرجاء تحميل {{label}}",
+    "email_invalid": "الرجاء إدخال بريد إلكتروني صالح.",
+    "phone_invalid": "الرجاء إدخال رقم هاتف صالح.",
+    "url_invalid": "الرجاء إدخال رابط صالح.",
+    "password_length": "يجب أن تكون كلمة المرور من 8 إلى 20 حرفًا.",
+    "password_complexity": "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة وأرقام ورموز.",
+    "password_match": "كلمات المرور غير متطابقة!",
+    "postal_number": "يجب أن يكون الرمز البريدي رقمًا."
+  },
+  "investor": {
+    "title_details": "تفاصيل المستثمر - {{name}}",
+    "full_name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "dob": "تاريخ الميلاد",
+    "nationality": "الجنسية",
+    "address": "العنوان السكني",
+    "country": "بلد الإقامة",
+    "postal_code": "الرمز البريدي",
+    "password": "إنشاء كلمة مرور",
+    "confirm_password": "تأكيد كلمة المرور",
+    "proof_address": "إثبات العنوان",
+    "proof_address_ph": "تحميل إثبات العنوان (مثل فاتورة مرافق)",
+    "identity_doc": "وثيقة الهوية",
+    "identity_doc_ph": "تحميل إثبات الهوية (مثل جواز سفر ساري المفعول، بطاقة هوية)",
+    "signature": "التوقيع",
+    "signature_ph": "التنسيقات المقبولة: JPEG، PNG، PDF (الحد الأقصى 5 ميجابايت)"
+  }
+}

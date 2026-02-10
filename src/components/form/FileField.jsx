@@ -8,6 +8,7 @@ import { PiUploadFill } from "react-icons/pi";
 import clsx from "clsx";
 import CustomBadge from "../common/CustomBadge";
 import CustomButton from "./CustomButton";
+import { useTranslation } from "react-i18next";
 
 export default function FileField({
   className = "w-full",
@@ -27,6 +28,7 @@ export default function FileField({
 
   const [internalList, setInternalList] = React.useState([]);
   const { showView = true, showDownload = false } = uploadProps;
+  const { t } = useTranslation("form");
 
   // Sync external value (AWS URLs) with internal list
   useEffect(() => {
@@ -35,13 +37,13 @@ export default function FileField({
     if (normalizedValue && Array.isArray(normalizedValue)) {
       const hasRemoteUrls = normalizedValue.some(
         (item) =>
-          typeof item === "string" || (typeof item === "object" && item.url && !item.originFileObj)
+          typeof item === "string" || (typeof item === "object" && item.url && !item.originFileObj),
       );
 
       if (hasRemoteUrls) {
         const remoteFiles = normalizedValue
           .filter(
-            (item) => typeof item === "string" || (typeof item === "object" && !item.originFileObj)
+            (item) => typeof item === "string" || (typeof item === "object" && !item.originFileObj),
           )
           .map((item, index) => {
             const url = typeof item === "string" ? item : item.url;
@@ -137,7 +139,7 @@ export default function FileField({
               internalList.length > 0 ? "mb-3" : "",
               isError
                 ? "!border-danger hover:border-danger"
-                : "border-gray-300 hover:border-primary"
+                : "border-gray-300 hover:border-primary",
             )}
           >
             <div className="rounded-full bg-white border border-gray-300 p-1">
@@ -160,8 +162,8 @@ export default function FileField({
               <CustomButton
                 btnType="secondary"
                 onClick={() => window.open(getFileUrl(file), "_blank")}
-                className={`${showDownload ? "!rounded-none" : "!rounded-l-none"} !h-[39px]`}
-                text="View"
+                className={`${showDownload ? "!rounded-none" : ""} !h-[39px]`}
+                text={t("common.view")}
               />
             )}
             {showDownload && (
@@ -171,7 +173,11 @@ export default function FileField({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <CustomButton type="link" className="!rounded-l-none !h-[39px]" text="Download" />
+                <CustomButton
+                  type="link"
+                  className="!rounded-l-none !h-[39px]"
+                  text={t("common.download")}
+                />
               </a>
             )}
 

@@ -1,15 +1,21 @@
+import i18n from "../logic/i18n"; // Adjust path if needed
+
 export const localStorageTokenKey = "token";
-export const defaultMaxFileUploadSize = 5; // in MB
+export const defaultMaxFileUploadSize = 5;
 export const tableFallbackText = "-";
 
+// Helper to shorten the call
+const tLabel = (key, options) => i18n.t(`field.${key}`, { ns: "form", ...options });
+const tVal = (key, options) => i18n.t(`validation.${key}`, { ns: "form", ...options });
+
 export const defaultRequiredMsg = {
-  file: (label) => `Please upload ${label}`,
-  select: (label) => `Please select ${label}`,
-  daterange: (label) => `Please select ${label}`,
-  date: (label) => `Please select ${label}`,
-  textarea: (label) => `Please enter ${label}`,
-  number: (label) => `Please enter ${label}`,
-  default: (label) => `Please enter ${label}`,
+  file: (label) => tVal("required_upload", { label }),
+  select: (label) => tVal("required_select", { label }),
+  daterange: (label) => tVal("required_select", { label }),
+  date: (label) => tVal("required_select", { label }),
+  textarea: (label) => tVal("required", { label }),
+  number: (label) => tVal("required", { label }),
+  default: (label) => tVal("required", { label }),
 };
 
 const requiredRule = true;
@@ -19,59 +25,102 @@ export const formRules = {
     const message = customMsg || (defaultRequiredMsg[type] || defaultRequiredMsg.default)(label);
     return [{ required: requiredRule, message }];
   },
-  phone: (required = true, requiredMsg = "Please enter phone number.") => [
-    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
+
+  phone: (required = true, requiredMsg) => [
+    ...(required
+      ? [
+          {
+            required: requiredRule,
+            message: requiredMsg || tVal("required", { label: tLabel("phone") }),
+          },
+        ]
+      : []),
     {
       pattern: /^[0-9]{4,17}$/,
-      message: "Please enter a valid phone number.",
+      message: tVal("phone_invalid"),
     },
   ],
 
-  email: (required = true, requiredMsg = "Please enter email.") => [
-    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
+  email: (required = true, requiredMsg) => [
+    ...(required
+      ? [
+          {
+            required: requiredRule,
+            message: requiredMsg || tVal("required", { label: tLabel("email") }),
+          },
+        ]
+      : []),
     {
       pattern: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
-      message: "Please enter a valid email address.",
+      message: tVal("email_invalid"),
     },
   ],
 
-  url: (required = true, requiredMsg = "Please enter URL.") => [
-    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
+  url: (required = true, requiredMsg) => [
+    ...(required
+      ? [
+          {
+            required: requiredRule,
+            message: requiredMsg || tVal("required", { label: tLabel("url") }),
+          },
+        ]
+      : []),
     {
       pattern: /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-./?%&=]*)?$/i,
-      message: "Please enter a valid URL.",
+      message: tVal("url_invalid"),
     },
   ],
 
-  password: (required = true, requiredMsg = "Please enter password.") => [
-    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
-    { min: 8, message: "Password must be 8-20 characters." },
-    { max: 20, message: "Password must be 8-20 characters." },
+  password: (required = true, requiredMsg) => [
+    ...(required
+      ? [
+          {
+            required: requiredRule,
+            message: requiredMsg || tVal("required", { label: tLabel("password") }),
+          },
+        ]
+      : []),
+    { min: 8, message: tVal("password_length") },
+    { max: 20, message: tVal("password_length") },
     {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-      message: "Password must contain uppercase, lowercase, number, and special character.",
+      message: tVal("password_complexity"),
     },
   ],
 
-  confirmPass: (key = "password", required = true, requiredMsg = "Please confirm password.") => [
-    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
+  confirmPass: (key = "password", required = true, requiredMsg) => [
+    ...(required
+      ? [
+          {
+            required: requiredRule,
+            message: requiredMsg || tVal("required", { label: tLabel("password") }),
+          },
+        ]
+      : []),
     ({ getFieldValue }) => ({
       validator(_, value) {
         if (!value || getFieldValue(key) === value) {
           return Promise.resolve();
         }
-        return Promise.reject(new Error("Passwords do not match!"));
+        return Promise.reject(new Error(tVal("password_match")));
       },
     }),
   ],
 
-  postalCode: (required = true, requiredMsg = "Please enter postal code.") => [
-    ...(required ? [{ required: requiredRule, message: requiredMsg }] : []),
-    { pattern: /^[0-9]+$/, message: "Postal code must be a number." },
-    // { len: 6, message: "Postal code must be exactly 6 digits." },
+  postalCode: (required = true, requiredMsg) => [
+    ...(required
+      ? [
+          {
+            required: requiredRule,
+            message: requiredMsg || tVal("required", { label: tLabel("postal_code") }),
+          },
+        ]
+      : []),
+    { pattern: /^[0-9]+$/, message: tVal("postal_number") },
   ],
 };
 
+// ... keep exports for investorKycStatus, tradeStatus, etc. ...
 export const investorKycStatus = {
   pending: "pending",
   approved: "approved",

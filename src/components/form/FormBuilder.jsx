@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { Form, Button, Space, Divider } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Button, Space, Divider, Tabs, Badge } from "antd";
 import Field, { FormField } from "./Field";
 import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router-dom";
 import TableTitle from "../table/TableTitle";
 import { defaultMaxFileUploadSize, defaultRequiredMsg } from "../../utils/constants";
+import { useTranslation } from "react-i18next";
 
 /**
  * 🧩 FormBuilder Component
@@ -27,6 +28,7 @@ import { defaultMaxFileUploadSize, defaultRequiredMsg } from "../../utils/consta
  * @param {String} submitText - Submit button text
  * @param {Object} formProps - Extra props for AntD Form
  * @param {Boolean} twoColumn - Enable responsive 2-column layout
+ * @param {Boolean} multiLanguage - If true, renders English/Arabic tabs and requires both to be valid.
  */
 
 export default function FormBuilder({
@@ -45,9 +47,31 @@ export default function FormBuilder({
   twoColumn = true,
   loading = false,
   formHeight = "",
+  multiLanguage = false,
 }) {
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+
+  const [activeLang, setActiveLang] = useState("en");
+  const [tabErrors, setTabErrors] = useState({ en: false, ar: false });
+  useEffect(() => {
+    if (multiLanguage) {
+      const errors = form.getFieldsError();
+      const hasEnError = errors.some((e) => e.errors.length > 0 && e.name[0] === "en");
+      const hasArError = errors.some((e) => e.errors.length > 0 && e.name[0] === "ar");
+      setTabErrors({ en: hasEnError, ar: hasArError });
+    }
+  }, [form, multiLanguage]);
+
+  useEffect(() => {
+    const errors = form.getFieldsError().filter(({ errors }) => errors.length > 0);
+
+    if (errors.length > 0) {
+      const fieldNames = errors.map(({ name }) => name);
+      form.validateFields(fieldNames);
+    }
+  }, [i18n.language, form]);
 
   useEffect(() => {
     if (initialValues && Object.keys(initialValues).length) {
@@ -150,7 +174,13 @@ export default function FormBuilder({
     const currentValue = form.getFieldValue(fieldNamePath);
     const handleChange = (val) => {
       const newVal = val?.target ? val.target.value : val;
-      form.setFieldsValue({ [fieldNamePath]: newVal });
+      // Handle nested paths for multi-lang
+      if (Array.isArray(fieldNamePath)) {
+        // Create a deep update or let AntD handle the path array
+        form.setFieldsValue({ [fieldNamePath[0]]: { [fieldNamePath[1]]: newVal } });
+      } else {
+        form.setFieldsValue({ [fieldNamePath]: newVal });
+      }
       computeAndSetComputedFields(fieldNamePath);
     };
 
@@ -163,7 +193,7 @@ export default function FormBuilder({
     return renderFieldType(
       { ...field, disabled: field.disabled ?? typeof field.computed === "function" },
       computedValue,
-      handleChange
+      handleChange,
     );
   };
 
@@ -176,13 +206,17 @@ export default function FormBuilder({
       return rule;
     });
 
-  const renderFormItem = (field, itemProps = {}) => {
+  const renderFormItem = (field, itemProps = {}, langPrefix = null) => {
     const processedRules = getProcessedRules(field);
+
+    // If multiLanguage is on, nested path is ['en', 'title']
+    const fieldName = langPrefix ? [langPrefix, field.name] : field.name;
+    const uniqueKey = langPrefix ? `${langPrefix}-${field.name}` : field.name;
 
     return (
       <FormField
-        key={field.name}
-        name={field.name}
+        key={uniqueKey}
+        name={fieldName}
         label={field.label}
         type={field.type}
         rules={processedRules}
@@ -205,22 +239,66 @@ export default function FormBuilder({
     onFinish({ ...values, ...controlledValues }, { form });
   };
 
+  const onFinishFailed = ({ errorFields }) => {
+    if (multiLanguage) {
+      // 1. Calculate errors for both tabs immediately
+      const hasEnError = errorFields.some((field) => field.name[0] === "en");
+      const hasArError = errorFields.some((field) => field.name[0] === "ar");
+
+      // 2. Update Red Dots state INSTANTLY (Fixes the delay)
+      setTabErrors({ en: hasEnError, ar: hasArError });
+
+      // 3. Smart Switching Logic:
+      // Only switch tabs if the CURRENT tab is valid (clean),
+      // but the OTHER tab has errors.
+      const currentTabHasErrors =
+        (activeLang === "en" && hasEnError) || (activeLang === "ar" && hasArError);
+
+      if (!currentTabHasErrors) {
+        if (hasEnError) setActiveLang("en");
+        else if (hasArError) setActiveLang("ar");
+      }
+      // If current tab has errors, we stay here so the user can fix them first.
+    }
+  };
+
+  const renderGrid = (langPrefix) => (
+    <div
+      className={`grid ${
+        twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+      } gap-x-4 items-start`}
+    >
+      {formConfig.map((field) =>
+        renderFormItem(
+          field,
+          {
+            initialValue: field.initialValue,
+            className: "w-full",
+            validateTrigger: "onBlur",
+            ...field.formItemProps,
+          },
+          langPrefix,
+        ),
+      )}
+    </div>
+  );
+
   if (mode === "fields-only") {
     return {
       form,
-      Fields: (
-        <div className={`grid ${twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"} gap-6`}>
-          {formConfig.map((field) => renderFormItem(field))}
-        </div>
-      ),
+      Fields: renderGrid(),
     };
   }
+
+  const currentLangLabel =
+    activeLang === "en" ? t("language.english", "English") : t("language.arabic", "Arabic");
 
   return (
     <Form
       form={form}
       layout={layout}
       onFinish={handleFinish}
+      onFinishFailed={onFinishFailed}
       className={`${formHeight} flex flex-col justify-between gap-6`}
       {...formProps}
     >
@@ -231,20 +309,41 @@ export default function FormBuilder({
             <Divider className="my-4" variant="dashed" />
           </>
         )}
-        <div
-          className={`grid ${
-            twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-          } gap-x-4  items-start`}
-        >
-          {formConfig.map((field) =>
-            renderFormItem(field, {
-              initialValue: field.initialValue,
-              className: "w-full",
-              validateTrigger: "onBlur",
-              ...field.formItemProps,
-            })
-          )}
-        </div>
+        {multiLanguage ? (
+          <Tabs
+            activeKey={activeLang}
+            onChange={setActiveLang}
+            type="card"
+            tabBarExtraContent={
+              <span className="text-gray-500 text-sm">
+                {t("common.filling_form_msg", { ns: "form", lang: currentLangLabel })}
+              </span>
+            }
+            destroyOnHidden={false} // IMPORTANT: Keep hidden fields mounted so they validate
+            items={[
+              {
+                key: "en",
+                label: (
+                  <Badge dot={tabErrors.en} offset={[5, 0]}>
+                    {t("language.english", "English")}
+                  </Badge>
+                ),
+                children: renderGrid("en"),
+              },
+              {
+                key: "ar",
+                label: (
+                  <Badge dot={tabErrors.ar} offset={[5, 0]}>
+                    {t("language.arabic", "Arabic")}
+                  </Badge>
+                ),
+                children: renderGrid("ar"),
+              },
+            ]}
+          />
+        ) : (
+          renderGrid(null) // Standard render
+        )}
       </div>
 
       <div className="flex flex-wrap gap-2 w-full">

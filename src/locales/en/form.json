@@ -1,0 +1,49 @@
+{
+  "field": {
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "url": "URL",
+    "password": "Password",
+    "postal_code": "Postal Code"
+  },
+  "common": {
+    "save": "Save",
+    "back": "Back",
+    "submit": "Submit",
+    "file_placeholder": "Upload file",
+    "view": "View",
+    "download": "Download",
+    "filling_form_msg": "The form you are filling for {{lang}} platform."
+  },
+  "validation": {
+    "required": "Please enter {{label}}",
+    "required_select": "Please select {{label}}",
+    "required_upload": "Please upload {{label}}",
+    "email_invalid": "Please enter a valid email address.",
+    "phone_invalid": "Please enter a valid phone number.",
+    "url_invalid": "Please enter a valid URL.",
+    "password_length": "Password must be 8-20 characters.",
+    "password_complexity": "Password must contain uppercase, lowercase, number, and special character.",
+    "password_match": "Passwords do not match!",
+    "postal_number": "Postal code must be a number."
+  },
+  "investor": {
+    "title_details": "Investor Details - {{name}}",
+    "full_name": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "dob": "Date of Birth",
+    "nationality": "Nationality",
+    "address": "Residential Address",
+    "country": "Country of residence",
+    "postal_code": "Postal Code",
+    "password": "Create Password",
+    "confirm_password": "Confirm Password",
+    "proof_address": "Proof of Address",
+    "proof_address_ph": "Upload proof of address (e.g., utility bill)",
+    "identity_doc": "Identity Document",
+    "identity_doc_ph": "Upload identity proof (e.g., Valid Passport, ID card)",
+    "signature": "Signature",
+    "signature_ph": "Accepted Formats: JPEG, PNG, PDF (Max 5MB)"
+  }
+}
