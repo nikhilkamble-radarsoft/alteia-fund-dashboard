@@ -1,0 +1,72 @@
+{
+  "language": {
+    "english": "English",
+    "arabic": "Arabic"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "investors": "Investors",
+    "funds": "Funds",
+    "fund_performance": "Fund Performance",
+    "fund_allocation": "Fund Allocation",
+    "fund_interest": "Fund Interest",
+    "leads": "Leads",
+    "fund_categories": "Fund Categories",
+    "settings": "Settings",
+    "logout": "Logout",
+    "push_notifications": "Push notifications",
+    "add_new": "Add new"
+  },
+  "titles": {
+    "welcome_back": "Welcome back, {{name}}!",
+    "dashboard_overview": "Dashboard Overview",
+    "customers_mgmt": "Customers management",
+    "customers_subtitle": "Track customer verification, investment activity, and key details.",
+    "add_customer": "Add New Customer",
+    "add_customer_subtitle": "Fill in the details below to register a new customer and initiate KYC verification.",
+    "investor_details": "Investor Details",
+    "investor_details_subtitle": "View and manage investor details.",
+
+    "funds_mgmt": "Funds management",
+    "funds_subtitle": "Browse and explore every available investment opportunity in one place.",
+    "add_fund": "Add New Fund",
+    "add_fund_subtitle": "Fill in the details below to create or update an investment opportunity. Ensure all information is accurate before saving.",
+    "fund_details": "Fund Details",
+    "fund_details_subtitle": "View and manage Fund details.",
+
+    "roi_overview": "ROI Overview",
+    "roi_subtitle": "Track your portfolio’s performance and analyze monthly returns at a glance.",
+    "monthly_roi_input": "Monthly ROI Input",
+    "monthly_roi_subtitle": "Enter monthly ROI percentages to update investor reports.",
+
+    "fund_allocation_title": "Fund Allocation",
+    "fund_allocation_subtitle": "Allocate funds to investors.",
+    "add_purchase": "Add New Purchase",
+    "purchase_details": "Purchase Details",
+    "purchase_details_subtitle": "View purchase details.",
+
+    "interested_investors": "Interested investors",
+    "interested_investors_subtitle": "View investors who have shown interest in funds and set reminders for pending follow-ups.",
+    "review_kyc": "Review KYC and registration details before approval.",
+
+    "leads_mgmt": "Leads management",
+    "leads_subtitle": "Manage and track lead status, and follow up efficiently.",
+    "lead_details": "Lead Details",
+
+    "fund_categories_title": "Fund Categories",
+    "fund_categories_subtitle": "Create and manage fund categories used across the platform. Categories help structure funds, reporting, and allocations.",
+
+    "create_notification": "Create Notification",
+    "create_notification_subtitle": "Create and manage notifications for investors."
+  },
+  "actions": {
+    "create_investor": "Create Investor",
+    "view_investor": "View Investor",
+    "create_fund": "Create Fund",
+    "view_fund": "View Fund",
+    "view_update_roi": "View Update ROI",
+    "create_purchase": "Create Purchase",
+    "view_purchase": "View Purchase",
+    "view_lead": "View Lead"
+  }
+}

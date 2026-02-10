@@ -7,15 +7,17 @@ import CustomBadge from "../../components/common/CustomBadge";
 import { tableFallbackText, tradeStatus } from "../../utils/constants";
 import CustomTag from "../../components/common/CustomTag";
 import { formatDate, outputFormatters, sanitizeText } from "../../utils/utils";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
 export default function Trades() {
   const navigate = useNavigate();
+  const { t } = useTranslation("table");
 
   const columns = [
     {
-      title: "Fund Title",
+      title: t("funds.columns.fund_title"),
       dataIndex: "title",
       render: (text, record) => (
         <NavLink to={`/funds/${record._id}`} className="p-0">
@@ -24,50 +26,51 @@ export default function Trades() {
       ),
     },
     {
-      title: "Category",
+      title: t("funds.columns.category"),
       dataIndex: "category.name",
     },
     {
-      title: "ROI %",
+      title: t("funds.columns.roi"),
       dataIndex: "roi_range",
-      render: (text, record) =>
-        `${text?.endsWith("%") ? text : `${text}%`} ${
-          record.ytd_return ? `(YTD ${record.ytd_return})` : ""
-        }`,
+      render: (text, record) => {
+        const roi = text?.endsWith("%") ? text : `${text}%`;
+        const ytdLabel = t("common.ytd", "YTD");
+        return `${roi} ${record.ytd_return ? `(${ytdLabel} ${record.ytd_return || "-"})` : ""}`;
+      },
     },
     {
-      title: "Min. Investment",
+      title: t("funds.columns.min_investment"),
       dataIndex: "minimum_investment",
       render: (text) => outputFormatters.money(text) || tableFallbackText,
     },
     {
-      title: "Duration Type",
+      title: t("funds.columns.duration_type"),
       dataIndex: "duration_type",
       render: (text) => sanitizeText(text) || tableFallbackText,
     },
     {
-      title: "Start Date",
+      title: t("funds.columns.start_date"),
       dataIndex: "start_date",
       render: (text) => formatDate(text) || tableFallbackText,
     },
     {
-      title: "End Date",
+      title: t("funds.columns.end_date"),
       dataIndex: "end_date",
       render: (text) => formatDate(text) || tableFallbackText,
     },
     {
-      title: "Status",
+      title: t("common.columns.status"),
       dataIndex: "status",
       render: (text) => {
         let finalText = text?.toLowerCase();
         let finalVariant, customColors;
         switch (text) {
           case tradeStatus.active:
-            finalText = "Active";
+            finalText = t("funds.status.active");
             finalVariant = "success";
             break;
           case tradeStatus.inactive:
-            finalText = "Inactive";
+            finalText = t("funds.status.inactive");
             finalVariant = "danger";
             break;
           default:
@@ -81,11 +84,15 @@ export default function Trades() {
   return (
     <div>
       <TableTitle
-        title="Funds Listing"
+        title={t("funds.title")}
         titleColor="text-black"
         subtitleColor="text-black"
         buttons={[
-          <CustomButton text="Add New Fund" showIcon onClick={() => navigate("/funds/create")} />,
+          <CustomButton
+            text={t("funds.add_new")}
+            showIcon
+            onClick={() => navigate("/funds/create")}
+          />,
         ]}
       />
       <Divider variant="dashed" className="my-2" />

@@ -3,13 +3,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
-import { investorKycStatus, tradeInterestStatus } from "../../utils/constants";
 import CustomTag from "../../components/common/CustomTag";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules } from "../../utils/constants";
 import useApi from "../../logic/useApi";
-import dayjs from "dayjs";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
@@ -18,14 +17,15 @@ export default function FundCategories() {
   const { callApi, loading } = useApi();
   const { showConfirm, modal, closeModal } = useThemedModal();
   const [fetchRefresh, setFetchRefresh] = useState(false);
+  const { t } = useTranslation("table");
 
   const handleDelete = (record) => {
     showConfirm({
-      message: "Delete Category",
-      subMessage: "Are you sure you want to delete category?",
+      message: t("categories.modals.delete_title"),
+      subMessage: t("categories.modals.delete_message"),
       showAnimation: false,
       variant: "error",
-      confirmText: "Delete category",
+      confirmText: t("categories.modals.delete_btn"),
       onConfirm: async (values) => {
         try {
           const { status } = await callApi({
@@ -48,30 +48,28 @@ export default function FundCategories() {
 
   const columns = [
     {
-      title: "Name",
+      title: t("categories.columns.name"),
       dataIndex: "name",
       render: (text, record) => (
         <NavLink
           onClick={() => {
             showConfirm({
-              // variant: "none",
-              message: "Edit Fund Category",
-              subMessage:
-                "Define a category to group similar funds and improve fund discovery and reporting.",
+              message: t("categories.modals.edit_title"),
+              subMessage: t("categories.modals.subtitle"),
               showAnimation: false,
               twoColumn: false,
               fields: [
                 {
                   name: "name",
-                  label: "Name",
+                  label: t("categories.modals.name_label"),
                   type: "input",
-                  rules: formRules.required("Name"),
+                  rules: formRules.required(t("categories.modals.name_label")),
                 },
                 {
                   name: "description",
-                  label: "Description",
+                  label: t("categories.modals.desc_label"),
                   type: "textarea",
-                  placeholder: "Enter your description",
+                  placeholder: t("categories.modals.desc_placeholder"),
                 },
               ],
               onConfirm: async (values) => {
@@ -100,22 +98,22 @@ export default function FundCategories() {
       ),
     },
     {
-      title: "Description",
+      title: t("categories.columns.description"),
       dataIndex: "description",
     },
     {
-      title: "Status",
+      title: t("common.columns.status"),
       dataIndex: "status",
       render: (text) => {
         let finalText = text?.toLowerCase();
         let finalVariant, customColors;
         switch (text) {
           case "active":
-            finalText = "Active";
+            finalText = t("categories.status.active");
             finalVariant = "success";
             break;
           case "inactive":
-            finalText = "Inactive";
+            finalText = t("categories.status.inactive");
             finalVariant = "danger";
             break;
           default:
@@ -125,11 +123,11 @@ export default function FundCategories() {
       },
     },
     {
-      title: "Action",
+      title: t("categories.columns.action"),
       dataIndex: "action",
       actions: (record) => [
         {
-          label: "Delete",
+          label: t("categories.actions.delete"),
           onClick: (record) => handleDelete(record),
           disabled: record.status === "active",
         },
@@ -140,32 +138,30 @@ export default function FundCategories() {
   return (
     <>
       <TableTitle
-        title="Fund Categories"
+        title={t("categories.title")}
         titleColor="text-black"
         buttons={[
           <CustomButton
-            text="Add New Category"
+            text={t("categories.add_new")}
             showIcon
             onClick={() => {
               showConfirm({
-                // variant: "none",
-                message: "Create Fund Category",
-                subMessage:
-                  "Define a category to group similar funds and improve fund discovery and reporting.",
+                message: t("categories.modals.create_title"),
+                subMessage: t("categories.modals.subtitle"),
                 showAnimation: false,
                 twoColumn: false,
                 fields: [
                   {
                     name: "name",
-                    label: "Name",
+                    label: t("categories.modals.name_label"),
                     type: "input",
-                    rules: formRules.required("Name"),
+                    rules: formRules.required(t("categories.modals.name_label")),
                   },
                   {
                     name: "description",
-                    label: "Description",
+                    label: t("categories.modals.desc_label"),
                     type: "textarea",
-                    placeholder: "Enter your description",
+                    placeholder: t("categories.modals.desc_placeholder"),
                   },
                 ],
                 onConfirm: async (values) => {

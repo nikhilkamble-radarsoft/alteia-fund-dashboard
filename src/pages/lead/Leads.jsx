@@ -9,14 +9,14 @@ import { useState } from "react";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { checkUserKycDocument } from "../../utils/utils";
 import countryList from "../../utils/country_list.json";
+import { useTranslation } from "react-i18next";
 
 export default function Leads() {
   const navigate = useNavigate();
   const { callApi } = useApi();
   const { modal, showConfirm, closeModal } = useThemedModal();
   const [fetchRefresh, setFetchRefresh] = useState(false);
-
-  const [form] = Form.useForm();
+  const { t } = useTranslation("table");
 
   const handleStatusChange = async (id, newStatus, comment) => {
     if (!newStatus) return;
@@ -44,17 +44,17 @@ export default function Leads() {
   const handleShowRejectModal = (record) => {
     showConfirm({
       title: "",
-      message: "Reject KYC Verification",
+      message: t("leads.modals.reject_title"),
       variant: "error",
-      confirmText: "Reject",
-      cancelText: "Cancel",
+      confirmText: t("leads.modals.reject_btn"),
+      cancelText: t("leads.modals.cancel_btn"),
       fields: [
         {
           name: "comment",
-          label: "Comments",
+          label: t("leads.modals.comment_label"),
           type: "textarea",
-          placeholder: "Enter your comment",
-          rules: formRules.required("Comments"),
+          placeholder: t("leads.modals.comment_placeholder"),
+          rules: formRules.required(t("leads.modals.comment_label")),
           rows: 4,
         },
       ],
@@ -67,10 +67,10 @@ export default function Leads() {
   const handleShowApproveModal = (record) => {
     showConfirm({
       title: "",
-      message: "Approve KYC Verification",
+      message: t("leads.modals.approve_title"),
       variant: "success",
-      confirmText: "Approve",
-      cancelText: "Cancel",
+      confirmText: t("leads.modals.approve_btn"),
+      cancelText: t("leads.modals.cancel_btn"),
       onConfirm: () => {
         handleStatusChange(record._id, investorKycStatus.approved);
       },
@@ -83,7 +83,7 @@ export default function Leads() {
 
   const columns = [
     {
-      title: "Customer Name",
+      title: t("leads.columns.customer_name"),
       dataIndex: "full_name",
       render: (text, record) => (
         <Button type="link" onClick={() => handleNavigate(record._id)} className="p-0">
@@ -91,34 +91,37 @@ export default function Leads() {
         </Button>
       ),
     },
-    { title: "Email", dataIndex: "email" },
     {
-      title: "Phone",
+      title: t("common.columns.email"),
+      dataIndex: "email",
+    },
+    {
+      title: t("common.columns.phone"),
       dataIndex: "phone",
       render: (text, record) => {
         const phoneCode = countryList.find(
-          (item) => item.country_of_residence === record.country
+          (item) => item.country_of_residence === record.country,
         )?.phone_code;
         return `${phoneCode ? phoneCode + " " : ""}${text}`;
       },
     },
     {
-      title: "KYC Status",
+      title: t("investors.columns.kyc_status"),
       dataIndex: "kyc_status",
       render: (text) => {
         let finalText = text?.toLowerCase();
         let finalVariant;
         switch (text) {
           case investorKycStatus.approved:
-            finalText = "KYC Verified";
+            finalText = t("investors.kyc_status.verified");
             finalVariant = "success";
             break;
           case investorKycStatus.pending:
-            finalText = "Pending Approval";
+            finalText = t("investors.kyc_status.pending");
             finalVariant = "warning";
             break;
           case investorKycStatus.rejected:
-            finalText = "Denied";
+            finalText = t("investors.kyc_status.denied");
             finalVariant = "danger";
             break;
           default:
@@ -127,26 +130,32 @@ export default function Leads() {
         return <CustomBadge variant={finalVariant} label={finalText} />;
       },
     },
-    { title: "Nationality", dataIndex: "nationality" },
-    { title: "Country of Residence", dataIndex: "country" },
     {
-      title: "Actions",
+      title: t("leads.columns.nationality"),
+      dataIndex: "nationality",
+    },
+    {
+      title: t("leads.columns.country"),
+      dataIndex: "country",
+    },
+    {
+      title: t("common.columns.actions"),
       actions: (record) => [
         {
           type: "update",
-          label: "Approve",
+          label: t("leads.actions.approve"),
           onClick: (record) => handleShowApproveModal(record),
           visible: record.kyc_status === investorKycStatus.pending && record.hasKycDocument,
         },
         {
           type: "update",
-          label: "Reject",
+          label: t("leads.actions.reject"),
           onClick: (record) => handleShowRejectModal(record),
           visible: record.kyc_status === investorKycStatus.pending && record.hasKycDocument,
         },
         {
           type: "update",
-          label: "Request KYC",
+          label: t("leads.actions.request_kyc"),
           onClick: (record) => handleKycNavigate(record),
           visible: !record.hasKycDocument,
         },
@@ -156,7 +165,7 @@ export default function Leads() {
 
   return (
     <div>
-      <TableTitle title="Leads Listing" titleColor="text-black" />
+      <TableTitle title={t("leads.title")} titleColor="text-black" />
       <Divider variant="dashed" className="my-2" />
       <CustomTable
         columns={columns}

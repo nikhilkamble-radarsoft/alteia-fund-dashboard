@@ -9,6 +9,8 @@ import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules } from "../../utils/constants";
 import useApi from "../../logic/useApi";
 import dayjs from "dayjs";
+// CHANGED: Import translation hook
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
@@ -16,81 +18,72 @@ export default function TradeInterests() {
   const navigate = useNavigate();
   const { callApi, loading } = useApi();
   const { showConfirm, modal, closeModal } = useThemedModal();
+  // CHANGED: Initialize translation hook
+  const { t } = useTranslation("table");
 
   const handleRemindMe = (record) => {
     showConfirm({
-      message: "Set Follow-Up Reminder",
+      message: t("interests.modal.title"), // CHANGED
       showAnimation: false,
       twoColumn: true,
       fields: [
         {
           name: "reminder_date",
-          label: "Reminder Date",
+          label: t("interests.modal.reminder_date"), // CHANGED
           type: "date",
-          rules: formRules.required("Reminder Date"),
+          rules: formRules.required(t("interests.modal.reminder_date")), // CHANGED
           datePickerProps: {
             disabledDate: (current) => current && current < dayjs().startOf("day"),
           },
         },
         {
           name: "reminder_time",
-          label: "Time",
+          label: t("interests.modal.time"), // CHANGED
           type: "time",
           rules: [
-            ...formRules.required("Time"),
+            ...formRules.required(t("interests.modal.time")), // CHANGED
             ({ getFieldValue }) => ({
               validator: (_, value) => {
                 const reminderDate = getFieldValue("reminder_date");
 
-                // If either is missing, let required rules handle it
                 if (!value || !reminderDate) {
                   return Promise.resolve();
                 }
 
-                // Combine date + time into a single datetime
                 const selectedDateTime = dayjs(reminderDate)
                   .hour(dayjs(value).hour())
                   .minute(dayjs(value).minute())
                   .second(0);
 
                 if (selectedDateTime.isBefore(dayjs())) {
-                  return Promise.reject(new Error("No past date or time allowed"));
+                  return Promise.reject(new Error(t("interests.modal.error_past_date"))); // CHANGED
                 }
 
                 return Promise.resolve();
               },
             }),
           ],
-
           timePickerProps: (form) => ({
             disabledTime: () => {
               const selectedDate = form.getFieldValue("reminder_date");
-
-              // If no date or not today → no restrictions
               if (!selectedDate || !dayjs(selectedDate).isSame(dayjs(), "day")) {
                 return {};
               }
-
               const now = dayjs();
-              const currentHour = now.hour();
-              const currentMinute = now.minute();
-
               return {
-                disabledHours: () => Array.from({ length: currentHour }, (_, i) => i),
-
+                disabledHours: () => Array.from({ length: now.hour() }, (_, i) => i),
                 disabledMinutes: (hour) =>
-                  hour === currentHour ? Array.from({ length: currentMinute }, (_, i) => i) : [],
+                  hour === now.hour() ? Array.from({ length: now.minute() }, (_, i) => i) : [],
               };
             },
           }),
         },
-
         {
           name: "comment",
-          label: "Comments",
+          label: t("interests.modal.comments"), // CHANGED
           type: "textarea",
-          placeholder: "Enter your comment",
-          rules: formRules.required("Comments"),
+          placeholder: t("interests.modal.comments_placeholder"), // CHANGED
+          rules: formRules.required(t("interests.modal.comments")), // CHANGED
           rows: 4,
           formItemProps: {
             className: "md:col-span-2",
@@ -106,8 +99,6 @@ export default function TradeInterests() {
               ...values,
               wishlist_id: record.wishlist_id,
             },
-            successOptions: {},
-            errorOptions: {},
           });
           if (status) {
             closeModal();
@@ -125,43 +116,38 @@ export default function TradeInterests() {
 
   const columns = [
     {
-      title: "Customer Name",
+      title: t("interests.columns.customer_name"), // CHANGED
       dataIndex: "full_name",
-      // render: (text, record) => (
-      //   <NavLink to={`/investors/${record.user_id}`} className="p-0">
-      //     {text}
-      //   </NavLink>
-      // ),
     },
     {
-      title: "Email",
+      title: t("common.columns.email"), // CHANGED (Reusing common key)
       dataIndex: "email",
     },
     {
-      title: "Fund Interest",
+      title: t("interests.columns.fund_interest"), // CHANGED
       dataIndex: "title",
     },
     {
-      title: "Status",
+      title: t("common.columns.status"),
       dataIndex: "status",
       render: (text) => {
         let finalText = text?.toLowerCase();
         let finalVariant, customColors;
         switch (text) {
           case tradeInterestStatus.new:
-            finalText = "New";
+            finalText = t("interests.status.new"); // CHANGED
             finalVariant = "upcoming";
             break;
           case tradeInterestStatus.contacted:
-            finalText = "Contacted";
+            finalText = t("interests.status.contacted"); // CHANGED
             finalVariant = "primary";
             break;
           case tradeInterestStatus.reminder_set:
-            finalText = "Reminder Set";
+            finalText = t("interests.status.reminder_set"); // CHANGED
             finalVariant = "pending";
             break;
           case tradeInterestStatus.missed_reminder:
-            finalText = "Missed Reminder";
+            finalText = t("interests.status.missed_reminder"); // CHANGED
             finalVariant = "danger";
             break;
           default:
@@ -171,27 +157,27 @@ export default function TradeInterests() {
       },
     },
     {
-      title: "Last activity",
+      title: t("interests.columns.last_activity"), // CHANGED
       dataIndex: "last_activity",
     },
     {
-      title: "Action",
+      title: t("interests.columns.action"), // CHANGED
       dataIndex: "action",
       actions: (record) => [
         {
-          label: "Remind me",
+          label: t("interests.actions.remind_me"), // CHANGED
           onClick: (record) => handleRemindMe(record),
           visible: ![tradeInterestStatus.reminder_set, tradeInterestStatus.contacted].includes(
-            record.status
+            record.status,
           ),
         },
         {
-          label: "Request KYC",
+          label: t("interests.actions.request_kyc"), // CHANGED
           onClick: (record) => handleKycNavigate(record),
           visible: investorKycStatus.pending === record.kyc_status,
         },
         {
-          label: "Complete Purchase",
+          label: t("interests.actions.complete_purchase"), // CHANGED
           onClick: (record) =>
             navigate(`/purchase/create`, {
               state: { trade_id: record.fund_id, user_id: record.user_id },
@@ -204,7 +190,11 @@ export default function TradeInterests() {
 
   return (
     <>
-      <TableTitle title="Funds Interest" titleColor="text-black" subtitleColor="text-black" />
+      <TableTitle
+        title={t("interests.title")} // CHANGED
+        titleColor="text-black"
+        subtitleColor="text-black"
+      />
       <Divider variant="dashed" className="my-2" />
       <CustomTable
         columns={columns}

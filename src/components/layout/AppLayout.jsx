@@ -1,18 +1,20 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import { Layout, Drawer } from "antd";
-import { matchPath, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import { useMediaQuery } from "react-responsive";
+import { useLanguage } from "../../logic/useLanguage";
+// Import your language hook to detect direction
 
 const { Content } = Layout;
 
 const TitleContext = createContext({
   title: null,
   subtitle: null,
-  setTitle: () => { },
-  setSubtitle: () => { },
-  clearTopData: () => { },
+  setTitle: () => {},
+  setSubtitle: () => {},
+  clearTopData: () => {},
 });
 
 export default function AppLayout() {
@@ -23,6 +25,8 @@ export default function AppLayout() {
   const [title, setTitle] = useState(null);
   const [subtitle, setSubtitle] = useState(null);
   const [showBack, setShowBack] = useState(null);
+
+  const { isRTL } = useLanguage();
 
   const sidebarWidth = collapsed ? 80 : 256;
 
@@ -38,11 +42,8 @@ export default function AppLayout() {
   };
 
   useLayoutEffect(() => {
-    // const depth = location.pathname.split("/").filter(Boolean).length;
-    // if (depth <= 2) clearTopData();
     clearTopData();
   }, [location.pathname]);
-
 
   return (
     <TitleContext.Provider
@@ -57,7 +58,9 @@ export default function AppLayout() {
               position: "fixed",
               top: 0,
               bottom: 0,
-              left: 0,
+              // 2. Dynamic Positioning: If RTL, stick to Right. If LTR, stick to Left.
+              right: isRTL ? 0 : "auto",
+              left: isRTL ? "auto" : 0,
               background: "var(--color-primary)",
               transition: "width 0.2s",
               zIndex: 1000,
@@ -70,11 +73,11 @@ export default function AppLayout() {
         {/* Mobile Drawer */}
         {isMobile && (
           <Drawer
-            placement="left"
+            placement={isRTL ? "right" : "left"}
             closable={false}
             open={drawerVisible}
             onClose={() => setDrawerVisible(false)}
-            width={250}
+            width={280}
             styles={{ body: { padding: 0 } }}
             className="bg-primary"
           >
@@ -85,8 +88,9 @@ export default function AppLayout() {
         {/* Main Content */}
         <Layout
           style={{
-            marginLeft: !isMobile ? sidebarWidth : 0,
-            transition: "margin-left 0.2s",
+            marginRight: isRTL && !isMobile ? sidebarWidth : 0,
+            marginLeft: !isRTL && !isMobile ? sidebarWidth : 0,
+            transition: "all 0.2s",
           }}
         >
           <Topbar

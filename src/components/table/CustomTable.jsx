@@ -1,8 +1,9 @@
 import { Select, Table, Input, Pagination } from "antd";
 import useApi from "../../logic/useApi";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { enhanceColumns } from "./TableUtils.jsx";
 import { useThemedModal } from "../../logic/useThemedModal.jsx";
+import { useTranslation } from "react-i18next";
 
 /**
  * CustomTable with server/client sorting and action column support
@@ -107,6 +108,7 @@ export default function CustomTable({
   const [total, setTotal] = useState(dataSource?.length || 0);
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
+  const { t } = useTranslation("table");
 
   const { showError } = useThemedModal();
 
@@ -218,7 +220,9 @@ export default function CustomTable({
     const dataKey = apiConfig.dataAccessorKey || "data";
     const totalKey = apiConfig.totalAccessorKey || "totalRecords";
 
-    const updatedData = dataMapper ? dataMapper(response?.[dataKey] || []) : response?.[dataKey] || [];
+    const updatedData = dataMapper
+      ? dataMapper(response?.[dataKey] || [])
+      : response?.[dataKey] || [];
 
     setTableData(updatedData);
     setTotal(response?.[totalKey] ?? 0);
@@ -240,8 +244,8 @@ export default function CustomTable({
     } else {
       const arr = dataSource.filter((d) =>
         Object.keys(d).some((key) =>
-          d[key]?.toString().toLowerCase().includes(debouncedSearch.toLowerCase())
-        )
+          d[key]?.toString().toLowerCase().includes(debouncedSearch.toLowerCase()),
+        ),
       );
       setTableData(arr);
       setTotal(arr.length || 0);
@@ -307,13 +311,13 @@ export default function CustomTable({
               options={[2, 5, 10].map((v) => ({ label: v, value: v }))}
               className="w-20"
             />
-            <span className="text-gray-600">entries per page</span>
+            <span className="text-gray-600">{t("common.entries_per_page")}</span>
           </div>
         )}
 
         {showSearch && (
           <Input
-            placeholder="Search:"
+            placeholder={t("common.search_placeholder")}
             className="w-60"
             value={search}
             onChange={(e) => {
@@ -359,7 +363,11 @@ export default function CustomTable({
       {showPagination && (
         <div className="flex flex-wrap gap-3 justify-center sm:justify-between items-center mt-3 text-sm text-gray-600">
           <span>
-            Showing {showingFrom} to {showingTo} of {total} {total === 1 ? "item" : "items"}
+            {t("pagination.showing", {
+              from: showingFrom,
+              to: showingTo,
+              count: total,
+            })}
           </span>
 
           <Pagination

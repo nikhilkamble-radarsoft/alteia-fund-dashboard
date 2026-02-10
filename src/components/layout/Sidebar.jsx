@@ -7,19 +7,23 @@ import AppLogo from "../common/AppLogo";
 import { useDispatch } from "react-redux";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import CustomButton from "../form/CustomButton";
-import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
+import { useLanguage } from "../../logic/useLanguage";
+import { useTranslation } from "react-i18next";
 
 const { Sider } = Layout;
 
 export default function Sidebar({ collapsed, toggleSidebar }) {
+  const { isRTL } = useLanguage();
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [openKeys, setOpenKeys] = useState([]);
 
   const isMobile = useMediaQuery({ maxWidth: 768 });
-  const routesConfig = createRoutesConfig({ dispatch, navigate });
+  const routesConfig = createRoutesConfig({ dispatch, navigate, t });
 
   const getMenuItems = (routes) => {
     const menuItemsArray = [];
@@ -43,14 +47,14 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
           children && children.length
             ? undefined
             : route.onClick
-            ? () => {
-                isMobile && toggleSidebar();
-                route.onClick();
-              }
-            : () => {
-                isMobile && toggleSidebar();
-                navigate(route.path);
-              },
+              ? () => {
+                  isMobile && toggleSidebar();
+                  route.onClick();
+                }
+              : () => {
+                  isMobile && toggleSidebar();
+                  navigate(route.path);
+                },
         children: children && children.length ? children : undefined,
       });
 
@@ -80,7 +84,7 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
         if (childKey.length) {
           // If child is visible → return child
           const visibleChild = route.children.find(
-            (c) => matchPath({ path: c.path, end: true }, pathname) && c.showInSidebar
+            (c) => matchPath({ path: c.path, end: true }, pathname) && c.showInSidebar,
           );
           if (visibleChild) return [visibleChild.path];
 
@@ -173,8 +177,9 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
             onClick={toggleSidebar}
             className="!p-1.5 fixed top-[74px] h-auto z-[2000]"
             style={{
-              left: collapsed ? 68 : 244,
-              transition: "left 0.2s",
+              left: isRTL ? undefined : collapsed ? 68 : 244,
+              right: isRTL ? (collapsed ? 68 : 244) : undefined,
+              transition: "all 0.25s",
             }}
             btnType="light-primary"
           />
@@ -185,12 +190,12 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
       <div className="">
         {!collapsed && (
           <div className="bg-[#FFFFFF1A] rounded-2xl p-4 gap-3 mx-4 flex flex-col justify-center items-center">
-            <Title level={5} className="text-white">
-              Push notifications
+            <Title level={5} className="!text-white !m-0">
+              {t("sidebar.push_notifications")}
             </Title>
             <CustomButton
               showIcon
-              text="Add new"
+              text={t("sidebar.add_new")}
               onClick={() => navigate("/create-notification")}
               btnType="light-primary"
             />

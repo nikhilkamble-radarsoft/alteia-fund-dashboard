@@ -16,7 +16,7 @@ export function useAxios() {
       }
       return config;
     },
-    (error) => Promise.reject(error)
+    (error) => Promise.reject(error),
   );
 
   // response interceptor
@@ -24,7 +24,7 @@ export function useAxios() {
     (response) => response,
     (error) => {
       return Promise.reject(error);
-    }
+    },
   );
 
   return instance;

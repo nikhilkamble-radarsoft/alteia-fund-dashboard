@@ -6,13 +6,15 @@ import TableTitle from "../../components/table/TableTitle";
 import CustomBadge from "../../components/common/CustomBadge";
 import { investorKycStatus } from "../../utils/constants";
 import countryList from "../../utils/country_list.json";
+import { useTranslation } from "react-i18next";
 
 export default function Investors() {
   const navigate = useNavigate();
+  const { t } = useTranslation("table");
 
   const columns = [
     {
-      title: "Customer Name",
+      title: t("investors.columns.full_name"),
       dataIndex: "full_name",
       render: (text, record) => (
         <NavLink to={`/investors/${record._id}`} className="p-0">
@@ -21,36 +23,36 @@ export default function Investors() {
       ),
     },
     {
-      title: "Email",
+      title: t("common.columns.email"),
       dataIndex: "email",
     },
     {
-      title: "Phone",
+      title: t("common.columns.phone"),
       dataIndex: "phone",
       render: (text, record) => {
         const phoneCode = countryList.find(
-          (item) => item.country_of_residence === record.country
+          (item) => item.country_of_residence === record.country,
         )?.phone_code;
         return `${phoneCode ? phoneCode + " " : ""}${text}`;
       },
     },
     {
-      title: "KYC Status",
+      title: t("investors.columns.kyc_status"),
       dataIndex: "kyc_status",
       render: (text) => {
         let finalText = text?.toLowerCase();
         let finalVariant;
         switch (text) {
           case investorKycStatus.approved:
-            finalText = "KYC Verified";
+            finalText = t("investors.kyc_status.verified");
             finalVariant = "success";
             break;
           case investorKycStatus.pending:
-            finalText = "Pending Approval";
+            finalText = t("investors.kyc_status.pending");
             finalVariant = "warning";
             break;
           case investorKycStatus.rejected:
-            finalText = "Denied";
+            finalText = t("investors.kyc_status.denied");
             finalVariant = "danger";
             break;
           default:
@@ -60,11 +62,11 @@ export default function Investors() {
       },
     },
     {
-      title: "Nationality",
+      title: t("investors.columns.nationality"),
       dataIndex: "nationality",
     },
     {
-      title: "Country of Residence",
+      title: t("investors.columns.country"),
       dataIndex: "country",
     },
   ];
@@ -72,12 +74,12 @@ export default function Investors() {
   return (
     <div>
       <TableTitle
-        title="Customers investing"
+        title={t("investors.title")}
         titleColor="text-black"
         subtitleColor="text-black"
         buttons={[
           <CustomButton
-            text="Add New Customer"
+            text={t("investors.add_new")}
             showIcon
             onClick={() => navigate("/investors/create")}
           />,

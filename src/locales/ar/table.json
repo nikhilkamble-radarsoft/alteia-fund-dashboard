@@ -1,0 +1,145 @@
+{
+  "pagination": {
+    "showing": "عرض {{from}} إلى {{to}} من {{count}} عنصر"
+  },
+  "common": {
+    "search_placeholder": "بحث:",
+    "entries_per_page": "مدخلات لكل صفحة",
+    "columns": {
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "id": "المعرف",
+      "actions": "الإجراءات",
+      "status": "الحالة",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "آخر تحديث"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "delete": "حذف",
+      "view": "عرض"
+    },
+    "ytd": "منذ بداية العام"
+  },
+  "investors": {
+    "title": "العملاء المستثمرون",
+    "add_new": "إضافة عميل جديد",
+    "columns": {
+      "full_name": "اسم العميل",
+      "kyc_status": "حالة KYC",
+      "nationality": "الجنسية",
+      "country": "بلد الإقامة"
+    },
+    "kyc_status": {
+      "verified": "تم التحقق",
+      "pending": "بانتظار الموافقة",
+      "denied": "مرفوض"
+    }
+  },
+
+  "funds": {
+    "title": "قائمة الصناديق",
+    "add_new": "إضافة صندوق جديد",
+    "columns": {
+      "fund_title": "اسم الصندوق",
+      "category": "الفئة",
+      "roi": "نسبة العائد %",
+      "min_investment": "الحد الأدنى للاستثمار",
+      "duration_type": "نوع المدة",
+      "start_date": "تاريخ البدء",
+      "end_date": "تاريخ الانتهاء"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    }
+  },
+  "purchases": {
+    "title": "قائمة المشتريات",
+    "add_new": "إضافة عملية شراء جديدة",
+    "columns": {
+      "fund_name": "اسم الصندوق",
+      "investor_name": "اسم المستثمر",
+      "amount": "المبلغ",
+      "units": "الوحدات",
+      "date": "التاريخ"
+    }
+  },
+  "interests": {
+    "title": "اهتمامات الصناديق",
+    "columns": {
+      "customer_name": "اسم العميل",
+      "fund_interest": "الاهتمام بالصندوق",
+      "last_activity": "آخر نشاط",
+      "action": "الإجراء"
+    },
+    "status": {
+      "new": "جديد",
+      "contacted": "تم الاتصال",
+      "reminder_set": "تم تعيين تذكير",
+      "missed_reminder": "تذكير فائت"
+    },
+    "actions": {
+      "remind_me": "ذكرني",
+      "request_kyc": "طلب KYC",
+      "complete_purchase": "إكمال الشراء"
+    },
+    "modal": {
+      "title": "تعيين تذكير للمتابعة",
+      "reminder_date": "تاريخ التذكير",
+      "time": "الوقت",
+      "comments": "التعليقات",
+      "comments_placeholder": "أدخل تعليقك",
+      "error_past_date": "لا يُسمح بتاريخ أو وقت سابق"
+    }
+  },
+  "leads": {
+    "title": "قائمة العملاء المحتملين",
+    "columns": {
+      "customer_name": "اسم العميل",
+      "nationality": "الجنسية",
+      "country": "بلد الإقامة"
+    },
+    "modals": {
+      "reject_title": "رفض التحقق من الهوية (KYC)",
+      "approve_title": "الموافقة على التحقق من الهوية (KYC)",
+      "reject_btn": "رفض",
+      "approve_btn": "موافقة",
+      "cancel_btn": "إلغاء",
+      "comment_label": "التعليقات",
+      "comment_placeholder": "أدخل تعليقك"
+    },
+    "actions": {
+      "approve": "موافقة",
+      "reject": "رفض",
+      "request_kyc": "طلب KYC"
+    }
+  },
+  "categories": {
+    "title": "فئات الصناديق",
+    "add_new": "إضافة فئة جديدة",
+    "columns": {
+      "name": "الاسم",
+      "description": "الوصف",
+      "action": "الإجراء"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "actions": {
+      "delete": "حذف"
+    },
+    "modals": {
+      "create_title": "إنشاء فئة صندوق",
+      "edit_title": "تعديل فئة الصندوق",
+      "delete_title": "حذف الفئة",
+      "delete_message": "هل أنت متأكد أنك تريد حذف الفئة؟",
+      "delete_btn": "حذف الفئة",
+      "subtitle": "حدد فئة لتجميع الصناديق المماثلة وتحسين اكتشاف الصناديق وإعداد التقارير.",
+      "name_label": "الاسم",
+      "desc_label": "الوصف",
+      "desc_placeholder": "أدخل الوصف الخاص بك"
+    }
+  }
+}

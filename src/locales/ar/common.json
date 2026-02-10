@@ -1,0 +1,72 @@
+{
+  "language": {
+    "english": "الإنجليزية",
+    "arabic": "العربية"
+  },
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "investors": "المستثمرون",
+    "funds": "الصناديق",
+    "fund_performance": "أداء الصندوق",
+    "fund_allocation": "تخصيص الأموال",
+    "fund_interest": "الاهتمام بالصندوق",
+    "leads": "العملاء المحتملين",
+    "fund_categories": "فئات الصندوق",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "push_notifications": "إشعارات الدفع",
+    "add_new": "إضافة جديد"
+  },
+  "titles": {
+    "welcome_back": "مرحباً بك مجدداً، {{name}}!",
+    "dashboard_overview": "نظرة عامة على لوحة التحكم",
+    "customers_mgmt": "إدارة العملاء",
+    "customers_subtitle": "تتبع التحقق من العملاء، ونشاط الاستثمار، والتفاصيل الرئيسية.",
+    "add_customer": "إضافة عميل جديد",
+    "add_customer_subtitle": "املأ التفاصيل أدناه لتسجيل عميل جديد وبدء عملية التحقق من الهوية (KYC).",
+    "investor_details": "تفاصيل المستثمر",
+    "investor_details_subtitle": "عرض وإدارة تفاصيل المستثمر.",
+
+    "funds_mgmt": "إدارة الصناديق",
+    "funds_subtitle": "تصفح واستكشف جميع الفرص الاستثمارية المتاحة في مكان واحد.",
+    "add_fund": "إضافة صندوق جديد",
+    "add_fund_subtitle": "املأ التفاصيل أدناه لإنشاء أو تحديث فرصة استثمارية. تأكد من دقة جميع المعلومات قبل الحفظ.",
+    "fund_details": "تفاصيل الصندوق",
+    "fund_details_subtitle": "عرض وإدارة تفاصيل الصندوق.",
+
+    "roi_overview": "نظرة عامة على العائد",
+    "roi_subtitle": "تتبع أداء محفظتك وتحليل العوائد الشهرية في لمحة سريعة.",
+    "monthly_roi_input": "إدخال العائد الشهري",
+    "monthly_roi_subtitle": "أدخل نسب العائد الشهري لتحديث تقارير المستثمرين.",
+
+    "fund_allocation_title": "تخصيص الصندوق",
+    "fund_allocation_subtitle": "تخصيص الأموال للمستثمرين.",
+    "add_purchase": "إضافة عملية شراء جديدة",
+    "purchase_details": "تفاصيل الشراء",
+    "purchase_details_subtitle": "عرض تفاصيل الشراء.",
+
+    "interested_investors": "المستثمرون المهتمون",
+    "interested_investors_subtitle": "عرض المستثمرين الذين أبدوا اهتماماً بالصناديق وتعيين تذكيرات للمتابعات المعلقة.",
+    "review_kyc": "مراجعة تفاصيل التسجيل وKYC قبل الموافقة.",
+
+    "leads_mgmt": "إدارة العملاء المحتملين",
+    "leads_subtitle": "إدارة وتتبع حالة العملاء المحتملين، والمتابعة بكفاءة.",
+    "lead_details": "تفاصيل العميل المحتمل",
+
+    "fund_categories_title": "فئات الصندوق",
+    "fund_categories_subtitle": "إنشاء وإدارة فئات الصناديق المستخدمة عبر المنصة. تساعد الفئات في هيكلة الصناديق والتقارير والتخصيصات.",
+
+    "create_notification": "إنشاء إشعار",
+    "create_notification_subtitle": "إنشاء وإدارة الإشعارات للمستثمرين."
+  },
+  "actions": {
+    "create_investor": "إنشاء مستثمر",
+    "view_investor": "عرض المستثمر",
+    "create_fund": "إنشاء صندوق",
+    "view_fund": "عرض الصندوق",
+    "view_update_roi": "عرض تحديث العائد",
+    "create_purchase": "إنشاء عملية شراء",
+    "view_purchase": "عرض عملية الشراء",
+    "view_lead": "عرض العميل المحتمل"
+  }
+}

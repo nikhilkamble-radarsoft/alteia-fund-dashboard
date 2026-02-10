@@ -6,11 +6,15 @@ import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import { ConfigProvider } from "antd";
 import { StyleProvider } from "@ant-design/cssinjs";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
 import { ModalProvider } from "./logic/ModalProvider";
 import "./App.css";
+import "./logic/i18n"; // Initialize i18n
+import { useLanguage } from "./logic/useLanguage";
+import { useAxios } from "./logic/useAxios";
+import { logout, setAuth } from "./redux/authSlice";
 
 const wrapWithAuth = (element, { isPrivate, isPublic }) => {
   if (isPrivate) return <PrivateRoute>{element}</PrivateRoute>;
@@ -27,7 +31,7 @@ const flattenRoutes = (routes) => {
       <Suspense fallback={<div>Loading...</div>}>
         <Component />
       </Suspense>,
-      { isPrivate, isPublic }
+      { isPrivate, isPublic },
     );
 
     acc.push({ path, element, withLayout });
@@ -44,10 +48,16 @@ const getCssVariable = (name) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 export default function App() {
+  const { locale, direction } = useLanguage();
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const axios = useAxios();
+
   const routesConfig = createRoutesConfig();
   const allRoutes = flattenRoutes(routesConfig);
   const layoutRoutes = allRoutes.filter((r) => r.withLayout);
   const nonLayoutRoutes = allRoutes.filter((r) => !r.withLayout);
+  const isAuthenticated = !!user?._id;
 
   const router = createBrowserRouter([
     {
@@ -62,9 +72,26 @@ export default function App() {
     },
   ]);
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get(`/user/profile`);
+        dispatch(setAuth({ user: res.data?.data }));
+      } catch (err) {
+        if (err?.response?.status === 401) dispatch(logout());
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   return (
     <StyleProvider layer>
       <ConfigProvider
+        locale={locale}
+        direction={direction}
         theme={{
           token: {
             colorLink: getCssVariable("--color-primary"),
@@ -126,13 +153,9 @@ export default function App() {
           },
         }}
       >
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <ModalProvider>
-              <RouterProvider router={router} />
-            </ModalProvider>
-          </PersistGate>
-        </Provider>
+        <ModalProvider>
+          <RouterProvider router={router} />
+        </ModalProvider>
       </ConfigProvider>
     </StyleProvider>
   );

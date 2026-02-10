@@ -41,7 +41,7 @@ const aliases = {
 const variantStyles = {
   ...baseVariants,
   ...Object.fromEntries(
-    Object.entries(aliases).map(([alias, target]) => [alias, baseVariants[target]])
+    Object.entries(aliases).map(([alias, target]) => [alias, baseVariants[target]]),
   ),
 };
 
@@ -80,7 +80,7 @@ const CustomTag = ({ variant = "success", text, customColors, divClassName, dotC
       className={`inline-flex items-center px-3 py-1 text-sm rounded-lg ${divClassName}`}
       style={{ backgroundColor: finalBg, color: finalText }}
     >
-      <CustomDot color={finalDot} className={`mr-1 ${dotClassName}`} />
+      <CustomDot color={finalDot} className={`me-1 ${dotClassName}`} />
       {text}
     </div>
   );

@@ -1,0 +1,144 @@
+{
+  "pagination": {
+    "showing": "Showing {{from}} to {{to}} of {{count}} items"
+  },
+  "common": {
+    "search_placeholder": "Search:",
+    "entries_per_page": "entries per page",
+    "columns": {
+      "email": "Email",
+      "phone": "Phone",
+      "id": "ID",
+      "actions": "Actions",
+      "status": "Status",
+      "created_at": "Created Date",
+      "updated_at": "Last Updated"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View"
+    },
+    "ytd": "YTD"
+  },
+  "investors": {
+    "title": "Customers investing",
+    "add_new": "Add New Customer",
+    "columns": {
+      "full_name": "Customer Name",
+      "kyc_status": "KYC Status",
+      "nationality": "Nationality",
+      "country": "Country of Residence"
+    },
+    "kyc_status": {
+      "verified": "KYC Verified",
+      "pending": "Pending Approval",
+      "denied": "Denied"
+    }
+  },
+  "funds": {
+    "title": "Funds Listing",
+    "add_new": "Add New Fund",
+    "columns": {
+      "fund_title": "Fund Title",
+      "category": "Category",
+      "roi": "ROI %",
+      "min_investment": "Min. Investment",
+      "duration_type": "Duration Type",
+      "start_date": "Start Date",
+      "end_date": "End Date"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "purchases": {
+    "title": "Purchase Listing",
+    "add_new": "Add New Purchase",
+    "columns": {
+      "fund_name": "Fund Name",
+      "investor_name": "Investor Name",
+      "amount": "Amount",
+      "units": "Units",
+      "date": "Date"
+    }
+  },
+  "interests": {
+    "title": "Funds Interest",
+    "columns": {
+      "customer_name": "Customer Name",
+      "fund_interest": "Fund Interest",
+      "last_activity": "Last Activity",
+      "action": "Action"
+    },
+    "status": {
+      "new": "New",
+      "contacted": "Contacted",
+      "reminder_set": "Reminder Set",
+      "missed_reminder": "Missed Reminder"
+    },
+    "actions": {
+      "remind_me": "Remind me",
+      "request_kyc": "Request KYC",
+      "complete_purchase": "Complete Purchase"
+    },
+    "modal": {
+      "title": "Set Follow-Up Reminder",
+      "reminder_date": "Reminder Date",
+      "time": "Time",
+      "comments": "Comments",
+      "comments_placeholder": "Enter your comment",
+      "error_past_date": "No past date or time allowed"
+    }
+  },
+  "leads": {
+    "title": "Leads Listing",
+    "columns": {
+      "customer_name": "Customer Name",
+      "nationality": "Nationality",
+      "country": "Country of Residence"
+    },
+    "modals": {
+      "reject_title": "Reject KYC Verification",
+      "approve_title": "Approve KYC Verification",
+      "reject_btn": "Reject",
+      "approve_btn": "Approve",
+      "cancel_btn": "Cancel",
+      "comment_label": "Comments",
+      "comment_placeholder": "Enter your comment"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "request_kyc": "Request KYC"
+    }
+  },
+  "categories": {
+    "title": "Fund Categories",
+    "add_new": "Add New Category",
+    "columns": {
+      "name": "Name",
+      "description": "Description",
+      "action": "Action"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "delete": "Delete"
+    },
+    "modals": {
+      "create_title": "Create Fund Category",
+      "edit_title": "Edit Fund Category",
+      "delete_title": "Delete Category",
+      "delete_message": "Are you sure you want to delete category?",
+      "delete_btn": "Delete category",
+      "subtitle": "Define a category to group similar funds and improve fund discovery and reporting.",
+      "name_label": "Name",
+      "desc_label": "Description",
+      "desc_placeholder": "Enter your description"
+    }
+  }
+}

@@ -4,14 +4,15 @@ import CustomTable from "../../components/table/CustomTable";
 import CustomButton from "../../components/form/CustomButton";
 import TableTitle from "../../components/table/TableTitle";
 import { formatDate, outputFormatters } from "../../utils/utils";
-import { tableFallbackText } from "../../utils/constants";
+import { useTranslation } from "react-i18next";
 
 export default function FundPurchases() {
   const navigate = useNavigate();
+  const { t } = useTranslation("table");
 
   const columns = [
     {
-      title: "Fund Name",
+      title: t("purchases.columns.fund_name"),
       dataIndex: "fund.title",
       render: (text, record) => (
         <NavLink to={`/purchase/${record._id}`} className="p-0">
@@ -20,63 +21,34 @@ export default function FundPurchases() {
       ),
     },
     {
-      title: "Investor Name",
+      title: t("purchases.columns.investor_name"),
       dataIndex: "user.full_name",
     },
     {
-      title: "Amount",
+      title: t("purchases.columns.amount"),
       dataIndex: "user_amount",
       render: (text) => outputFormatters.money(text),
     },
     {
-      title: "Units",
+      title: t("purchases.columns.units"),
       dataIndex: "fund_unit",
     },
     {
-      title: "Date",
+      title: t("purchases.columns.date"),
       dataIndex: "purchase_date",
       render: (text) => formatDate(text),
     },
-    // {
-    //   title: "Status",
-    //   dataIndex: "status",
-    //   render: (text) => {
-    //     let finalText = text?.toLowerCase();
-    //     let finalVariant, customColors;
-    //     switch (text) {
-    //       case fundPurchaseStatus.completed:
-    //         finalText = "Completed";
-    //         finalVariant = "success";
-    //         break;
-    //       case fundPurchaseStatus.pending:
-    //         finalText = "Pending";
-    //         finalVariant = "warning";
-    //         break;
-    //       case fundPurchaseStatus.in_progress:
-    //         finalText = "In Progress";
-    //         finalVariant = "upcoming";
-    //         break;
-    //       case fundPurchaseStatus.cancelled:
-    //         finalText = "Cancelled";
-    //         finalVariant = "danger";
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    //     return <CustomTag variant={finalVariant} text={finalText} customColors={customColors} />;
-    //   },
-    // },
   ];
 
   return (
     <div>
       <TableTitle
-        title="Purchase Listing"
+        title={t("purchases.title")}
         titleColor="text-black"
         subtitleColor="text-black"
         buttons={[
           <CustomButton
-            text="Add New Purchase"
+            text={t("purchases.add_new")}
             showIcon
             onClick={() => navigate("/purchase/create")}
           />,

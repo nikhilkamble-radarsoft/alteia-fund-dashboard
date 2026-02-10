@@ -33,8 +33,6 @@ export default function Field({
   // arbitrary extra props
   ...rest
 }) {
-  const isMobile = useMediaQuery({ maxWidth: 768 });
-
   // sensible defaults for placeholders if not passed
   const defaultPlaceholder =
     placeholder ??
