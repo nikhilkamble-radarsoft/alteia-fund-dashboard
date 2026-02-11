@@ -10,6 +10,7 @@ import errorAnim from "../assets/error-animation.lottie";
 import { FormField } from "../components/form/Field";
 import { Form } from "antd";
 import FormBuilder from "../components/form/FormBuilder";
+import { useTranslation } from "react-i18next";
 
 /**
  * Hook for controlling ThemedModal programmatically
@@ -32,6 +33,7 @@ export function useThemedModal() {
     footerAlign: "center",
   });
   const [confirmForm] = Form.useForm();
+  const { t } = useTranslation("form");
 
   const commonStyles = {
     content: {
@@ -60,7 +62,7 @@ export function useThemedModal() {
       });
       setVisible(true);
     },
-    [handleClose]
+    [handleClose],
   );
 
   const showSuccess = useCallback(
@@ -96,7 +98,7 @@ export function useThemedModal() {
         ...options,
       });
     },
-    [showCustom, closeModal]
+    [showCustom, closeModal],
   );
 
   const showError = useCallback(
@@ -132,7 +134,7 @@ export function useThemedModal() {
         ...options,
       });
     },
-    [showCustom, closeModal]
+    [showCustom, closeModal],
   );
 
   const showConfirm = useCallback(
@@ -143,13 +145,18 @@ export function useThemedModal() {
       variant = "success",
       fields = [],
       initialValues,
-      confirmText = "Confirm",
-      cancelText = "Cancel",
+      // Translated default values
+      confirmText,
+      cancelText,
       onConfirm,
       twoColumn = false,
       showAnimation = true,
       ...options
     } = {}) => {
+      // Resolve text inside the function to ensure current language is used
+      const finalConfirmText = confirmText || t("common.confirm");
+      const finalCancelText = cancelText || t("common.cancel");
+
       const isSuccess = variant === "success";
 
       confirmForm.resetFields();
@@ -205,7 +212,7 @@ export function useThemedModal() {
         ),
         buttons: [
           {
-            text: cancelText,
+            text: finalCancelText,
             btnType: isSuccess ? "secondary" : "secondary-danger",
             onClick: () => {
               confirmForm.resetFields();
@@ -213,7 +220,7 @@ export function useThemedModal() {
             },
           },
           {
-            text: confirmText,
+            text: finalConfirmText,
             btnType: isSuccess ? "primary" : "danger",
             onClick: () => confirmForm.submit(),
           },
@@ -223,7 +230,7 @@ export function useThemedModal() {
       });
       setVisible(true);
     },
-    [closeModal, confirmForm]
+    [closeModal, confirmForm, t], // Added 't' to dependencies
   );
 
   const modal = <ThemedModal {...modalConfig} visible={visible} onClose={handleClose} />;

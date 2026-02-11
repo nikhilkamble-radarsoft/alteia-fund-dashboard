@@ -6,14 +6,17 @@ import dayjs from "dayjs";
 import { formRules } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import { inputFormatters } from "../../utils/utils";
+import { useTranslation } from "react-i18next";
 
 export default function ViewTrade() {
-  const { callApi, loading = { loading } } = useApi();
+  const { callApi, loading } = useApi();
   const [data, setData] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [fundCategories, setFundCategories] = useState([]);
+
+  const { t } = useTranslation("form");
 
   const fetchData = async () => {
     const { response } = await callApi({
@@ -88,163 +91,152 @@ export default function ViewTrade() {
   const formConfig = [
     {
       name: "title",
-      label: "Title",
+      label: t("funds.title"),
       type: "input",
-      rules: formRules.required("Title"),
-      placeholder: "Enter Fund name",
+      rules: formRules.required(t("funds.title")),
+      placeholder: t("funds.title_ph"),
     },
     {
       name: "category",
-      label: "Category",
+      label: t("funds.category"),
       type: "select",
-      rules: formRules.required("Category"),
+      rules: formRules.required(t("funds.category")),
       options: fundCategories.map((cat) => ({ value: cat._id, label: cat.name })),
-      placeholder: "Select category (e.g., Real Estate, Energy)",
+      placeholder: t("funds.category_ph"),
     },
     {
       name: "roi_range",
-      label: "ROI %",
+      label: t("funds.roi"),
       type: "number",
-      rules: formRules.required("ROI"),
-      placeholder: "Enter expected annual ROI (e.g., 8.5)",
+      rules: formRules.required(t("funds.roi")),
+      placeholder: t("funds.roi_ph"),
     },
 
     {
       name: "duration_type",
-      label: "Duration Type",
+      label: t("funds.duration_type"),
       type: "select",
-      rules: formRules.required("Duration Type", "select"),
+      rules: formRules.required(t("funds.duration_type"), "select"),
       options: [
-        { value: "open-ended", label: "Open-ended" },
-        { value: "close-ended", label: "Close-ended" },
+        { value: "open-ended", label: t("funds.duration_open") },
+        { value: "close-ended", label: t("funds.duration_close") },
       ],
     },
     {
       name: "start_date",
-      label: "Start Date",
+      label: t("funds.start_date"),
       type: "date",
-      rules: formRules.required("Start Date", "date"),
+      rules: formRules.required(t("funds.start_date"), "date"),
       shouldShow: (formValues) => formValues.duration_type,
       datePickerProps: (form) => ({
         disabledDate: (current) => {
           if (!current) return false;
-
           const today = dayjs().startOf("day");
           const endDate = form.getFieldValue("end_date");
-
-          // cannot be future
           if (current.isAfter(today)) return true;
-
-          // cannot be after end_date
           if (endDate && current.isAfter(dayjs(endDate).startOf("day"))) {
             return true;
           }
-
           return false;
         },
       }),
     },
     {
       name: "end_date",
-      label: "End Date",
+      label: t("funds.end_date"),
       type: "date",
-      rules: formRules.required("End Date", "date"),
+      rules: formRules.required(t("funds.end_date"), "date"),
       shouldShow: (formValues) => formValues.duration_type === "close-ended",
       datePickerProps: (form) => ({
         disabledDate: (current) => {
           if (!current) return false;
-
           const today = dayjs().startOf("day");
           const startDate = form.getFieldValue("start_date");
-
-          // cannot be future
           if (current.isAfter(today)) return true;
-
-          // cannot be before start_date
           if (startDate && current.isBefore(dayjs(startDate).startOf("day"))) {
             return true;
           }
-
           return false;
         },
       }),
     },
     {
       name: "location",
-      label: "Location",
+      label: t("funds.location"),
       type: "input",
-      rules: formRules.required("Location"),
+      rules: formRules.required(t("funds.location")),
     },
     {
       name: "status",
-      label: "Status",
+      label: t("funds.status"),
       type: "select",
-      rules: formRules.required("Status"),
+      rules: formRules.required(t("funds.status")),
       options: [
-        { value: "active", label: "Active" },
-        { value: "inactive", label: "Inactive" },
+        { value: "active", label: t("funds.active") },
+        { value: "inactive", label: t("funds.inactive") },
       ],
-      placeholder: "Choose status",
+      placeholder: t("funds.status_ph"),
     },
     {
       name: "minimum_investment",
-      label: "Minimum Investment ($)",
+      label: t("funds.min_investment"),
       type: "number",
-      rules: formRules.required("Minimum Investment"),
-      placeholder: "Enter minimum investment amount (e.g., $100,000)",
+      rules: formRules.required(t("funds.min_investment")),
+      placeholder: t("funds.min_investment_ph"),
       ...inputFormatters.money,
     },
     {
       name: "nav_unit",
-      label: "NAV/Unit ($)",
+      label: t("funds.nav_unit"),
       type: "number",
-      placeholder: "Enter Net Asset Value per unit (e.g., $1237.18)",
-      rules: formRules.required("NAV/Unit"),
+      placeholder: t("funds.nav_unit_ph"),
+      rules: formRules.required(t("funds.nav_unit")),
       ...inputFormatters.money,
     },
     {
       name: "fund_document",
-      label: "Documents Upload",
+      label: t("funds.documents"),
       type: "file",
-      rules: formRules.required("Proof of Address"),
-      placeholder: "Upload fact sheets, PDFs, supporting docs",
+      // Fixed: Previously passed "Proof of Address" incorrectly
+      rules: formRules.required(t("funds.documents")),
+      placeholder: t("funds.documents_ph"),
       accept: ["application/pdf"],
     },
     {
       name: "banner_image",
-      label: "Upload Fund Banner",
+      label: t("funds.banner"),
       type: "file",
-      placeholder: "Formats: JPG, PNG (Max 5MB)",
+      placeholder: t("funds.banner_ph"),
       accept: ["image/png", "image/jpeg", "image/jpg"],
-      rules: formRules.required("Banner Image"),
+      rules: formRules.required(t("funds.banner")),
     },
     {
       name: "why_invest",
-      label: "Why invest in this Fund?",
+      label: t("funds.why_invest"),
       type: "input-list",
-      placeholder: "Enter why invest in this Fund",
+      placeholder: t("funds.why_invest_ph"),
       maxLength: 50,
     },
     {
       name: "risks_to_consider",
-      label: "Risks to consider",
+      label: t("funds.risks"),
       type: "input-list",
-      placeholder: "Enter risks to consider",
+      placeholder: t("funds.risks_ph"),
       maxLength: 50,
     },
     {
       name: "aum",
-      label: "AUM (Assets Under Management) ($)",
+      label: t("funds.aum"),
       type: "number",
-      placeholder: "Enter current AUM (e.g., $32.87)",
-      rules: formRules.required("AUM"),
+      placeholder: t("funds.aum_ph"),
+      rules: formRules.required(t("funds.aum")),
       ...inputFormatters.money,
     },
     {
       name: "short_description",
-      label: "Short Description",
+      label: t("funds.short_desc"),
       type: "textarea",
-      rules: formRules.required("Short Description"),
+      rules: formRules.required(t("funds.short_desc")),
       rows: 4,
       maxLength: 150,
     },
@@ -252,12 +244,11 @@ export default function ViewTrade() {
 
   return (
     <FormBuilder
-      // mode="view-only"
       formProps={{ autoComplete: "off" }}
       formConfig={formConfig}
       initialValues={{ ...data, category: data?.category?._id }}
-      cancelText="Back"
-      submitText="Save"
+      cancelText={t("common.back")}
+      submitText={t("common.save")}
       onFinish={onFinish}
       loading={loading}
     />

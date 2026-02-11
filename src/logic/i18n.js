@@ -18,7 +18,7 @@ i18n
     // Performance: Wait for translations to load before rendering?
     // False = allow partial rendering (better UX)
     react: {
-      useSuspense: false,
+      useSuspense: true,
     },
 
     interpolation: { escapeValue: false }, // React handles escaping

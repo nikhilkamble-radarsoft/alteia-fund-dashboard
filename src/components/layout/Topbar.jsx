@@ -9,7 +9,6 @@ import { FiChevronLeft, FiGlobe } from "react-icons/fi";
 import TableTitle from "../table/TableTitle";
 import { useSelector } from "react-redux";
 import { useTopData } from "./AppLayout";
-// 1. Import language hooks
 import { useLanguage } from "../../logic/useLanguage";
 import { useTranslation } from "react-i18next";
 import Field from "../form/Field";
@@ -22,7 +21,6 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
 
-  // 2. Get direction and translation function
   const { direction, currentLang, changeLanguage } = useLanguage();
   const { t } = useTranslation();
   const isRTL = direction === "rtl";
@@ -33,7 +31,6 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
     showBack: contextShowBack,
   } = useTopData();
 
-  // 3. Pass 't' to routes so titles are translated
   const routes = createRoutesConfig({ user, t });
 
   const findActiveRoute = (routes, pathname, parents = []) => {
@@ -73,7 +70,7 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
         height: "auto",
         zIndex: 999,
         padding: "10px 16px",
-        transition: "all 0.2s", // Changed to 'all' to animate both left/right
+        transition: "all 0.2s",
       }}
     >
       <div className="flex justify-between items-center w-full bg-white px-4 py-2 rounded-2xl shadow-sm">
@@ -91,7 +88,6 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
                   showBack ? (
                     <CustomButton
                       showIcon
-                      // 5. Rotate Back Icon for RTL
                       icon={
                         <FiChevronLeft
                           size={30}
@@ -145,16 +141,15 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
             content={
               <div className="w-full">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-sm">
-                    {/* 6. Translate static texts */}
-                    {t("titles.create_notification", "Notifications")}
-                  </span>
+                  <span className="font-semibold text-sm">{t("notifications")}</span>
                   <span className="text-xs text-text-secondary cursor-pointer">
-                    Mark all as read
+                    {t("markAllAsRead")}
                   </span>
                 </div>
                 <div className="space-y-2 max-h-40 overflow-y-auto">
-                  <div className="p-2 rounded-lg bg-[#F5F7F0] text-xs">No new notifications.</div>
+                  <div className="p-2 rounded-lg bg-[#F5F7F0] text-xs">
+                    {t("noNewNotifications")}
+                  </div>
                 </div>
               </div>
             }

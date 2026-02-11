@@ -187,7 +187,6 @@ export default function ViewInvestor() {
       submitText={id ? undefined : t("common.save")}
       onFinish={onFinish}
       loading={loading}
-      multiLanguage
     />
   );
 }

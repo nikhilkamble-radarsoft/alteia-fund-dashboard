@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 export default function FileField({
   className = "w-full",
-  placeholder = "Upload",
+  placeholder, // Removed default value here to handle it with translation
   value,
   onChange,
   accept,
@@ -25,10 +25,12 @@ export default function FileField({
   loading = false,
 }) {
   const isMobile = useMediaQuery({ maxWidth: 768 });
-
   const [internalList, setInternalList] = React.useState([]);
   const { showView = true, showDownload = false } = uploadProps;
   const { t } = useTranslation("form");
+
+  // Handle default placeholder translation
+  const finalPlaceholder = placeholder || t("common.upload");
 
   // Sync external value (AWS URLs) with internal list
   useEffect(() => {
@@ -47,10 +49,13 @@ export default function FileField({
           )
           .map((item, index) => {
             const url = typeof item === "string" ? item : item.url;
+            // Translate "File 1", "File 2" etc.
+            const defaultName = `${t("common.file")} ${index + 1}`;
+
             const fileName =
               typeof item === "string"
-                ? url.split("/").pop()?.split("?")[0] || `File ${index + 1}`
-                : item.name || url.split("/").pop()?.split("?")[0] || `File ${index + 1}`;
+                ? url.split("/").pop()?.split("?")[0] || defaultName
+                : item.name || url.split("/").pop()?.split("?")[0] || defaultName;
 
             return {
               uid: `url-${index}-${Date.now()}`,
@@ -69,7 +74,7 @@ export default function FileField({
     } else if (normalizedValue && Array.isArray(normalizedValue) && normalizedValue.length === 0) {
       setInternalList([]);
     }
-  }, [value]);
+  }, [value, t]); // Added t to dependency array
 
   const handleChange = ({ fileList }) => {
     let list = multiple ? fileList : fileList.slice(-1);
@@ -90,7 +95,7 @@ export default function FileField({
     return file.url || file.thumbUrl;
   };
 
-  const getFileName = (file) => file.name || "Unknown File";
+  const getFileName = (file) => file.name || t("common.unknownFile");
 
   const computedDisabled = Boolean(loading || disabledProp);
   const showUploadInput =
@@ -117,7 +122,10 @@ export default function FileField({
             if (maxSize && file && file.size / 1024 / 1024 > Number(maxSize)) {
               if (form && fieldName) {
                 form.setFields([
-                  { name: fieldName, errors: [`File must be smaller than ${maxSize}MB`] },
+                  {
+                    name: fieldName,
+                    errors: [t("common.fileSizeError", { maxSize })],
+                  },
                 ]);
               }
               return Upload.LIST_IGNORE;
@@ -145,7 +153,7 @@ export default function FileField({
             <div className="rounded-full bg-white border border-gray-300 p-1">
               <PiUploadFill className="text-light-primary" size={24} />
             </div>
-            <Paragraph className="mb-0 text-center">{placeholder}</Paragraph>
+            <Paragraph className="mb-0 text-center">{finalPlaceholder}</Paragraph>
           </div>
         </Upload>
       )}
@@ -195,9 +203,9 @@ export default function FileField({
                   }
                 }}
                 className={`
-                    absolute top-[-7px] right-[-7px] rounded-full bg-background transition
-                    ${isMobile ? "flex" : "hidden group-hover:flex hover:cursor-pointer"}
-                  `}
+                  absolute top-[-7px] right-[-7px] rounded-full bg-background transition
+                  ${isMobile ? "flex" : "hidden group-hover:flex hover:cursor-pointer"}
+                `}
               >
                 <LuPlus
                   size={16}
@@ -211,7 +219,7 @@ export default function FileField({
 
       {!loading && !showUploadInput && internalList.length === 0 && (
         <div className="rounded-md">
-          <Alert type="warning" showIcon message="Failed to load file(s)" />
+          <Alert type="warning" showIcon message={t("common.failedToLoadFiles")} />
         </div>
       )}
     </div>

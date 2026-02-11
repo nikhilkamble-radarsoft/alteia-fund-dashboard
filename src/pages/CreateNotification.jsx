@@ -3,8 +3,10 @@ import FormBuilder from "../components/form/FormBuilder";
 import { useLocation, useNavigate } from "react-router-dom";
 import useApi from "../logic/useApi";
 import { formRules } from "../utils/constants";
+import { useTranslation } from "react-i18next";
 
 export default function CreateNotification() {
+  const { t } = useTranslation("form");
   const navigate = useNavigate();
   const { callApi, loading } = useApi();
   const { state } = useLocation();
@@ -15,9 +17,10 @@ export default function CreateNotification() {
   const onFinish = async (values) => {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
-      if (!values[key]) return;
+      if (values[key] === null || values[key] === undefined || values[key] === "") return;
+
       // Upload files
-      if (["notification_picture"].includes(key) && values[key][0].originFileObj)
+      if (["notification_picture"].includes(key) && values[key]?.[0]?.originFileObj)
         return formData.append(key, values[key][0].originFileObj);
 
       if (Array.isArray(values[key])) {
@@ -50,52 +53,52 @@ export default function CreateNotification() {
   const formConfig = [
     {
       name: "type",
-      label: "Type",
+      label: t("notification.type"),
       type: "select",
       options: [
-        { value: "common", label: "Common" },
-        { value: "user", label: "User" },
-        { value: "fund", label: "Fund" },
+        { value: "common", label: t("notification.type_common") },
+        { value: "user", label: t("notification.type_user") },
+        { value: "fund", label: t("notification.type_fund") },
       ],
-      rules: formRules.required("Type"),
+      rules: formRules.required(t("notification.type")),
     },
     {
       name: "fund_id",
-      label: "Fund",
+      label: t("purchase.fund"),
       type: "select",
       options: funds.map((fund) => ({ value: fund._id, label: fund.title })),
-      placeholder: "Select fund",
+      placeholder: t("purchase.selectFund"),
       shouldShow: (values) => values.type === "fund",
     },
     {
       name: "send_id",
-      label: "User",
+      label: t("notification.user"),
       type: "select",
       selectProps: {
         mode: "multiple",
       },
       options: investors.map((investor) => ({ value: investor._id, label: investor.full_name })),
-      placeholder: "Select user",
+      placeholder: t("notification.selectUser"),
       shouldShow: (values) => values.type === "user",
     },
     {
       name: "title",
-      label: "Title",
-      rules: formRules.required("Title"),
+      label: t("notification.title"),
+      rules: formRules.required(t("notification.title")),
     },
     {
       name: "url",
-      label: "URL",
+      label: t("field.url"), // Reusing existing key
       rules: formRules.url(false),
     },
     {
       name: "message",
-      label: "Message",
+      label: t("notification.message"),
       type: "textarea",
     },
     {
       name: "notification_picture",
-      label: "Notification Picture",
+      label: t("notification.picture"),
       type: "file",
       uploadProps: {
         accept: ["image/jpeg", "image/png", "image/jpg"],
@@ -127,7 +130,7 @@ export default function CreateNotification() {
 
           return acc;
         },
-        { purchaseMap: {}, funds: [], fundIdSet: new Set() }
+        { purchaseMap: {}, funds: [], fundIdSet: new Set() },
       );
 
       setFunds(uniqueFunds);
@@ -160,8 +163,8 @@ export default function CreateNotification() {
       // mode="view-only"
       formProps={{ autoComplete: "off" }}
       formConfig={formConfig}
-      cancelText="Back"
-      submitText="Save"
+      cancelText={t("common.back")}
+      submitText={t("common.save")}
       onFinish={onFinish}
       loading={loading}
       initialValues={state}

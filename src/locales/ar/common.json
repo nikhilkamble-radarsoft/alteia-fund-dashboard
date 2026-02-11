@@ -1,4 +1,10 @@
 {
+  "appTitle": "لوحة معلومات صندوق ألتيا",
+  "loading": "جاري التحميل...",
+  "pageNotFound": "404 - الصفحة غير موجودة",
+  "notifications": "إشعارات",
+  "markAllAsRead": "تحديد الكل كمقروء",
+  "noNewNotifications": "لا توجد إشعارات جديدة.",
   "language": {
     "english": "الإنجليزية",
     "arabic": "العربية"

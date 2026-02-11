@@ -7,6 +7,7 @@ import InputList from "./InputList";
 import TagsInput from "./TagsInput";
 import IconPicker from "./IconPicker";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 const { RangePicker } = DatePicker;
 
@@ -33,20 +34,26 @@ export default function Field({
   // arbitrary extra props
   ...rest
 }) {
+  const { t } = useTranslation("form");
+
+  // Helper to get clean default text without label if none provided
+  // e.g. "Select {{label}}" -> "Select"
+  const getPlaceholderText = (key) => t(`common.placeholders.${key}`, { label: "" }).trim();
+
   // sensible defaults for placeholders if not passed
+  const defaultPlaceholders = {
+    select: getPlaceholderText("select"),
+    textarea: getPlaceholderText("enter"),
+    date: getPlaceholderText("select"),
+    daterange: [getPlaceholderText("start"), getPlaceholderText("end")],
+    time: getPlaceholderText("select"),
+    number: getPlaceholderText("enter"),
+    file: getPlaceholderText("upload"),
+    default: getPlaceholderText("enter"),
+  };
+
   const defaultPlaceholder =
-    placeholder ??
-    {
-      select: "Select",
-      textarea: "Enter",
-      date: "Select",
-      daterange: ["Start", "End"],
-      time: "Select",
-      number: "Enter",
-      file: "Upload",
-      default: "Enter",
-    }[type] ??
-    "Enter";
+    placeholder ?? defaultPlaceholders[type] ?? defaultPlaceholders.default;
 
   const common = {
     ...rest,
@@ -141,7 +148,11 @@ export default function Field({
       return (
         <RangePicker
           {...common}
-          placeholder={Array.isArray(defaultPlaceholder) ? defaultPlaceholder : ["Start", "End"]}
+          placeholder={
+            Array.isArray(defaultPlaceholder)
+              ? defaultPlaceholder
+              : [getPlaceholderText("start"), getPlaceholderText("end")]
+          }
           value={value ? [dayjs(value[0]), dayjs(value[1])] : []}
           onChange={onChange}
           {...resolvedDatePickerProps}
@@ -238,6 +249,8 @@ export function FormField({
   children,
   ...props
 }) {
+  const { t } = useTranslation("form");
+
   if (type === "checkbox") {
     return (
       <Form.Item key={name} name={name} rules={rules} valuePropName="checked" {...formItemProps}>
@@ -246,15 +259,19 @@ export function FormField({
     );
   }
 
+  // Use the structure from form.json: common.placeholders
   const placeholderMap = {
-    select: `Select ${label}`,
-    textarea: `Enter ${label}`,
-    date: `Select ${label}`,
-    daterange: [placeholder?.[0] || `Start ${label}`, placeholder?.[1] || `End ${label}`],
-    time: `Select ${label}`,
-    number: `Enter ${label}`,
-    file: `Upload ${label}`,
-    default: `Enter ${label}`,
+    select: t("common.placeholders.select", { label }),
+    textarea: t("common.placeholders.enter", { label }),
+    date: t("common.placeholders.select", { label }),
+    daterange: [
+      placeholder?.[0] || t("common.placeholders.start", { label }),
+      placeholder?.[1] || t("common.placeholders.end", { label }),
+    ],
+    time: t("common.placeholders.select", { label }),
+    number: t("common.placeholders.enter", { label }),
+    file: t("common.placeholders.upload", { label }),
+    default: t("common.placeholders.enter", { label }),
   };
 
   const newPlaceholder = placeholder || placeholderMap[type] || placeholderMap.default;

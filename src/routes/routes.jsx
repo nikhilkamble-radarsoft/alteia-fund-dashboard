@@ -274,7 +274,7 @@ export const createRoutesConfig = (ctx = {}) => {
     {
       key: "logout",
       onClick: () => {
-        ctx.dispatch?.(logouctx.t?.());
+        ctx.dispatch?.(logout());
         ctx.navigate?.("/login");
       },
       icon: (props) => <LuLogOut {...props} className="text-danger" />,

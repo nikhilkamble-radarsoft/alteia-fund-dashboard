@@ -36,10 +36,7 @@ const Login = () => {
         url: "/admin/login",
         method: "POST",
         data: values,
-        successOptions: {
-          subMessage:
-            "The new customer profile has been created and is now pending verification. You can review or manage the customer in the dashboard.",
-        },
+        successOptions: {},
       });
 
       if (status) {

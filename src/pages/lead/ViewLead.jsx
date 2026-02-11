@@ -7,8 +7,10 @@ import { useTopData } from "../../components/layout/AppLayout";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules, investorKycStatus } from "../../utils/constants";
 import { checkUserKycDocument } from "../../utils/utils";
+import { useTranslation } from "react-i18next";
 
 export default function ViewLead() {
+  const { t } = useTranslation("form");
   const { callApi, loading } = useApi();
   const [lead, setLead] = useState(null);
   const { id } = useParams();
@@ -42,17 +44,17 @@ export default function ViewLead() {
   const handleShowRejectModal = () => {
     showConfirm({
       title: "",
-      message: "Reject KYC Verification",
+      message: t("lead.rejectKYCVerification"),
       variant: "error",
-      confirmText: "Reject",
-      cancelText: "Cancel",
+      confirmText: t("lead.reject"),
+      cancelText: t("lead.cancel"),
       fields: [
         {
           name: "comment",
-          label: "Comments",
+          label: t("lead.comments"),
           type: "textarea",
-          placeholder: "Enter your comment",
-          rules: formRules.required("Comments"),
+          placeholder: t("lead.enterComment"),
+          rules: formRules.required(t("lead.comments")),
           rows: 4,
         },
       ],
@@ -65,10 +67,10 @@ export default function ViewLead() {
   const handleShowApproveModal = () => {
     showConfirm({
       title: "",
-      message: "Approve KYC Verification",
+      message: t("lead.approveKYCVerification"),
       variant: "success",
-      confirmText: "Approve",
-      cancelText: "Cancel",
+      confirmText: t("lead.approve"),
+      cancelText: t("lead.cancel"),
       onConfirm: () => {
         handleStatusChange(investorKycStatus.approved);
       },
@@ -94,7 +96,7 @@ export default function ViewLead() {
       dob: dayjs(localLead.dob),
     };
     setLead(updatedLead);
-    setTitle(`Lead Details - ${updatedLead.full_name}`);
+    setTitle(t("lead.leadDetails", { name: updatedLead.full_name }));
   };
 
   useEffect(() => {
@@ -104,31 +106,31 @@ export default function ViewLead() {
   }, [id]);
 
   const formConfig = [
-    { name: "full_name", label: "Full Name", type: "input" },
-    { name: "email", label: "Email Address", type: "input" },
-    { name: "phone", label: "Phone Number", type: "input" },
-    { name: "dob", label: "Date of Birth", type: "date" },
-    { name: "nationality", label: "Nationality", type: "input" },
-    { name: "residential_address", label: "Residential Address", type: "input" },
-    { name: "country", label: "Country of residence", type: "input" },
-    { name: "postal_code", label: "Postal Code", type: "input" },
+    { name: "full_name", label: t("lead.fullName"), type: "input" },
+    { name: "email", label: t("lead.emailAddress"), type: "input" },
+    { name: "phone", label: t("lead.phoneNumber"), type: "input" },
+    { name: "dob", label: t("lead.dob"), type: "date" },
+    { name: "nationality", label: t("lead.nationality"), type: "input" },
+    { name: "residential_address", label: t("lead.residentialAddress"), type: "input" },
+    { name: "country", label: t("lead.countryOfResidence"), type: "input" },
+    { name: "postal_code", label: t("lead.postalCode"), type: "input" },
     {
       name: "address_file",
-      label: "Proof of Address",
+      label: t("lead.proofOfAddress"),
       type: "file",
-      placeholder: "Upload proof of address (e.g., utility bill)",
+      placeholder: t("lead.uploadProofOfAddress"),
     },
     {
       name: "document_file",
-      label: "Identity Document",
+      label: t("lead.identityDocument"),
       type: "file",
-      placeholder: "Upload identity proof (e.g., Valid Passport, ID card, passport)",
+      placeholder: t("lead.uploadIdentityProof"),
     },
     {
       name: "signature_file",
-      label: "Signature",
+      label: t("lead.signature"),
       type: "file",
-      placeholder: "Accepted Formats: JPEG, PNG, PDF (Max 5MB)",
+      placeholder: t("lead.acceptedFormats"),
     },
   ];
 
@@ -142,12 +144,12 @@ export default function ViewLead() {
         loading={loading}
         {...(lead?.kyc_status === investorKycStatus.pending && checkUserKycDocument(lead)
           ? {
-              cancelText: "Reject Lead",
-              submitText: "Approve Lead",
+              cancelText: t("lead.rejectLead"),
+              submitText: t("lead.approveLead"),
               onCancel: handleShowRejectModal,
               onFinish: handleShowApproveModal,
             }
-          : { cancelText: "Back" })}
+          : { cancelText: t("lead.back") })}
       />
       {modal}
     </>

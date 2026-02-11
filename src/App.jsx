@@ -7,14 +7,13 @@ import PublicRoute from "./routes/PublicRoute";
 import { ConfigProvider } from "antd";
 import { StyleProvider } from "@ant-design/cssinjs";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "./redux/store";
 import { ModalProvider } from "./logic/ModalProvider";
 import "./App.css";
-import "./logic/i18n"; // Initialize i18n
+import "./logic/i18n";
 import { useLanguage } from "./logic/useLanguage";
 import { useAxios } from "./logic/useAxios";
 import { logout, setAuth } from "./redux/authSlice";
+import { useTranslation } from "react-i18next";
 
 const wrapWithAuth = (element, { isPrivate, isPublic }) => {
   if (isPrivate) return <PrivateRoute>{element}</PrivateRoute>;
@@ -22,13 +21,13 @@ const wrapWithAuth = (element, { isPrivate, isPublic }) => {
   return element;
 };
 
-const flattenRoutes = (routes) => {
+const flattenRoutes = (routes, t) => {
   return routes.reduce((acc, route) => {
     const { path, Component, children, isPrivate, isPublic, withLayout = true } = route;
     if (!Component) return acc;
 
     const element = wrapWithAuth(
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>{t("loading")}</div>}>
         <Component />
       </Suspense>,
       { isPrivate, isPublic },
@@ -37,7 +36,7 @@ const flattenRoutes = (routes) => {
     acc.push({ path, element, withLayout });
 
     if (children) {
-      acc.push(...flattenRoutes(children));
+      acc.push(...flattenRoutes(children, t));
     }
 
     return acc;
@@ -48,13 +47,14 @@ const getCssVariable = (name) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 export default function App() {
+  const { t, i18n } = useTranslation();
   const { locale, direction } = useLanguage();
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const axios = useAxios();
 
   const routesConfig = createRoutesConfig();
-  const allRoutes = flattenRoutes(routesConfig);
+  const allRoutes = flattenRoutes(routesConfig, t);
   const layoutRoutes = allRoutes.filter((r) => r.withLayout);
   const nonLayoutRoutes = allRoutes.filter((r) => !r.withLayout);
   const isAuthenticated = !!user?._id;
@@ -68,7 +68,7 @@ export default function App() {
     ...nonLayoutRoutes.map(({ path, element }) => ({ path, element })),
     {
       path: "*",
-      element: <div>404 - Page Not Found</div>,
+      element: <div>{t("pageNotFound")}</div>,
     },
   ]);
 
@@ -86,6 +86,18 @@ export default function App() {
 
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    if (!user && i18n.language !== "en") {
+      i18n.changeLanguage("en");
+    }
+  }, [user, i18n]);
+
+  useEffect(() => {
+    document.title = t("appTitle");
+    document.documentElement.lang = locale;
+    document.documentElement.dir = direction;
+  }, [locale, direction, t]);
 
   return (
     <StyleProvider layer>

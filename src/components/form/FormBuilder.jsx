@@ -86,18 +86,18 @@ export default function FormBuilder({
     controlled && Object.prototype.hasOwnProperty.call(controlled, name);
 
   const renderFieldType = (field, value, onChange) => {
+    const tPh = (key) => t(`common.placeholders.${key}`, { ns: "form", label: field.label });
+
     const placeholderMap = {
-      select: `Select ${field.label}`,
-      textarea: `Enter ${field.label}`,
-      date: `Select ${field.label}`,
-      daterange: [
-        field.placeholder?.[0] || `Start ${field.label}`,
-        field.placeholder?.[1] || `End ${field.label}`,
-      ],
-      time: `Select ${field.label}`,
-      number: `Enter ${field.label}`,
-      file: `Upload ${field.label}`,
-      default: `Enter ${field.label}`,
+      select: tPh("select"),
+      time: tPh("select"),
+      date: tPh("select"),
+      textarea: tPh("enter"),
+      number: tPh("enter"),
+      file: tPh("upload"),
+      default: tPh("enter"),
+
+      daterange: [field.placeholder?.[0] || tPh("start"), field.placeholder?.[1] || tPh("end")],
     };
 
     const placeholder = field.placeholder || placeholderMap[field.type] || placeholderMap.default;

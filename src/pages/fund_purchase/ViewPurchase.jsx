@@ -5,8 +5,10 @@ import useApi from "../../logic/useApi";
 import { formRules } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import { inputFormatters } from "../../utils/utils";
+import { useTranslation } from "react-i18next";
 
 export default function ViewPurchase() {
+  const { t } = useTranslation("form");
   const { callApi, loading } = useApi();
   const [data, setData] = useState(null);
   const { id } = useParams();
@@ -93,25 +95,25 @@ export default function ViewPurchase() {
   const formConfig = [
     {
       name: "fund_id",
-      label: "Fund",
+      label: t("purchase.fund"),
       type: "select",
-      rules: formRules.required("Fund"),
+      rules: formRules.required(t("purchase.fund")),
       options: funds.map((fund) => ({ value: fund._id, label: fund.title })),
-      placeholder: "Select fund",
+      placeholder: t("purchase.selectFund"),
     },
     {
       name: "user_id",
-      label: "Investor",
+      label: t("purchase.investor"),
       type: "select",
-      rules: formRules.required("Investor"),
+      rules: formRules.required(t("purchase.investor")),
       options: investors.map((investor) => ({ value: investor._id, label: investor.full_name })),
-      placeholder: "Select investor",
+      placeholder: t("purchase.selectInvestor"),
     },
     {
       name: "fund_roi",
-      label: "Fund ROI",
+      label: t("purchase.fundROI"),
       type: "number",
-      placeholder: "Enter fund roi (e.g., 7.18)",
+      placeholder: t("purchase.enterFundROI"),
       min: 1,
       computed: (values) => {
         const selectedFund = funds.find((fund) => fund._id === values.fund_id);
@@ -121,52 +123,28 @@ export default function ViewPurchase() {
     },
     {
       name: "user_amount",
-      label: "Amount ($)",
+      label: t("purchase.amountUSD"),
       type: "number",
-      rules: formRules.required("Amount"),
-      placeholder: "Enter amount",
+      rules: formRules.required(t("purchase.amount")),
+      placeholder: t("purchase.enterAmount"),
       ...inputFormatters.money,
     },
     {
       name: "fund_unit",
-      label: "Units",
+      label: t("purchase.units"),
       type: "number",
-      rules: formRules.required("Units"),
-      placeholder: "Enter units (e.g., 1237.18)",
+      rules: formRules.required(t("purchase.units")),
+      placeholder: t("purchase.enterUnits"),
       min: 1,
     },
-    // {
-    //   name: "unit_price",
-    //   label: "Unit Price ($)",
-    //   type: "number",
-    //   rules: formRules.required("Unit Price"),
-    //   placeholder: "Enter unit price (e.g., $1237.18)",
-    //   computed: (values) => {
-    //     const amount = Number(values?.user_amount ?? 0);
-    //     const units = Number(values?.units ?? 0);
-    //     if (!units) return undefined;
-    //     const price = amount / units;
-    //     if (!Number.isFinite(price)) return undefined;
-    //     return Number(price.toFixed(2));
-    //   },
-    //   computedDeps: ["amount", "units"],
-    //   ...inputFormatters.money,
-    // },
     {
       name: "fund_aum",
-      label: "Current AUM ($)",
+      label: t("purchase.currentAUM"),
       type: "number",
-      placeholder: "Enter current AUM (e.g., $32.87)",
-      rules: formRules.required("AUM"),
+      placeholder: t("purchase.enterCurrentAUM"),
+      rules: formRules.required(t("purchase.aum")),
       ...inputFormatters.money,
     },
-    // {
-    //   name: "remarks",
-    //   label: "Remarks",
-    //   type: "textarea",
-    //   rows: 4,
-    //   maxLength: 150,
-    // },
   ];
 
   return (
@@ -174,8 +152,8 @@ export default function ViewPurchase() {
       formProps={{ autoComplete: "off" }}
       formConfig={formConfig}
       initialValues={{ fund_id: trade_id, user_id, ...data }}
-      cancelText="Back"
-      submitText="Save"
+      cancelText={t("purchase.back")}
+      submitText={t("purchase.save")}
       onFinish={onFinish}
       loading={loading}
     />

@@ -1,4 +1,10 @@
 {
+  "appTitle": "Alteia Fund Dashboard",
+  "loading": "Loading...",
+  "pageNotFound": "404 - Page Not Found",
+  "notifications": "Notifications",
+  "markAllAsRead": "Mark all as read",
+  "noNewNotifications": "No new notifications.",
   "language": {
     "english": "English",
     "arabic": "Arabic"
