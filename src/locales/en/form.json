@@ -148,5 +148,12 @@
     "title": "Title",
     "message": "Message",
     "picture": "Notification Picture"
+  },
+  "roi": {
+    "monthlyInput": "Monthly ROI Input",
+    "year": "Year",
+    "month": "Month",
+    "roiPercent": "ROI%",
+    "errorAtLeastOne": "Please enter at least one ROI"
   }
 }

@@ -1,50 +1,58 @@
 import React, { useEffect, useState } from "react";
-
-import { Segmented } from "antd";
-import PortfolioMetrics from "./PortfolioMetrics";
 import PortfolioChartSection from "./PortfolioChartSection";
 import CustomButton from "../../components/form/CustomButton";
 import Field from "../../components/form/Field";
 import { useNavigate } from "react-router-dom";
 import useApi from "../../logic/useApi";
+import { useTranslation } from "react-i18next";
 
 export default function ROIOverview() {
+  const { t } = useTranslation("table");
   const { callApi } = useApi();
   const [funds, setFunds] = useState([]);
   const navigate = useNavigate();
+
   const portfolioData = {
+    // Included purely for translation context if you uncomment the metrics section later
     metrics: [
       {
         value: "9.4% YTD Growth",
-        subtitle: "Total Portfolio ROI",
+        subtitle: t("roi.totalPortfolioROI"),
         color: "text-light-primary",
-        desc: "Your portfolio's year-to-date return indicates steady growth.",
+        desc: t("roi.metricsDesc1"),
         onView: () => {},
       },
       {
         value: "0.8% average per month",
-        subtitle: "Average Monthly ROI",
+        subtitle: t("roi.avgMonthlyROI"),
         color: "text-light-primary",
-        desc: "Consistent monthly returns help build long-term wealth.",
+        desc: t("roi.metricsDesc2"),
         onView: () => {},
       },
       {
         value: "ROI Peaked at 12.4%",
-        subtitle: "Top Performer Month",
+        subtitle: t("roi.topPerformerMonth"),
         color: "text-light-primary",
-        desc: "June delivered the highest return in the portfolio this year.",
+        desc: t("roi.metricsDesc3"),
         onView: () => {},
       },
       {
         value: "ROI Dipped to 3.1%",
-        subtitle: "Toughest Month",
+        subtitle: t("roi.toughestMonth"),
         color: "text-light-primary",
-        desc: "February was the most challenging month, with reduced returns.",
+        desc: t("roi.metricsDesc4"),
         onView: () => {},
       },
     ],
-    timeFilters: ["3 Months", "6 Months", "12 Months", "📅", "2025", "August ▼"],
-    rangeFilters: ["Today", "This Week", "This Month", "This Year"],
+    timeFilters: [
+      t("roi.3Months"),
+      t("roi.6Months"),
+      t("roi.12Months"),
+      "📅",
+      "2025",
+      "August ▼",
+    ],
+    rangeFilters: [t("roi.today"), t("roi.thisWeek"), t("roi.thisMonth"), t("roi.thisYear")],
   };
 
   const [selectedFilters, setSelectedFilters] = useState({});
@@ -69,10 +77,8 @@ export default function ROIOverview() {
     fetchFunds();
   }, []);
 
-  // ROIOverview.js — replace fetchROIData with this
   const fetchROIData = async () => {
     try {
-      // build params: include year only when selectedFilters.year is truthy
       const params = { fund_id: selectedTrade };
       if (selectedFilters?.year) params.year = selectedFilters.year;
 
@@ -84,11 +90,8 @@ export default function ROIOverview() {
       const rows = response?.data || [];
       const selectedFund = funds.find((f) => f._id === selectedTrade) || {};
 
-      // Helper to turn "January" + "2025" into a Date object (first day of month)
       const makeDate = (monthName, yearStr) => {
-        // Use JS to parse, fallback if invalid
         try {
-          // e.g. new Date('January 1, 2025') -> month index
           const d = new Date(`${monthName} 1, ${yearStr}`);
           if (isNaN(d)) return null;
           return d;
@@ -105,17 +108,18 @@ export default function ROIOverview() {
           const yearStr = item.year;
           const dt = makeDate(monthName, yearStr);
           const roiPercent = Number(item.max_roi || 0);
-          const fundValue = navUnit + (roiPercent / 100) * navUnit; // preserve previous logic
+          const fundValue = navUnit + (roiPercent / 100) * navUnit;
+
           return {
             ...item,
-            monthLabel: params.year ? monthName : `${monthName} ${yearStr}`, // e.g. "September 2025"
-            date: dt ? dt.getTime() : undefined, // timestamp for sorting
+            // You might want to translate monthName here if 'item.month' is always English
+            monthLabel: params.year ? monthName : `${monthName} ${yearStr}`,
+            date: dt ? dt.getTime() : undefined,
             fundValue,
             roi: roiPercent,
           };
         })
         .sort((a, b) => {
-          // Put undefined dates at the end
           if (a.date === undefined) return 1;
           if (b.date === undefined) return -1;
           return a.date - b.date;
@@ -145,12 +149,12 @@ export default function ROIOverview() {
                 options={funds?.map((fund) => ({ value: fund._id, label: fund.title }))}
                 value={selectedTrade || funds?.[0]?._id}
                 onChange={setSelectedTrade}
-                placeholder={portfolioData.title}
+                placeholder={t("roi.selectPortfolio")} // Fixed undefined placeholder
                 className="w-full"
                 allowClear={false}
               />
             </div>
-            <p className="text-gray-400 text-xs sm:text-sm mt-1">Portfolio Highlights</p>
+            <p className="text-gray-400 text-xs sm:text-sm mt-1">{t("roi.portfolioHighlights")}</p>
           </div>
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             {/* <Segmented
@@ -161,11 +165,8 @@ export default function ROIOverview() {
             /> */}
             <CustomButton
               showIcon
-              text="Add ROI"
+              text={t("roi.addROI")}
               onClick={() => {
-                // navigate(`/roi/update/${selectedTrade || funds?.[0]?._id}`, {
-                //   state: { ...selectedFilters, fund: funds.find((fund) => fund._id === selectedTrade) },
-                // });
                 navigate(`/roi/update`, {
                   state: {
                     ...selectedFilters,
@@ -180,7 +181,7 @@ export default function ROIOverview() {
         </div>
       </div>
 
-      {/* Metrics Section */}
+      {/* Metrics Section (Currently Commented out in source) */}
       {/* <PortfolioMetrics metrics={portfolioData.metrics} /> */}
 
       {/* Chart Section */}

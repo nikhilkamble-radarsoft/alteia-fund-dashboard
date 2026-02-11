@@ -74,5 +74,19 @@
     "create_purchase": "Create Purchase",
     "view_purchase": "View Purchase",
     "view_lead": "View Lead"
+  },
+  "months": {
+    "january": "Jan",
+    "february": "Feb",
+    "march": "Mar",
+    "april": "Apr",
+    "may": "May",
+    "june": "Jun",
+    "july": "Jul",
+    "august": "Aug",
+    "september": "Sep",
+    "october": "Oct",
+    "november": "Nov",
+    "december": "Dec"
   }
 }

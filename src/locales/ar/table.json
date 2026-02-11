@@ -141,5 +141,34 @@
       "desc_label": "الوصف",
       "desc_placeholder": "أدخل الوصف الخاص بك"
     }
+  },
+  "roi": {
+    "selectPortfolio": "اختر المحفظة",
+    "portfolioHighlights": "أبرز ملامح المحفظة",
+    "addROI": "إضافة عائد",
+    "totalPortfolioROI": "إجمالي عائد المحفظة",
+    "avgMonthlyROI": "متوسط العائد الشهري",
+    "topPerformerMonth": "الشهر الأعلى أداءً",
+    "toughestMonth": "الشهر الأقل أداءً",
+    "metricsDesc1": "يشير عائد محفظتك منذ بداية العام إلى نمو ثابت.",
+    "metricsDesc2": "تساعد العوائد الشهرية المستمرة في بناء ثروة طويلة الأجل.",
+    "metricsDesc3": "حقق شهر يونيو أعلى عائد في المحفظة هذا العام.",
+    "metricsDesc4": "كان شهر فبراير الشهر الأكثر صعوبة مع انخفاض العوائد.",
+    "3Months": "3 أشهر",
+    "6Months": "6 أشهر",
+    "12Months": "12 شهراً",
+    "today": "اليوم",
+    "thisWeek": "هذا الأسبوع",
+    "thisMonth": "هذا الشهر",
+    "thisYear": "هذا العام",
+
+    "yearlyPerformance": "أداء العائد السنوي",
+    "selectYear": "السنة",
+    "period_3M": "3 أشهر",
+    "period_6M": "6 أشهر",
+    "period_1Y": "سنة",
+    "period_3Y": "3 سنوات",
+    "period_5Y": "5 سنوات",
+    "period_Max": "الكل"
   }
 }

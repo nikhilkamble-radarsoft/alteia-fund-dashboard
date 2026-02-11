@@ -10,8 +10,10 @@ import TableTitle from "../../components/table/TableTitle";
 import { years } from "./PortfolioChartSection";
 import Title from "antd/es/typography/Title";
 import { formatDate } from "../../utils/utils";
+import { useTranslation } from "react-i18next";
 
 const ViewUpdateROI = () => {
+  const { t } = useTranslation("form");
   const { title, setTitle } = useTopData();
   const { callApi, loading } = useApi();
   const location = useLocation();
@@ -54,11 +56,12 @@ const ViewUpdateROI = () => {
       });
 
       setCurrentROI(updatedROI || {});
-      setTitle(
-        `Monthly ROI Input ${fund.title ? `- ${fund.title}` : ""} ${
-          selectedYear ? `(Year-${selectedYear})` : ""
-        }`
-      );
+
+      // Dynamic Title Translation
+      const titleSuffix = fund.title ? `- ${fund.title}` : "";
+      const yearSuffix = selectedYear ? `(${t("roi.year")}-${selectedYear})` : "";
+
+      setTitle(`${t("roi.monthlyInput")} ${titleSuffix} ${yearSuffix}`);
     } catch (error) {
       console.error("Error fetching ROI:", error);
     }
@@ -70,7 +73,7 @@ const ViewUpdateROI = () => {
     } else {
       navigate(-1);
     }
-  }, [fund, selectedYear]);
+  }, [fund, selectedYear, t]); // Added t dependency
 
   useEffect(() => {
     if (!validYears.includes(selectedYear)) {
@@ -79,6 +82,7 @@ const ViewUpdateROI = () => {
     }
   }, [validYears]);
 
+  // Keep these as English keys for the backend/logic
   const monthsList = [
     "January",
     "February",
@@ -126,16 +130,16 @@ const ViewUpdateROI = () => {
             ? {
                 fund_id: fund._id,
                 year: `${selectedYear}`,
-                month: m,
+                month: m, // Sending English month to backend
                 less_roi: "0",
                 max_roi: `${Number(values?.[m] || 0)}`,
               }
-            : null
+            : null,
         )
         .filter(Boolean);
 
       if (!roi_list.length) {
-        return showError("Please enter at least one ROI");
+        return showError(t("roi.errorAtLeastOne"));
       }
 
       await callApi({
@@ -179,21 +183,41 @@ const ViewUpdateROI = () => {
 
       <Form layout="vertical" form={form} onFinish={handleSubmit}>
         <div className="grid grid-cols-2 gap-3 px-2">
-          <div className="text-primary font-bold">Month</div>
-          <div className="text-primary font-bold text-left">ROI%</div>
+          <div className="text-primary font-bold">{t("roi.month")}</div>
+          <div className="text-primary font-bold text-left">{t("roi.roiPercent")}</div>
         </div>
 
         <div className="rounded-lg">
           {filteredMonths.map((m) => (
             <div key={m} className="grid grid-cols-2 gap-3 px-3 py-2">
-              <FormField value={m} type="input" placeholder="Month" disabled={true} form={form} />
-              <FormField name={m} type="number" placeholder="ROI%" disabled={loading} form={form} />
+              {/* Display Translated Month Name, but value is purely visual here */}
+              <FormField
+                value={t(`months.${m.toLowerCase()}`, { ns: "common" })}
+                type="input"
+                placeholder={t("roi.month")}
+                disabled={true}
+                form={form}
+              />
+              {/* Input binds to 'm' (English key) so form state matches backend expectation */}
+              <FormField
+                name={m}
+                type="number"
+                placeholder={t("roi.roiPercent")}
+                disabled={loading}
+                form={form}
+              />
             </div>
           ))}
         </div>
 
         <div className="mt-4 flex justify-end">
-          <CustomButton type="primary" htmlType="submit" loading={loading} text="Save" width="" />
+          <CustomButton
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            text={t("common.save")}
+            width=""
+          />
         </div>
       </Form>
     </div>

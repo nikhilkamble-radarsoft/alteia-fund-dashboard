@@ -9,6 +9,7 @@ import clsx from "clsx";
 import CustomBadge from "../common/CustomBadge";
 import CustomButton from "./CustomButton";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../logic/useLanguage";
 
 export default function FileField({
   className = "w-full",
@@ -24,6 +25,7 @@ export default function FileField({
   hidden: hiddenProp,
   loading = false,
 }) {
+  const { isRTL } = useLanguage();
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [internalList, setInternalList] = React.useState([]);
   const { showView = true, showDownload = false } = uploadProps;
@@ -203,7 +205,7 @@ export default function FileField({
                   }
                 }}
                 className={`
-                  absolute top-[-7px] right-[-7px] rounded-full bg-background transition
+                  absolute top-[-7px] ${isRTL ? "left-[-7px]" : "right-[-7px]"} rounded-full bg-background transition
                   ${isMobile ? "flex" : "hidden group-hover:flex hover:cursor-pointer"}
                 `}
               >

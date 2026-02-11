@@ -140,5 +140,34 @@
       "desc_label": "Description",
       "desc_placeholder": "Enter your description"
     }
+  },
+  "roi": {
+    "selectPortfolio": "Select Portfolio",
+    "portfolioHighlights": "Portfolio Highlights",
+    "addROI": "Add ROI",
+    "totalPortfolioROI": "Total Portfolio ROI",
+    "avgMonthlyROI": "Average Monthly ROI",
+    "topPerformerMonth": "Top Performer Month",
+    "toughestMonth": "Toughest Month",
+    "metricsDesc1": "Your portfolio's year-to-date return indicates steady growth.",
+    "metricsDesc2": "Consistent monthly returns help build long-term wealth.",
+    "metricsDesc3": "June delivered the highest return in the portfolio this year.",
+    "metricsDesc4": "February was the most challenging month, with reduced returns.",
+    "3Months": "3 Months",
+    "6Months": "6 Months",
+    "12Months": "12 Months",
+    "today": "Today",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "thisYear": "This Year",
+
+    "yearlyPerformance": "Yearly ROI Performance",
+    "selectYear": "Year",
+    "period_3M": "3M",
+    "period_6M": "6M",
+    "period_1Y": "1Y",
+    "period_3Y": "3Y",
+    "period_5Y": "5Y",
+    "period_Max": "Max"
   }
 }
