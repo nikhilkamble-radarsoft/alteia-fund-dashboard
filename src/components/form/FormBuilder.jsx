@@ -39,12 +39,15 @@ export default function FormBuilder({
   const translateBatch = async (texts, targetLang) => {
     if (!texts.length) return [];
 
+    const sourceLang = targetLang === "ar" ? "en" : "ar";
+
     const { response, status } = await callApi({
       url: "/translate",
       method: "post",
       data: {
         texts: texts,
         targetLang: targetLang,
+        sourceLang: sourceLang, // <--- Add this line
       },
       errorOptions: {},
     });
