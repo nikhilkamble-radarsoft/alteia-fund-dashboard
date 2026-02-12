@@ -6,6 +6,7 @@ import { formRules } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import { inputFormatters } from "../../utils/utils";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../logic/useLanguage";
 
 export default function ViewPurchase() {
   const { t } = useTranslation("form");
@@ -18,6 +19,7 @@ export default function ViewPurchase() {
   const [investors, setInvestors] = useState([]);
   const location = useLocation();
   const { trade_id, user_id } = location.state || {};
+  const { currentLang } = useLanguage();
 
   const fetchData = async () => {
     const { response } = await callApi({
@@ -88,9 +90,12 @@ export default function ViewPurchase() {
     if (id) {
       fetchData();
     }
+  }, [id]);
+
+  useEffect(() => {
     fetchFunds();
     fetchInvestors();
-  }, [id]);
+  }, [currentLang]);
 
   const formConfig = [
     {
@@ -116,8 +121,8 @@ export default function ViewPurchase() {
       placeholder: t("purchase.enterFundROI"),
       min: 1,
       computed: (values) => {
-        const selectedFund = funds.find((fund) => fund._id === values.fund_id);
-        return Number(selectedFund?.roi_range) || undefined;
+        const selectedFund = funds.find((fund) => fund._id === values?.fund_id);
+        return selectedFund?.roi_range ? Number(selectedFund?.roi_range) : null;
       },
       computedDeps: ["fund_id"],
     },
@@ -156,6 +161,7 @@ export default function ViewPurchase() {
       submitText={t("purchase.save")}
       onFinish={onFinish}
       loading={loading}
+      multiLanguage={null}
     />
   );
 }

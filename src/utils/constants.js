@@ -99,7 +99,13 @@ export const formRules = {
       : []),
     ({ getFieldValue }) => ({
       validator(_, value) {
-        if (!value || getFieldValue(key) === value) {
+        let targetValue = getFieldValue(key);
+
+        if (targetValue === undefined) {
+          targetValue = getFieldValue(["en", key]);
+        }
+
+        if (!value || targetValue === value) {
           return Promise.resolve();
         }
         return Promise.reject(new Error(tVal("password_match")));

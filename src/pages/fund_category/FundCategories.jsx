@@ -9,6 +9,7 @@ import { formRules } from "../../utils/constants";
 import useApi from "../../logic/useApi";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../logic/useLanguage";
 
 const { Title } = Typography;
 
@@ -18,6 +19,7 @@ export default function FundCategories() {
   const { showConfirm, modal, closeModal } = useThemedModal();
   const [fetchRefresh, setFetchRefresh] = useState(false);
   const { t } = useTranslation("table");
+  const { currentLang } = useLanguage();
 
   const handleDelete = (record) => {
     showConfirm({
@@ -39,6 +41,8 @@ export default function FundCategories() {
             },
             errorOptions: {},
           });
+
+          return status;
         } catch (error) {
           console.log(error);
         }
@@ -87,13 +91,14 @@ export default function FundCategories() {
                 });
               },
               initialValues: {
-                name: record.name,
-                description: record.description,
+                en: { name: record.name.en, description: record.description.en },
+                ar: { name: record.name.ar, description: record.description.ar },
               },
+              multiLanguage: { showExtra: false },
             });
           }}
         >
-          {text}
+          {text[currentLang] || text.en || text}
         </NavLink>
       ),
     },
@@ -165,7 +170,7 @@ export default function FundCategories() {
                   },
                 ],
                 onConfirm: async (values) => {
-                  await callApi({
+                  const { status } = await callApi({
                     url: `/admin/fund-category`,
                     method: "POST",
                     data: { ...values },
@@ -177,6 +182,11 @@ export default function FundCategories() {
                     },
                     errorOptions: {},
                   });
+
+                  return status;
+                },
+                multiLanguage: {
+                  showExtra: false,
                 },
               });
             }}
@@ -189,6 +199,9 @@ export default function FundCategories() {
         apiConfig={{
           url: "/admin/fund-category",
           fetchRefresh,
+          params: {
+            skipDefaultTransform: true,
+          },
         }}
         rowKey="_id"
       />

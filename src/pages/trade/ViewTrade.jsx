@@ -7,6 +7,7 @@ import { formRules } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import { inputFormatters } from "../../utils/utils";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../logic/useLanguage";
 
 export default function ViewTrade() {
   const { callApi, loading } = useApi();
@@ -15,29 +16,9 @@ export default function ViewTrade() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [fundCategories, setFundCategories] = useState([]);
+  const { currentLang } = useLanguage();
 
   const { t } = useTranslation("form");
-
-  const fetchData = async () => {
-    const { response } = await callApi({
-      method: "post",
-      url: `/admin/get-trade-list`,
-      data: {
-        fund_id: id,
-      },
-      errorOptions: {
-        onOk: () => navigate(-1),
-      },
-    });
-
-    const localData = response.data;
-
-    const updatedData = {
-      ...localData,
-      dob: dayjs(localData.dob),
-    };
-    setData(updatedData);
-  };
 
   const fetchFundCategories = async () => {
     const { response } = await callApi({
@@ -50,22 +31,103 @@ export default function ViewTrade() {
     setFundCategories(response.data || []);
   };
 
-  const onFinish = async (values) => {
-    const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      if (!values[key]) return;
-      // Upload files
-      if (["fund_document", "banner_image"].includes(key) && values[key][0].originFileObj)
-        return formData.append(key, values[key][0].originFileObj);
-
-      if (Array.isArray(values[key])) {
-        values[key].forEach((item) => formData.append(key, item));
-      } else {
-        formData.append(key, values[key]);
-      }
+  const fetchData = async () => {
+    const { response } = await callApi({
+      method: "post",
+      url: `/admin/get-trade-list`,
+      data: {
+        fund_id: id,
+      },
+      params: { skipDefaultTransform: true },
+      errorOptions: {
+        onOk: () => navigate(-1),
+      },
     });
 
-    if (!id) formData.append("created_by", user._id);
+    const data = response.data;
+
+    const formattedData = {
+      en: {
+        ...data,
+
+        title: data.title?.en,
+        short_description: data.short_description?.en,
+        location: data.location?.en,
+
+        why_invest: data.why_invest?.en || [],
+        risks_to_consider: data.risks_to_consider?.en || [],
+
+        start_date: data.start_date ? dayjs(data.start_date) : null,
+        end_date: data.end_date ? dayjs(data.end_date) : null,
+        banner_image: data.banner_image,
+        fund_document: data.fund_document,
+      },
+      ar: {
+        title: data.title?.ar,
+        short_description: data.short_description?.ar,
+        location: data.location?.ar,
+
+        why_invest: data.why_invest?.ar || [],
+        risks_to_consider: data.risks_to_consider?.ar || [],
+      },
+    };
+
+    setData(formattedData);
+  };
+
+  const onFinish = async (formValues) => {
+    const values = {
+      en: { ...data?.en, ...formValues.en },
+      ar: { ...data?.ar, ...formValues.ar },
+    };
+
+    const formData = new FormData();
+
+    const appendSection = (sectionData, prefix) => {
+      if (!sectionData) return;
+
+      Object.keys(sectionData).forEach((key) => {
+        const value = sectionData[key];
+
+        if (value === undefined || value === null || value === "") return;
+
+        if (
+          ["banner_image", "fund_document"].includes(key) &&
+          Array.isArray(value) &&
+          value[0]?.originFileObj
+        ) {
+          formData.append(key, value[0].originFileObj);
+          return;
+        }
+
+        if (
+          ["banner_image", "fund_document"].includes(key) &&
+          Array.isArray(value) &&
+          !value[0]?.originFileObj
+        ) {
+          return;
+        }
+
+        if (Array.isArray(value)) {
+          formData.append(`${prefix}[${key}]`, JSON.stringify(value));
+          return;
+        }
+
+        if (dayjs.isDayjs(value)) {
+          formData.append(`${prefix}[${key}]`, value.toISOString());
+          return;
+        }
+
+        formData.append(`${prefix}[${key}]`, value);
+      });
+    };
+
+    // Process merged English and Arabic data
+    appendSection(values.en, "en");
+    appendSection(values.ar, "ar");
+
+    // Append IDs
+    if (!id && user?._id) formData.append("en[created_by]", user._id);
     if (id) formData.append("fund_id", id);
 
     const { status } = await callApi({
@@ -85,8 +147,11 @@ export default function ViewTrade() {
     if (id) {
       fetchData();
     }
-    fetchFundCategories();
   }, [id]);
+
+  useEffect(() => {
+    fetchFundCategories();
+  }, [currentLang]);
 
   const formConfig = [
     {
@@ -127,14 +192,19 @@ export default function ViewTrade() {
       label: t("funds.start_date"),
       type: "date",
       rules: formRules.required(t("funds.start_date"), "date"),
-      shouldShow: (formValues) => formValues.duration_type,
+      shouldShow: (formValues) => formValues.en?.duration_type,
+
+      dependencies: [["en", "end_date"]],
       datePickerProps: (form) => ({
         disabledDate: (current) => {
           if (!current) return false;
           const today = dayjs().startOf("day");
-          const endDate = form.getFieldValue("end_date");
-          if (current.isAfter(today)) return true;
-          if (endDate && current.isAfter(dayjs(endDate).startOf("day"))) {
+
+          const endDate = form.getFieldValue(["en", "end_date"]);
+
+          if (current.isBefore(today)) return true;
+
+          if (endDate && current.isAfter(dayjs(endDate).endOf("day"))) {
             return true;
           }
           return false;
@@ -146,13 +216,18 @@ export default function ViewTrade() {
       label: t("funds.end_date"),
       type: "date",
       rules: formRules.required(t("funds.end_date"), "date"),
-      shouldShow: (formValues) => formValues.duration_type === "close-ended",
+      shouldShow: (formValues) => formValues.en?.duration_type === "close-ended",
+
+      dependencies: [["en", "start_date"]],
       datePickerProps: (form) => ({
         disabledDate: (current) => {
           if (!current) return false;
           const today = dayjs().startOf("day");
-          const startDate = form.getFieldValue("start_date");
-          if (current.isAfter(today)) return true;
+
+          const startDate = form.getFieldValue(["en", "start_date"]);
+
+          if (current.isBefore(today)) return true;
+
           if (startDate && current.isBefore(dayjs(startDate).startOf("day"))) {
             return true;
           }
@@ -197,7 +272,7 @@ export default function ViewTrade() {
       name: "fund_document",
       label: t("funds.documents"),
       type: "file",
-      // Fixed: Previously passed "Proof of Address" incorrectly
+
       rules: formRules.required(t("funds.documents")),
       placeholder: t("funds.documents_ph"),
       accept: ["application/pdf"],
@@ -251,6 +326,7 @@ export default function ViewTrade() {
       submitText={t("common.save")}
       onFinish={onFinish}
       loading={loading}
+      multiLanguage
     />
   );
 }

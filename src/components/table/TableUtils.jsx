@@ -1,6 +1,7 @@
 import { Dropdown, Button } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { tableFallbackText } from "../../utils/constants";
+import { useLanguage } from "../../logic/useLanguage";
 
 const customSortIcon = ({ sortOrder }) => (
   <span className="flex flex-col ml-1">
@@ -14,12 +15,21 @@ const customSortIcon = ({ sortOrder }) => (
 );
 
 export const enhanceColumns = ({ columns }) => {
+  const { currentLang = "en" } = useLanguage();
   return columns.map((col, i) => {
     const hasActions = !!col.actions;
 
     if (!hasActions) {
       return {
-        render: (val) => (val ? val : tableFallbackText),
+        render: (val, record, index) => {
+          if (val === null || val === undefined) return tableFallbackText;
+
+          if (typeof val === "object") {
+            return val[currentLang] || val.en || tableFallbackText;
+          }
+
+          return val;
+        },
         ...col,
         // sorter: true, // Enable this line to make all non-action columns sortable
         sorterIcon: customSortIcon,
@@ -42,8 +52,8 @@ export const enhanceColumns = ({ columns }) => {
           typeof a?.visible === "function"
             ? a?.visible?.(record, index)
             : a?.visible !== undefined
-            ? a?.visible
-            : true
+              ? a?.visible
+              : true,
         );
 
         if (!availableActions.length) return tableFallbackText;

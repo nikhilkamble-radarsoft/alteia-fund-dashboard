@@ -5,7 +5,7 @@ import { PiBellFill, PiGlobeFill } from "react-icons/pi";
 import { createRoutesConfig } from "../../routes/routes";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import CustomButton from "../form/CustomButton";
-import { FiChevronLeft, FiGlobe } from "react-icons/fi";
+import { FiChevronLeft } from "react-icons/fi";
 import TableTitle from "../table/TableTitle";
 import { useSelector } from "react-redux";
 import { useTopData } from "./AppLayout";
@@ -116,7 +116,7 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
             options={[
               {
                 value: "en",
-                label: t("language.english", "English"),
+                label: "English",
               },
               {
                 value: "ar",

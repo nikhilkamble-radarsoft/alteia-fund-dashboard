@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useTransition } from "react";
 import { enhanceColumns } from "./TableUtils.jsx";
 import { useThemedModal } from "../../logic/useThemedModal.jsx";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../logic/useLanguage.js";
 
 /**
  * CustomTable with server/client sorting and action column support
@@ -96,6 +97,7 @@ export default function CustomTable({
   rowKey = "_id",
 }) {
   const { callApi, loading: apiLoading } = useApi();
+  const { currentLang } = useLanguage();
 
   const isServer = Boolean(apiConfig?.url);
 
@@ -251,7 +253,16 @@ export default function CustomTable({
       setTotal(arr.length || 0);
       getTableData?.({ response: arr, meta: commonData });
     }
-  }, [page, pageSize, debouncedSearch, apiConfig.fetchRefresh, apiConfig.url, sortBy, sortOrder]);
+  }, [
+    page,
+    pageSize,
+    debouncedSearch,
+    apiConfig.fetchRefresh,
+    apiConfig.url,
+    sortBy,
+    sortOrder,
+    currentLang,
+  ]);
 
   /** Client: sync incoming dataSource prop when not using server */
   useEffect(() => {

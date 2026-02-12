@@ -7,6 +7,7 @@ import { useTopData } from "../../components/layout/AppLayout";
 import { formRules } from "../../utils/constants";
 import countryList from "../../utils/country_list.json";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../logic/useLanguage";
 
 export default function ViewInvestor() {
   const { callApi, loading } = useApi();
@@ -16,6 +17,7 @@ export default function ViewInvestor() {
 
   const { setTitle } = useTopData();
   const { t } = useTranslation("form");
+  const { currentLang } = useLanguage();
 
   const fetchInvestor = async () => {
     const { response } = await callApi({
@@ -24,36 +26,83 @@ export default function ViewInvestor() {
       data: {
         user_id: id,
       },
+      params: {
+        skipDefaultTransform: true,
+      },
       errorOptions: {
         onOk: () => navigate(-1),
       },
     });
 
-    const localInvestor = response.data;
+    const data = response.data;
 
-    const updatedInvestor = {
-      ...localInvestor,
-      dob: dayjs(localInvestor.dob),
+    // Transform API response to FormBuilder structure: { en: {...}, ar: {...} }
+    const formattedInvestor = {
+      en: {
+        ...data, // Spread common fields (email, phone, ids, etc.) into 'en'
+
+        // Overwrite Multilingual Fields with just the English string
+        full_name: data.full_name?.en,
+        nationality: data.nationality?.en,
+        country: data.country?.en,
+        residential_address: data.residential_address?.en,
+        risk_appetite: data.risk_appetite?.en,
+        investment_interest: data.investment_interest?.en,
+        rejected_comment: data.rejected_comment?.en,
+
+        // Format Special Fields
+        dob: data.dob ? dayjs(data.dob) : null,
+        document_file: data.document_file,
+        address_file: data.address_file,
+        signature_file: data.signature_file,
+      },
+      ar: {
+        // Map Arabic specific fields
+        full_name: data.full_name?.ar || data.full_name?.en,
+        nationality: data.nationality?.ar || data.nationality?.en,
+        country: data.country?.ar || data.country?.en,
+        residential_address: data.residential_address?.ar || data.residential_address?.en,
+        risk_appetite: data.risk_appetite?.ar || data.risk_appetite?.en,
+        investment_interest: data.investment_interest?.ar || data.investment_interest?.en,
+        rejected_comment: data.rejected_comment?.ar || data.rejected_comment?.en,
+      },
     };
-    setInvestor(updatedInvestor);
 
-    setTitle(t("investor.title_details", { name: updatedInvestor.full_name }));
+    setInvestor(formattedInvestor);
   };
 
   const onFinish = async (values) => {
     if (id) return;
+
     const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      if (!values[key]) return;
-      if (["confirmPassword"].includes(key)) return;
 
-      if (["address_file", "document_file", "signature_file"].includes(key))
-        return formData.append(key, values[key][0].originFileObj);
+    const appendSection = (data, prefix) => {
+      if (!data) return;
 
-      formData.append(key, values[key]);
-    });
+      Object.keys(data).forEach((key) => {
+        const value = data[key];
 
-    formData.append("role", "Investor");
+        if (value === undefined || value === null || value === "") return;
+        if (key === "confirmPassword") return;
+
+        if (
+          ["address_file", "document_file", "signature_file"].includes(key) &&
+          Array.isArray(value) &&
+          value[0]?.originFileObj
+        ) {
+          formData.append(key, value[0].originFileObj);
+          return;
+        }
+
+        formData.append(`${prefix}[${key}]`, value);
+      });
+    };
+
+    appendSection(values.en, "en");
+
+    appendSection(values.ar, "ar");
+
+    formData.append("en[role]", "Investor");
 
     const { status } = await callApi({
       method: "post",
@@ -62,6 +111,7 @@ export default function ViewInvestor() {
       successOptions: {},
       errorOptions: {},
     });
+
     if (status) {
       navigate("/investors");
     }
@@ -73,7 +123,16 @@ export default function ViewInvestor() {
     }
   }, [id]);
 
-  // 4. Update Form Config with t()
+  useEffect(() => {
+    if (investor) {
+      setTitle(
+        t("investor.title_details", {
+          name: investor?.full_name?.[currentLang] || investor?.full_name?.en,
+        }),
+      );
+    }
+  }, [investor, currentLang]);
+
   const formConfig = [
     {
       name: "full_name",
@@ -86,12 +145,14 @@ export default function ViewInvestor() {
       label: t("investor.email"),
       type: "input",
       rules: formRules.email(),
+      hideFromOtherLanguages: true,
     },
     {
       name: "phone",
       label: t("investor.phone"),
       type: "input",
       rules: formRules.phone(),
+      hideFromOtherLanguages: true,
     },
 
     {
@@ -133,6 +194,7 @@ export default function ViewInvestor() {
       name: "postal_code",
       label: t("investor.postal_code"),
       type: "input",
+      hideFromOtherLanguages: true,
     },
     ...(!id
       ? [
@@ -150,7 +212,7 @@ export default function ViewInvestor() {
           },
         ]
       : []),
-    // files
+
     {
       name: "address_file",
       label: t("investor.proof_address"),

@@ -145,92 +145,80 @@ export function useThemedModal() {
       variant = "success",
       fields = [],
       initialValues,
-      // Translated default values
       confirmText,
       cancelText,
       onConfirm,
       twoColumn = false,
       showAnimation = true,
+      multiLanguage = false,
       ...options
     } = {}) => {
-      // Resolve text inside the function to ensure current language is used
       const finalConfirmText = confirmText || t("common.confirm");
       const finalCancelText = cancelText || t("common.cancel");
-
       const isSuccess = variant === "success";
-
-      confirmForm.resetFields();
-
-      if (initialValues && typeof initialValues === "object") {
-        confirmForm.setFieldsValue(initialValues);
-      }
 
       setModalConfig({
         title,
+        buttons: [],
         content: (
-          <Form
-            form={confirmForm}
-            layout="vertical"
-            onFinish={(values) => {
-              onConfirm?.(values);
-            }}
-          >
-            <div className="flex flex-col items-center justify-center">
-              {showAnimation && (
-                <div className="mb-5">
-                  <DotLottieReact src={isSuccess ? successAnim : errorAnim} loop autoplay />
-                </div>
+          <div className="flex flex-col justify-center">
+            {showAnimation && (
+              <div className="mb-5 flex justify-center">
+                <DotLottieReact src={isSuccess ? successAnim : errorAnim} loop autoplay />
+              </div>
+            )}
+            <div className="flex flex-col items-center justify-center mb-8">
+              {message && (
+                <Title
+                  level={3}
+                  className={`${isSuccess ? "text-light-primary" : "text-danger"} text-center mb-0`}
+                >
+                  {message}
+                </Title>
               )}
-              <div className="flex flex-col items-center justify-center mb-8">
-                {message && (
-                  <Title
-                    level={3}
-                    className={`${
-                      isSuccess ? "text-light-primary" : "text-danger"
-                    } text-center mb-0`}
-                  >
-                    {message}
-                  </Title>
-                )}
-                {subMessage && (
-                  <Paragraph className="mb-0 text-[16px] text-center text-[#828282]">
-                    {subMessage}
-                  </Paragraph>
-                )}
-              </div>
-              <div
-                className={`w-full grid gap-x-6 items-start ${
-                  twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-                }`}
-              >
-                {fields.map((f) => (
-                  <FormField key={f.name} form={confirmForm} {...f} />
-                ))}
-              </div>
+              {subMessage && (
+                <Paragraph className="mb-0 text-[16px] text-center text-[#828282]">
+                  {subMessage}
+                </Paragraph>
+              )}
             </div>
-          </Form>
+            <FormBuilder
+              formConfig={fields}
+              initialValues={initialValues}
+              multiLanguage={multiLanguage}
+              twoColumn={twoColumn}
+              submitText={finalConfirmText}
+              cancelText={finalCancelText}
+              onFinish={async (values) => {
+                if (onConfirm) {
+                  try {
+                    // Resolve the result whether it is a Promise or a direct value
+                    const shouldClose = await Promise.resolve(onConfirm(values));
+
+                    // Only close and reset if the result is truthy
+                    if (shouldClose || shouldClose === undefined) {
+                      confirmForm.resetFields();
+                      closeModal();
+                    }
+                  } catch (error) {
+                    // Optional: Handle errors from onConfirm here if needed
+                    console.error("Confirmation failed:", error);
+                  }
+                } else {
+                  // If no onConfirm is provided, close immediately
+                  confirmForm.resetFields();
+                  closeModal();
+                }
+              }}
+              onCancel={closeModal}
+            />
+          </div>
         ),
-        buttons: [
-          {
-            text: finalCancelText,
-            btnType: isSuccess ? "secondary" : "secondary-danger",
-            onClick: () => {
-              confirmForm.resetFields();
-              closeModal();
-            },
-          },
-          {
-            text: finalConfirmText,
-            btnType: isSuccess ? "primary" : "danger",
-            onClick: () => confirmForm.submit(),
-          },
-        ],
-        footerAlign: "center",
         ...options,
       });
       setVisible(true);
     },
-    [closeModal, confirmForm, t], // Added 't' to dependencies
+    [closeModal, t],
   );
 
   const modal = <ThemedModal {...modalConfig} visible={visible} onClose={handleClose} />;

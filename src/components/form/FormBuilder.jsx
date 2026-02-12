@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Form, Divider, Tabs, Badge } from "antd";
 import Field, { FormField } from "./Field";
 import CustomButton from "./CustomButton";
@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import TableTitle from "../table/TableTitle";
 import { defaultMaxFileUploadSize, defaultRequiredMsg } from "../../utils/constants";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
 import useApi from "../../logic/useApi";
 
 export default function FormBuilder({
@@ -25,7 +24,7 @@ export default function FormBuilder({
   twoColumn = true,
   loading = false,
   formHeight = "",
-  multiLanguage = false,
+  multiLanguage = { showExtra: true },
 }) {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
@@ -36,8 +35,13 @@ export default function FormBuilder({
   const [tabErrors, setTabErrors] = useState({ en: false, ar: false });
   const [translating, setTranslating] = useState(false);
 
+  // Stringify dependencies to prevent infinite loops if parent passes new object references
+  const initialValuesJson = JSON.stringify(initialValues);
+  const multiLanguageJson = JSON.stringify(multiLanguage);
+
   const translateBatch = async (texts, targetLang) => {
     if (!texts.length) return [];
+    return []; // TODO: Uncomment to disable translation for testing
 
     const sourceLang = targetLang === "ar" ? "en" : "ar";
 
@@ -47,7 +51,7 @@ export default function FormBuilder({
       data: {
         texts: texts,
         targetLang: targetLang,
-        sourceLang: sourceLang, // <--- Add this line
+        sourceLang: sourceLang,
       },
       errorOptions: {},
     });
@@ -59,40 +63,89 @@ export default function FormBuilder({
     return texts;
   };
 
+  const updateTabErrors = useCallback(() => {
+    if (!multiLanguage) return;
+    const errors = form.getFieldsError();
+    const hasEnError = errors.some((e) => e.errors.length > 0 && e.name[0] === "en");
+    const hasArError = errors.some((e) => e.errors.length > 0 && e.name[0] === "ar");
+
+    setTabErrors((prev) => {
+      // optimization: prevent re-render if state hasn't changed
+      if (prev.en === hasEnError && prev.ar === hasArError) return prev;
+      return { en: hasEnError, ar: hasArError };
+    });
+  }, [form, multiLanguage]);
+
   const handleTabChange = async (newLang) => {
     if (translating) return;
 
     const oldLang = activeLang;
-    setActiveLang(newLang); // Switch tab immediately for better UX
+    setActiveLang(newLang);
 
-    // Identify fields to translate
     const currentValues = form.getFieldsValue();
     const sourceData = currentValues[oldLang] || {};
     const targetData = currentValues[newLang] || {};
 
-    const fieldsToTranslate = [];
-    const valuesToTranslate = [];
+    // We flatten all data into a single array of strings for the API
+    const textsToTranslate = [];
+    // We use this map to reconstruct the structure (string vs array) later
+    const fieldMap = []; // { name: string, type: 'string' | 'list', count: number }
 
     formConfig.forEach((field) => {
-      // Only translate inputs that have a value in source and are EMPTY in target
-      if (field.type === "input") {
+      // --- Case 1: Standard Text Input ---
+      if (field.type === "input" || field.type === "textarea") {
         const sourceVal = sourceData[field.name];
-        const targetVal = targetData[field.name];
+        const targetVal =
+          targetData[field.name] ||
+          (initialValues && initialValues[newLang] ? initialValues[newLang][field.name] : null);
 
         if (sourceVal && !targetVal) {
-          fieldsToTranslate.push(field.name);
-          valuesToTranslate.push(sourceVal);
+          textsToTranslate.push(sourceVal);
+          fieldMap.push({ name: field.name, type: "string", count: 1 });
+        }
+      }
+
+      // --- Case 2: Input List (Array of Strings) ---
+      if (field.type === "input-list") {
+        const sourceVal = sourceData[field.name]; // e.g. ["Apple", "Banana"]
+        const targetVal =
+          targetData[field.name] ||
+          (initialValues && initialValues[newLang] ? initialValues[newLang][field.name] : []);
+
+        // Only translate if source has items and target is empty
+        if (
+          Array.isArray(sourceVal) &&
+          sourceVal.length > 0 &&
+          (!targetVal || targetVal.length === 0)
+        ) {
+          // Push ALL list items to the flat array
+          textsToTranslate.push(...sourceVal);
+          // Record that the next X items belong to this field
+          fieldMap.push({ name: field.name, type: "list", count: sourceVal.length });
         }
       }
     });
 
-    if (fieldsToTranslate.length > 0) {
+    if (textsToTranslate.length > 0) {
       setTranslating(true);
-      const translatedValues = await translateBatch(valuesToTranslate, newLang);
+
+      // Send flat array to API
+      const translatedFlatValues = await translateBatch(textsToTranslate, newLang);
 
       const updates = {};
-      fieldsToTranslate.forEach((fieldName, index) => {
-        updates[fieldName] = translatedValues[index];
+      let currentIndex = 0;
+
+      // Reconstruct the data structure
+      fieldMap.forEach(({ name, type, count }) => {
+        if (type === "string") {
+          // Take 1 string
+          updates[name] = translatedFlatValues[currentIndex];
+          currentIndex++;
+        } else if (type === "list") {
+          // Take 'count' strings and form an array
+          updates[name] = translatedFlatValues.slice(currentIndex, currentIndex + count);
+          currentIndex += count;
+        }
       });
 
       form.setFieldsValue({
@@ -105,30 +158,73 @@ export default function FormBuilder({
     }
   };
 
+  // --- Effects ---
+
+  // 1. Handle Tab Error Initialization (Protected against infinite loop)
   useEffect(() => {
     if (multiLanguage) {
-      const errors = form.getFieldsError();
-      const hasEnError = errors.some((e) => e.errors.length > 0 && e.name[0] === "en");
-      const hasArError = errors.some((e) => e.errors.length > 0 && e.name[0] === "ar");
-      setTabErrors({ en: hasEnError, ar: hasArError });
+      updateTabErrors();
     }
-  }, [form, multiLanguage]);
+  }, [updateTabErrors, multiLanguageJson]); // Uses stringified dependency
 
+  // 2. Handle Initial Values (Protected against infinite loop)
+  useEffect(() => {
+    if (initialValues && Object.keys(initialValues).length) {
+      form.setFieldsValue(initialValues);
+    }
+    computeAndSetComputedFields();
+  }, [initialValuesJson, form]);
+
+  // 3. Handle Auto-validation on language change
   useEffect(() => {
     const errors = form.getFieldsError().filter(({ errors }) => errors.length > 0);
-
     if (errors.length > 0) {
       const fieldNames = errors.map(({ name }) => name);
       form.validateFields(fieldNames);
     }
   }, [i18n.language, form]);
 
-  useEffect(() => {
-    if (initialValues && Object.keys(initialValues).length) {
-      form.setFieldsValue(initialValues);
-    }
-    computeAndSetComputedFields();
-  }, [initialValues, form]);
+  // --- Logic ---
+
+  const computeAndSetComputedFields = (changedName) => {
+    // 1. Get raw nested values: { en: { fund_id: 1, ... }, ar: { ... } }
+    const rawValues = form.getFieldsValue(true);
+
+    // 2. Flatten values for easier access in computed functions
+    // Priority: Root properties > English properties > Arabic properties
+    const flatValues = {
+      ...rawValues.en, // English fields (fund_id, etc.)
+      ...rawValues.ar, // Arabic fields
+      ...rawValues, // Root fields (if any)
+    };
+
+    const updates = {};
+
+    formConfig.forEach((f) => {
+      if (typeof f.computed === "function") {
+        if (Array.isArray(f.computedDeps) && changedName) {
+          const changedFieldName = Array.isArray(changedName)
+            ? changedName[changedName.length - 1]
+            : changedName;
+          if (!f.computedDeps.includes(changedFieldName)) return;
+        }
+
+        try {
+          const v = f.computed(flatValues);
+
+          const targetPath = multiLanguage ? ["en", f.name] : f.name;
+
+          const currentVal = form.getFieldValue(targetPath);
+
+          if (v !== undefined && v !== currentVal) {
+            form.setFieldValue(targetPath, v);
+          }
+        } catch (e) {
+          console.error("Computation Error:", e);
+        }
+      }
+    });
+  };
 
   const isControlled = (name) =>
     controlled && Object.prototype.hasOwnProperty.call(controlled, name);
@@ -144,11 +240,11 @@ export default function FormBuilder({
       number: tPh("enter"),
       file: tPh("upload"),
       default: tPh("enter"),
-
       daterange: [field.placeholder?.[0] || tPh("start"), field.placeholder?.[1] || tPh("end")],
     };
 
     const placeholder = field.placeholder || placeholderMap[field.type] || placeholderMap.default;
+
     const props = {
       ...field,
       className: "w-full",
@@ -161,7 +257,7 @@ export default function FormBuilder({
       multiple: field.multiple,
       datePickerProps: field.datePickerProps,
       uploadProps: {
-        maxSize: defaultMaxFileUploadSize, // MB
+        maxSize: defaultMaxFileUploadSize,
         ...field.uploadProps,
       },
       selectProps: field.selectProps,
@@ -175,30 +271,9 @@ export default function FormBuilder({
         form={form}
         {...props}
         disabled={mode === "view-only" || field.disabled}
-        loading={loading || translating} // Show loading state during translation
+        loading={loading || translating}
       />
     );
-  };
-
-  const computeAndSetComputedFields = (changedName) => {
-    const values = form.getFieldsValue(true);
-    const updates = {};
-    formConfig.forEach((f) => {
-      if (typeof f.computed === "function") {
-        if (Array.isArray(f.computedDeps) && changedName) {
-          if (!f.computedDeps.includes(changedName)) return;
-        }
-        try {
-          const v = f.computed(values);
-          if (v !== undefined && v !== null && v !== values[f.name]) {
-            updates[f.name] = v;
-          }
-        } catch (e) {}
-      }
-    });
-    if (Object.keys(updates).length) {
-      form.setFieldsValue(updates);
-    }
   };
 
   const mapFieldToComponent = (field, fieldNamePath) => {
@@ -214,11 +289,19 @@ export default function FormBuilder({
       return renderFieldType(field, c.value, handleChange);
     }
 
+    // Uncontrolled (AntD native)
     const currentValue = form.getFieldValue(fieldNamePath);
+
+    // We create a wrapper to hook into changes for computed fields
     const handleChange = (val) => {
       const newVal = val?.target ? val.target.value : val;
+      // Note: We don't need to manually setFieldsValue for uncontrolled inputs usually,
+      // but if we do it for computed fields logic, we must be careful.
+      // Ideally, we rely on onValuesChange from the Form, but this works for per-field logic.
       if (Array.isArray(fieldNamePath)) {
-        form.setFieldsValue({ [fieldNamePath[0]]: { [fieldNamePath[1]]: newVal } });
+        form.setFieldsValue({
+          [fieldNamePath[0]]: { [fieldNamePath[1]]: newVal },
+        });
       } else {
         form.setFieldsValue({ [fieldNamePath]: newVal });
       }
@@ -231,14 +314,18 @@ export default function FormBuilder({
         : currentValue;
 
     return renderFieldType(
-      { ...field, disabled: field.disabled ?? typeof field.computed === "function" },
+      {
+        ...field,
+        disabled: field.disabled ?? typeof field.computed === "function",
+      },
       computedValue,
       handleChange,
     );
   };
 
-  const getProcessedRules = (field) =>
-    field.rules?.map((rule) => {
+  const renderFormItem = (field, itemProps = {}, langPrefix = null) => {
+    // Process rules inside render to ensure access to latest context if needed
+    const processedRules = field.rules?.map((rule) => {
       if (rule.required && !rule.message) {
         const msgFn = defaultRequiredMsg[field.type] || defaultRequiredMsg.default;
         return { ...rule, message: msgFn(field.label) };
@@ -246,10 +333,10 @@ export default function FormBuilder({
       return rule;
     });
 
-  const renderFormItem = (field, itemProps = {}, langPrefix = null) => {
-    const processedRules = getProcessedRules(field);
     const fieldName = langPrefix ? [langPrefix, field.name] : field.name;
     const uniqueKey = langPrefix ? `${langPrefix}-${field.name}` : field.name;
+
+    const dependencies = field.dependencies?.map((dep) => (langPrefix ? [langPrefix, dep] : dep));
 
     return (
       <FormField
@@ -262,28 +349,67 @@ export default function FormBuilder({
         formItemProps={itemProps}
         form={form}
         shouldShow={field.shouldShow}
+        dependencies={dependencies}
       >
-        {mapFieldToComponent(field, field.name)}
+        {mapFieldToComponent(field, fieldName)}
       </FormField>
     );
   };
+
+  // Memoize the grid rendering to improve performance during tab switching
+  const renderGrid = (langPrefix) => (
+    <div
+      className={`grid ${
+        twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+      } gap-x-4 items-start`}
+    >
+      {formConfig.map((field) => {
+        // --- LOGIC START: Hide non-text fields in secondary languages ---
+        if (langPrefix && langPrefix !== "en") {
+          const allowedTypes = ["input", "textarea", "input-list"]; // Define allowed types for translations
+          if (!allowedTypes.includes(field.type)) {
+            return null;
+          } else if (field.hideFromOtherLanguages) {
+            return null;
+          }
+        }
+        // --- LOGIC END ---
+
+        return renderFormItem(
+          field,
+          {
+            initialValue: field.initialValue,
+            className: "w-full",
+            validateTrigger: "onBlur",
+            ...field.formItemProps,
+          },
+          langPrefix,
+        );
+      })}
+    </div>
+  );
+
+  // Memoize the actual grid components so they don't re-compute on every tick
+  const englishGrid = useMemo(() => renderGrid("en"), [formConfig, twoColumn]);
+  const arabicGrid = useMemo(() => renderGrid("ar"), [formConfig, twoColumn]);
+  const defaultGrid = useMemo(() => renderGrid(null), [formConfig, twoColumn]);
 
   const handleFinish = (values) => {
     const controlledValues = Object.keys(controlled || {}).reduce((acc, key) => {
       acc[key] = controlled[key].value;
       return acc;
     }, {});
-
     onFinish({ ...values, ...controlledValues }, { form });
   };
 
   const onFinishFailed = ({ errorFields }) => {
     if (multiLanguage) {
+      updateTabErrors(); // Utilize the shared function
+
       const hasEnError = errorFields.some((field) => field.name[0] === "en");
       const hasArError = errorFields.some((field) => field.name[0] === "ar");
 
-      setTabErrors({ en: hasEnError, ar: hasArError });
-
+      // Auto-switch tab to error
       const currentTabHasErrors =
         (activeLang === "en" && hasEnError) || (activeLang === "ar" && hasArError);
 
@@ -294,31 +420,10 @@ export default function FormBuilder({
     }
   };
 
-  const renderGrid = (langPrefix) => (
-    <div
-      className={`grid ${
-        twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-      } gap-x-4 items-start`}
-    >
-      {formConfig.map((field) =>
-        renderFormItem(
-          field,
-          {
-            initialValue: field.initialValue,
-            className: "w-full",
-            validateTrigger: "onBlur",
-            ...field.formItemProps,
-          },
-          langPrefix,
-        ),
-      )}
-    </div>
-  );
-
   if (mode === "fields-only") {
     return {
       form,
-      Fields: renderGrid(),
+      Fields: defaultGrid,
     };
   }
 
@@ -331,6 +436,10 @@ export default function FormBuilder({
       layout={layout}
       onFinish={handleFinish}
       onFinishFailed={onFinishFailed}
+      // Add onFieldsChange to update badges in real-time without polling/effects
+      onFieldsChange={() => {
+        if (multiLanguage) updateTabErrors();
+      }}
       className={`${formHeight} flex flex-col justify-between gap-6`}
       {...formProps}
     >
@@ -347,9 +456,14 @@ export default function FormBuilder({
             onChange={handleTabChange}
             type="card"
             tabBarExtraContent={
-              <span className="text-gray-500 text-sm">
-                {t("common.filling_form_msg", { ns: "form", lang: currentLangLabel })}
-              </span>
+              multiLanguage.showExtra && (
+                <span className="text-gray-500 text-sm">
+                  {t("common.filling_form_msg", {
+                    ns: "form",
+                    lang: currentLangLabel,
+                  })}
+                </span>
+              )
             }
             destroyOnHidden={false}
             items={[
@@ -360,7 +474,7 @@ export default function FormBuilder({
                     {t("language.english", "English")}
                   </Badge>
                 ),
-                children: renderGrid("en"),
+                children: englishGrid, // Use memoized grid
               },
               {
                 key: "ar",
@@ -369,18 +483,20 @@ export default function FormBuilder({
                     {t("language.arabic", "Arabic")}
                   </Badge>
                 ),
-                children: renderGrid("ar"),
+                children: arabicGrid, // Use memoized grid
               },
             ]}
           />
         ) : (
-          renderGrid(null)
+          defaultGrid
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2 w-full">
+      <div
+        className={`flex flex-wrap gap-2 w-full ${twoColumn ? "justify-end" : "justify-center"}`}
+      >
         <CustomButton
-          className="!px-10 ms-auto"
+          className={`!px-10 ${twoColumn ? "" : "flex-1"}`}
           text={cancelText}
           btnType="secondary"
           onClick={() => {
@@ -391,7 +507,7 @@ export default function FormBuilder({
         />
         {(mode !== "view-only" || submitText) && (
           <CustomButton
-            className="!px-10"
+            className={`!px-10 ${twoColumn ? "" : "flex-1"}`}
             htmlType="submit"
             text={submitText}
             width=""

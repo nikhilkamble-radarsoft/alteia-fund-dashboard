@@ -1,10 +1,16 @@
 import axios from "axios";
 
 import { localStorageTokenKey } from "../utils/constants";
+import { useLanguage } from "./useLanguage";
 
 export function useAxios() {
+  const { currentLang } = useLanguage();
+
   const instance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
+    headers: {
+      "Accept-Language": currentLang,
+    },
   });
 
   // request interceptor

@@ -101,7 +101,7 @@ export default function useApi() {
         setLoading(false);
       }
     },
-    [navigate, showError, showSuccess]
+    [navigate, showError, showSuccess],
   );
 
   return { loading, callApi };
