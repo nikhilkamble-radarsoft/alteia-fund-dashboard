@@ -50,6 +50,7 @@ export default function ViewTrade() {
       en: {
         ...data,
 
+        term: data.term?.en,
         title: data.title?.en,
         short_description: data.short_description?.en,
         location: data.location?.en,

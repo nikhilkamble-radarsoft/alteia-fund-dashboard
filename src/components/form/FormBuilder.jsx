@@ -475,6 +475,7 @@ export default function FormBuilder({
                   </Badge>
                 ),
                 children: englishGrid, // Use memoized grid
+                forceRender: true,
               },
               {
                 key: "ar",
@@ -484,6 +485,7 @@ export default function FormBuilder({
                   </Badge>
                 ),
                 children: arabicGrid, // Use memoized grid
+                forceRender: true,
               },
             ]}
           />

@@ -14,28 +14,45 @@ export default function CreateNotification() {
   const [purchaseMap, setPurchaseMap] = useState({});
   const [investors, setInvestors] = useState([]);
 
-  const onFinish = async (values) => {
-    const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      if (values[key] === null || values[key] === undefined || values[key] === "") return;
+  const onFinish = async (formValues) => {
+    const values = {
+      en: { ...state?.en, ...formValues.en },
+      ar: { ...state?.ar, ...formValues.ar },
+    };
 
-      // Upload files
-      if (["notification_picture"].includes(key) && values[key]?.[0]?.originFileObj)
-        return formData.append(key, values[key][0].originFileObj);
-
-      if (Array.isArray(values[key])) {
-        values[key].forEach((item) => formData.append(key, item));
-      } else {
-        formData.append(key, values[key]);
-      }
-    });
-
-    if (values.type === "fund") {
-      const users = purchaseMap[values.fund_id];
-      if (users) {
-        users.forEach((user) => formData.append("send_id", user));
-      }
+    if (values.en?.type === "fund" && values.en?.fund_id) {
+      const users = purchaseMap[values.en.fund_id] || [];
+      values.en.send_id = users;
     }
+
+    const formData = new FormData();
+
+    const appendSection = (sectionData, prefix) => {
+      if (!sectionData) return;
+
+      Object.keys(sectionData).forEach((key) => {
+        const value = sectionData[key];
+
+        if (value === undefined || value === null || value === "") return;
+
+        if (key === "notification_picture") {
+          if (Array.isArray(value) && value[0]?.originFileObj) {
+            formData.append(key, value[0].originFileObj);
+          }
+          return;
+        }
+
+        if (Array.isArray(value)) {
+          formData.append(`${prefix}[${key}]`, JSON.stringify(value));
+          return;
+        }
+
+        formData.append(`${prefix}[${key}]`, value);
+      });
+    };
+
+    appendSection(values.en, "en");
+    appendSection(values.ar, "ar");
 
     const { status } = await callApi({
       method: "post",
@@ -46,7 +63,7 @@ export default function CreateNotification() {
     });
 
     if (status) {
-      navigate("/");
+      navigate(-1);
     }
   };
 
@@ -68,7 +85,7 @@ export default function CreateNotification() {
       type: "select",
       options: funds.map((fund) => ({ value: fund._id, label: fund.title })),
       placeholder: t("purchase.selectFund"),
-      shouldShow: (values) => values.type === "fund",
+      shouldShow: (values) => values.en?.type === "fund",
     },
     {
       name: "send_id",
@@ -79,17 +96,19 @@ export default function CreateNotification() {
       },
       options: investors.map((investor) => ({ value: investor._id, label: investor.full_name })),
       placeholder: t("notification.selectUser"),
-      shouldShow: (values) => values.type === "user",
+      shouldShow: (values) => values.en?.type === "user",
     },
     {
       name: "title",
       label: t("notification.title"),
       rules: formRules.required(t("notification.title")),
+      type: "input",
     },
     {
       name: "url",
-      label: t("field.url"), // Reusing existing key
+      label: t("field.url"),
       rules: formRules.url(false),
+      hideFromOtherLanguages: true,
     },
     {
       name: "message",
@@ -160,7 +179,6 @@ export default function CreateNotification() {
 
   return (
     <FormBuilder
-      // mode="view-only"
       formProps={{ autoComplete: "off" }}
       formConfig={formConfig}
       cancelText={t("common.back")}

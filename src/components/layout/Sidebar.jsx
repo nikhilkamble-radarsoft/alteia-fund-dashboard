@@ -169,7 +169,7 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
               <FiChevronLeft
                 size={14}
                 className={`text-white transition-transform duration-300 ${
-                  collapsed ? "rotate-180" : ""
+                  (isRTL ? !collapsed : collapsed) ? "rotate-180" : ""
                 }`}
               />
             }

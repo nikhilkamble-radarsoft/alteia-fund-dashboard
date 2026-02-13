@@ -151,6 +151,7 @@ export function useThemedModal() {
       twoColumn = false,
       showAnimation = true,
       multiLanguage = false,
+      destroyOnHidden = true,
       ...options
     } = {}) => {
       const finalConfirmText = confirmText || t("common.confirm");
@@ -160,6 +161,7 @@ export function useThemedModal() {
       setModalConfig({
         title,
         buttons: [],
+        destroyOnHidden,
         content: (
           <div className="flex flex-col justify-center">
             {showAnimation && (
@@ -192,20 +194,16 @@ export function useThemedModal() {
               onFinish={async (values) => {
                 if (onConfirm) {
                   try {
-                    // Resolve the result whether it is a Promise or a direct value
                     const shouldClose = await Promise.resolve(onConfirm(values));
 
-                    // Only close and reset if the result is truthy
                     if (shouldClose || shouldClose === undefined) {
                       confirmForm.resetFields();
                       closeModal();
                     }
                   } catch (error) {
-                    // Optional: Handle errors from onConfirm here if needed
                     console.error("Confirmation failed:", error);
                   }
                 } else {
-                  // If no onConfirm is provided, close immediately
                   confirmForm.resetFields();
                   closeModal();
                 }

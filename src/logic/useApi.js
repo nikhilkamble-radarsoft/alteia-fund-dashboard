@@ -70,6 +70,7 @@ export default function useApi() {
               navigate("/login");
             },
             onOkText: "Go to Login",
+            zIndex: 10001,
           });
         } else if (status === 403 && !navigationRef.current.unauthorized) {
           navigationRef.current.unauthorized = true;
@@ -81,6 +82,7 @@ export default function useApi() {
           if (errorOptions) {
             showError(errorMessage, errorOptions.subMessage, {
               ...errorOptions,
+              zIndex: 10001,
               autoCloseTime: errorOptions.autoCloseTime || defaultAutoCloseTime,
               style: {
                 zIndex: 3000,

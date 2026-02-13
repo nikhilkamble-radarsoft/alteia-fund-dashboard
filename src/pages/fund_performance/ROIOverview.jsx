@@ -5,12 +5,14 @@ import Field from "../../components/form/Field";
 import { useNavigate } from "react-router-dom";
 import useApi from "../../logic/useApi";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../logic/useLanguage";
 
 export default function ROIOverview() {
   const { t } = useTranslation("table");
   const { callApi } = useApi();
   const [funds, setFunds] = useState([]);
   const navigate = useNavigate();
+  const { currentLang } = useLanguage();
 
   const portfolioData = {
     // Included purely for translation context if you uncomment the metrics section later
@@ -44,14 +46,7 @@ export default function ROIOverview() {
         onView: () => {},
       },
     ],
-    timeFilters: [
-      t("roi.3Months"),
-      t("roi.6Months"),
-      t("roi.12Months"),
-      "📅",
-      "2025",
-      "August ▼",
-    ],
+    timeFilters: [t("roi.3Months"), t("roi.6Months"), t("roi.12Months"), "📅", "2025", "August ▼"],
     rangeFilters: [t("roi.today"), t("roi.thisWeek"), t("roi.thisMonth"), t("roi.thisYear")],
   };
 
@@ -75,7 +70,7 @@ export default function ROIOverview() {
 
   useEffect(() => {
     fetchFunds();
-  }, []);
+  }, [currentLang]);
 
   const fetchROIData = async () => {
     try {

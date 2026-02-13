@@ -147,7 +147,7 @@ const ViewUpdateROI = () => {
         method: "post",
         data: roi_list,
         successOptions: {
-          onOk: () => navigate(-1),
+          onOk: () => navigate("/roi"),
         },
         errorOptions: {},
       });

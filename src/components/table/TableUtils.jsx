@@ -93,7 +93,7 @@ export const enhanceColumns = ({ columns }) => {
         }));
 
         return (
-          <Dropdown align="bottom" menu={{ items }} trigger={["click"]}>
+          <Dropdown align="bottom" menu={{ items }} trigger={["click"]} className="w-full">
             <Button type="text" className="p-0">
               <MoreOutlined className="text-lg text-primary" />
             </Button>

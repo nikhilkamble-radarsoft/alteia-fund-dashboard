@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 export default function Leads() {
   const navigate = useNavigate();
   const { callApi } = useApi();
-  const { modal, showConfirm, closeModal } = useThemedModal();
+  const { modal, showConfirm } = useThemedModal();
   const [fetchRefresh, setFetchRefresh] = useState(false);
   const { t } = useTranslation("table");
 
@@ -32,8 +32,9 @@ export default function Leads() {
 
       if (status) {
         setFetchRefresh(!fetchRefresh);
-        closeModal();
       }
+
+      return status;
     } catch (error) {}
   };
 
@@ -48,6 +49,7 @@ export default function Leads() {
       variant: "error",
       confirmText: t("leads.modals.reject_btn"),
       cancelText: t("leads.modals.cancel_btn"),
+      multiLanguage: true,
       fields: [
         {
           name: "comment",
@@ -59,7 +61,11 @@ export default function Leads() {
         },
       ],
       onConfirm: (values) => {
-        handleStatusChange(record._id, investorKycStatus.rejected, values.comment);
+        const commentPayload = {
+          en: values.en?.comment,
+          ar: values.ar?.comment,
+        };
+        return handleStatusChange(record._id, investorKycStatus.rejected, commentPayload);
       },
     });
   };

@@ -48,7 +48,7 @@ const getCssVariable = (name) =>
 
 export default function App() {
   const { t, i18n } = useTranslation();
-  const { locale, direction } = useLanguage();
+  const { locale, direction, currentLang } = useLanguage();
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const axios = useAxios();
@@ -85,7 +85,7 @@ export default function App() {
     };
 
     fetchProfile();
-  }, []);
+  }, [currentLang]);
 
   useEffect(() => {
     if (!user && i18n.language !== "en") {

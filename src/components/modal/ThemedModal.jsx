@@ -35,6 +35,7 @@ const ThemedModal = ({
       open={visible}
       onCancel={onClose}
       footer={null}
+      centered
       styles={{
         body: {
           // padding: "45px 20px",

@@ -7,7 +7,8 @@ import { useTopData } from "../../components/layout/AppLayout";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules, investorKycStatus } from "../../utils/constants";
 import { checkUserKycDocument } from "../../utils/utils";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";import countryList from "../../utils/country_list.json";
+
 
 export default function ViewLead() {
   const { t } = useTranslation("form");
@@ -84,19 +85,45 @@ export default function ViewLead() {
       data: {
         user_id: id,
       },
+      params: {
+        skipDefaultTransform: true,
+      },
       errorOptions: {
         onOk: () => navigate(-1),
       },
     });
 
-    const localLead = response.data;
+    const data = response.data;
 
-    const updatedLead = {
-      ...localLead,
-      dob: dayjs(localLead.dob),
+    const formattedLead = {
+      en: {
+        ...data,
+
+        full_name: data.full_name?.en,
+        nationality: data.nationality?.en,
+        country: data.country?.en,
+        residential_address: data.residential_address?.en,
+        risk_appetite: data.risk_appetite?.en,
+        investment_interest: data.investment_interest?.en,
+        rejected_comment: data.rejected_comment?.en,
+
+        dob: data.dob ? dayjs(data.dob) : null,
+        document_file: data.document_file,
+        address_file: data.address_file,
+        signature_file: data.signature_file,
+      },
+      ar: {
+        full_name: data.full_name?.ar || data.full_name?.en,
+        nationality: data.nationality?.ar || data.nationality?.en,
+        country: data.country?.ar || data.country?.en,
+        residential_address: data.residential_address?.ar || data.residential_address?.en,
+        risk_appetite: data.risk_appetite?.ar || data.risk_appetite?.en,
+        investment_interest: data.investment_interest?.ar || data.investment_interest?.en,
+        rejected_comment: data.rejected_comment?.ar || data.rejected_comment?.en,
+      },
     };
-    setLead(updatedLead);
-    setTitle(t("lead.leadDetails", { name: updatedLead.full_name }));
+
+    setLead(formattedLead);
   };
 
   useEffect(() => {
@@ -107,13 +134,36 @@ export default function ViewLead() {
 
   const formConfig = [
     { name: "full_name", label: t("lead.fullName"), type: "input" },
-    { name: "email", label: t("lead.emailAddress"), type: "input" },
-    { name: "phone", label: t("lead.phoneNumber"), type: "input" },
+    { name: "email", label: t("lead.emailAddress"), type: "input", hideFromOtherLanguages: true },
+    { name: "phone", label: t("lead.phoneNumber"), type: "input", hideFromOtherLanguages: true },
     { name: "dob", label: t("lead.dob"), type: "date" },
-    { name: "nationality", label: t("lead.nationality"), type: "input" },
+    {
+      name: "nationality",
+      label: t("lead.nationality"),
+      type: "select",
+      options: countryList.map((country) => ({
+        label: country.nationality_display,
+        value: country.nationality,
+      })),
+      rules: formRules.required(t("investor.nationality")),
+    },
     { name: "residential_address", label: t("lead.residentialAddress"), type: "input" },
-    { name: "country", label: t("lead.countryOfResidence"), type: "input" },
-    { name: "postal_code", label: t("lead.postalCode"), type: "input" },
+    {
+      name: "country",
+      label: t("lead.countryOfResidence"),
+      type: "select",
+      options: countryList.map((country) => ({
+        label: country.country_of_residence_display,
+        value: country.country_of_residence,
+      })),
+      rules: formRules.required(t("investor.country")),
+    },
+    {
+      name: "postal_code",
+      label: t("lead.postalCode"),
+      type: "input",
+      hideFromOtherLanguages: true,
+    },
     {
       name: "address_file",
       label: t("lead.proofOfAddress"),
