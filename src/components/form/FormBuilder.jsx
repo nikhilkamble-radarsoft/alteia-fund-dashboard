@@ -41,7 +41,7 @@ export default function FormBuilder({
 
   const translateBatch = async (texts, targetLang) => {
     if (!texts.length) return [];
-    return []; // TODO: Uncomment to disable translation for testing
+    // return []; // TODO: Uncomment to disable translation for testing
 
     const sourceLang = targetLang === "ar" ? "en" : "ar";
 
