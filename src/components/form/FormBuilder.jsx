@@ -92,36 +92,38 @@ export default function FormBuilder({
     const fieldMap = []; // { name: string, type: 'string' | 'list', count: number }
 
     formConfig.forEach((field) => {
-      // --- Case 1: Standard Text Input ---
-      if (field.type === "input" || field.type === "textarea") {
-        const sourceVal = sourceData[field.name];
-        const targetVal =
-          targetData[field.name] ||
-          (initialValues && initialValues[newLang] ? initialValues[newLang][field.name] : null);
+      if (!field.hideFromOtherLanguages) {
+        // --- Case 1: Standard Text Input ---
+        if (field.type === "input" || field.type === "textarea") {
+          const sourceVal = sourceData[field.name];
+          const targetVal =
+            targetData[field.name] ||
+            (initialValues && initialValues[newLang] ? initialValues[newLang][field.name] : null);
 
-        if (sourceVal && !targetVal) {
-          textsToTranslate.push(sourceVal);
-          fieldMap.push({ name: field.name, type: "string", count: 1 });
+          if (sourceVal && !targetVal) {
+            textsToTranslate.push(sourceVal);
+            fieldMap.push({ name: field.name, type: "string", count: 1 });
+          }
         }
-      }
 
-      // --- Case 2: Input List (Array of Strings) ---
-      if (field.type === "input-list") {
-        const sourceVal = sourceData[field.name]; // e.g. ["Apple", "Banana"]
-        const targetVal =
-          targetData[field.name] ||
-          (initialValues && initialValues[newLang] ? initialValues[newLang][field.name] : []);
+        // --- Case 2: Input List (Array of Strings) ---
+        if (field.type === "input-list") {
+          const sourceVal = sourceData[field.name]; // e.g. ["Apple", "Banana"]
+          const targetVal =
+            targetData[field.name] ||
+            (initialValues && initialValues[newLang] ? initialValues[newLang][field.name] : []);
 
-        // Only translate if source has items and target is empty
-        if (
-          Array.isArray(sourceVal) &&
-          sourceVal.length > 0 &&
-          (!targetVal || targetVal.length === 0)
-        ) {
-          // Push ALL list items to the flat array
-          textsToTranslate.push(...sourceVal);
-          // Record that the next X items belong to this field
-          fieldMap.push({ name: field.name, type: "list", count: sourceVal.length });
+          // Only translate if source has items and target is empty
+          if (
+            Array.isArray(sourceVal) &&
+            sourceVal.length > 0 &&
+            (!targetVal || targetVal.length === 0)
+          ) {
+            // Push ALL list items to the flat array
+            textsToTranslate.push(...sourceVal);
+            // Record that the next X items belong to this field
+            fieldMap.push({ name: field.name, type: "list", count: sourceVal.length });
+          }
         }
       }
     });
