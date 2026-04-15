@@ -7,8 +7,8 @@ import { useTopData } from "../../components/layout/AppLayout";
 import { useThemedModal } from "../../logic/useThemedModal";
 import { formRules, investorKycStatus } from "../../utils/constants";
 import { checkUserKycDocument } from "../../utils/utils";
-import { useTranslation } from "react-i18next";import countryList from "../../utils/country_list.json";
-
+import { useTranslation } from "react-i18next";
+import countryList from "../../utils/country_list.json";
 
 export default function ViewLead() {
   const { t } = useTranslation("form");

@@ -12,7 +12,7 @@ i18n
   .init({
     fallbackLng: "en",
     supportedLngs: ["en", "ar"],
-    ns: ["common"], // Your logical file splits
+    ns: ["common", "table", "form"], // Your logical file splits
     defaultNS: "common",
 
     // Performance: Wait for translations to load before rendering?

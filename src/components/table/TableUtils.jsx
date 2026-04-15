@@ -16,6 +16,7 @@ const customSortIcon = ({ sortOrder }) => (
 
 export const enhanceColumns = ({ columns }) => {
   const { currentLang = "en" } = useLanguage();
+  
   return columns.map((col, i) => {
     const hasActions = !!col.actions;
 

@@ -26,10 +26,10 @@ export default function FileField({
   loading = false,
 }) {
   const { isRTL } = useLanguage();
+  const { t } = useTranslation("form");
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [internalList, setInternalList] = React.useState([]);
   const { showView = true, showDownload = false } = uploadProps;
-  const { t } = useTranslation("form");
 
   // Handle default placeholder translation
   const finalPlaceholder = placeholder || t("common.upload");

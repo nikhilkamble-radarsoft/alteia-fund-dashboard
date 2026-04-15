@@ -326,6 +326,19 @@ export default function FormBuilder({
   };
 
   const renderFormItem = (field, itemProps = {}, langPrefix = null) => {
+    if (field.type === "header") {
+      return (
+        <TableTitle
+          key={`header-${field.label}`}
+          title={field.label}
+          titleColor="text-black"
+          subtitle={field.subtitle}
+          buttons={field.buttons}
+          className="md:col-span-2 mb-4"
+        />
+      );
+    }
+
     // Process rules inside render to ensure access to latest context if needed
     const processedRules = field.rules?.map((rule) => {
       if (rule.required && !rule.message) {
@@ -363,7 +376,7 @@ export default function FormBuilder({
     <div
       className={`grid ${
         twoColumn ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-      } gap-x-4 items-start`}
+      } gap-x-4 gap-y-2 items-start`}
     >
       {formConfig.map((field) => {
         // --- LOGIC START: Hide non-text fields in secondary languages ---
@@ -458,7 +471,8 @@ export default function FormBuilder({
             onChange={handleTabChange}
             type="card"
             tabBarExtraContent={
-              multiLanguage.showExtra && (
+              multiLanguage.showExtra &&
+              mode !== "view-only" && (
                 <span className="text-gray-500 text-sm">
                   {t("common.filling_form_msg", {
                     ns: "form",

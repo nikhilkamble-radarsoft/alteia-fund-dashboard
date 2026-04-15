@@ -21,9 +21,8 @@ export default function Topbar({ onToggleSidebar, sidebarWidth }) {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
 
-  const { direction, currentLang, changeLanguage } = useLanguage();
+  const { currentLang, changeLanguage, isRTL } = useLanguage();
   const { t } = useTranslation();
-  const isRTL = direction === "rtl";
 
   const {
     title: contextTitle,
